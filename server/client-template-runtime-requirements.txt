@@ -1,0 +1,5 @@
+# Explicit native-template parser security pins, 25 October 2026; Python >=3.11.
+# Install explicitly into the runtime environment; the application never installs packages.
+lxml==6.1.1
+pypdf==6.21.2
+Pillow==13.0.0

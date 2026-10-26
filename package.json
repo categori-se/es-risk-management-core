@@ -1,0 +1,46 @@
+{
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server/local-workspace.mjs",
+    "local": "node server/local-workspace.mjs",
+    "test": "node --test --test-concurrency=4 tests/local-professional-workflow.test.mjs tests/project-lifecycle.test.mjs tests/project-lifecycle-http.test.mjs tests/project-lifecycle-portfolio-http.test.mjs tests/project-lifecycle-report.test.mjs tests/project-lifecycle-ui.test.mjs tests/consultancy-journey.test.mjs tests/consultancy-output-preview.test.mjs tests/practitioner-observation.test.mjs tests/consultancy-operations.test.mjs",
+    "test:installation": "node tools/check-community-source.mjs .",
+    "demo:seed": "node tools/seed-community-demo.mjs",
+    "test:container": "node tools/check-community-container.mjs",
+    "build:authenticated": "node tools/build-community-authenticated.mjs",
+    "test:authenticated": "node tools/check-community-authenticated.mjs .",
+    "build:catalog": "node tools/build-product-catalog.mjs",
+    "demo:rehearse": "node tools/run-consultancy-demonstration.mjs"
+  },
+  "dependencies": {
+    "@categori/app-auth-client": "file:vendor/app-auth-client",
+    "@categori/app-connections-streams": "file:vendor/app-connections-streams",
+    "@categori/app-core": "file:vendor/app-core",
+    "@categori/browser-recovery": "file:vendor/browser-recovery",
+    "@categori/studio-contracts": "file:vendor/studio-contracts",
+    "@categori/workspace-contracts": "file:vendor/workspace-contracts",
+    "exceljs": "4.4.0",
+    "jsdom": "23.2.0"
+  },
+  "engines": {
+    "node": ">=24.22.1"
+  },
+  "overrides": {
+    "exceljs": {
+      "uuid": "11.1.1"
+    }
+  },
+  "name": "es-risk-management-core",
+  "version": "0.1.0-preview.1",
+  "license": "Apache-2.0",
+  "optionalDependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "3.1127.0",
+    "@aws-sdk/client-dynamodb": "3.1127.0",
+    "@aws-sdk/client-lambda": "3.1127.0",
+    "@aws-sdk/client-s3": "3.1127.0",
+    "@aws-sdk/lib-dynamodb": "3.1127.0",
+    "@aws-sdk/s3-request-presigner": "3.1127.0",
+    "esbuild": "0.28.1"
+  }
+}

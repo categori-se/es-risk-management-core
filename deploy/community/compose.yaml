@@ -1,0 +1,22 @@
+# Linux only. Run from the generated community source directory.
+services:
+  review:
+    build:
+      context: ../..
+      dockerfile: deploy/community/Containerfile
+      args:
+        COMMUNITY_SOURCE_TREE_SHA256: ${ESIA_COMMUNITY_SOURCE_TREE_SHA256:?Set the exact sourceTreeSha256 from community-source-manifest.json}
+    image: esia-community:preview
+    network_mode: host
+    user: "${ESIA_UID:-1000}:${ESIA_GID:-1000}"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    mem_limit: 1g
+    tmpfs: ["/tmp:rw,noexec,nosuid,nodev,size=256m,mode=1777"]
+    volumes:
+      - type: bind
+        source: ${ESIA_PRIVATE_DATA:?Set ESIA_PRIVATE_DATA to an existing private directory owned by the configured non-root user}
+        target: /data
+    restart: "no"

@@ -1,0 +1,1350 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://esia.categori.se/schemas/resource-library.schema.json",
+  "title": "E&S Review institutional resource catalog",
+  "description": "Bibliographic resources, immutable publication editions and separately identified original files. Additional internal metadata never implies permission to disclose it. Runtime validation also checks referential integrity, unique edition identities, source binding and version succession cycles.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "resources",
+    "versions",
+    "files",
+    "instruments",
+    "mappings",
+    "collections",
+    "institutions",
+    "events"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "resources": {
+      "type": "array",
+      "maxItems": 20000,
+      "items": {
+        "$ref": "#/$defs/resource"
+      }
+    },
+    "versions": {
+      "type": "array",
+      "maxItems": 50000,
+      "items": {
+        "$ref": "#/$defs/version"
+      }
+    },
+    "files": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "$ref": "#/$defs/file"
+      }
+    },
+    "instruments": {
+      "type": "array",
+      "maxItems": 20000,
+      "items": {
+        "$ref": "#/$defs/instrument"
+      }
+    },
+    "mappings": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "$ref": "#/$defs/mapping"
+      }
+    },
+    "collections": {
+      "type": "array",
+      "maxItems": 2000,
+      "items": {
+        "$ref": "#/$defs/collection"
+      }
+    },
+    "institutions": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/$defs/institution"
+      }
+    },
+    "events": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "type": "object"
+      }
+    },
+    "links": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "$ref": "#/$defs/link"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "$ref": "#/$defs/relationship"
+      }
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[1-8][a-fA-F0-9]{3}-[89abAB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "text": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "url": {
+      "type": "string",
+      "maxLength": 4000,
+      "pattern": "^(https?://[^\\s]+)?$",
+      "description": "Runtime validation also rejects credentials and signed/access-token parameters."
+    },
+    "strings": {
+      "type": "array",
+      "maxItems": 100,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000
+      }
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^(\\d{4}(-\\d{2}(-\\d{2})?)?)?$"
+    },
+    "instant": {
+      "type": "string",
+      "pattern": "^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2}))?$"
+    },
+    "actionDecision": {
+      "enum": [
+        "permitted",
+        "prohibited",
+        "unknown"
+      ]
+    },
+    "actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "retrieve": {
+          "$ref": "#/$defs/actionDecision"
+        },
+        "store": {
+          "$ref": "#/$defs/actionDecision"
+        },
+        "index": {
+          "$ref": "#/$defs/actionDecision"
+        },
+        "ai": {
+          "$ref": "#/$defs/actionDecision"
+        },
+        "derive": {
+          "$ref": "#/$defs/actionDecision"
+        },
+        "download": {
+          "$ref": "#/$defs/actionDecision"
+        },
+        "redistribute": {
+          "$ref": "#/$defs/actionDecision"
+        },
+        "excerpt": {
+          "$ref": "#/$defs/actionDecision"
+        }
+      }
+    },
+    "rights": {
+      "type": "object",
+      "description": "Positive action decisions require source evidence and human review at use time. Public download additionally requires redistribution permission; project access does not establish source rights.",
+      "properties": {
+        "category": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "actions": {
+          "$ref": "#/$defs/actions"
+        },
+        "evidenceUrl": {
+          "$ref": "#/$defs/url"
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 8000
+        },
+        "reviewedAt": {
+          "$ref": "#/$defs/instant"
+        },
+        "reviewedBy": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "expiresAt": {
+          "$ref": "#/$defs/instant"
+        },
+        "audiences": {
+          "$ref": "#/$defs/strings"
+        },
+        "purposes": {
+          "$ref": "#/$defs/strings"
+        },
+        "resourceVersionId": {
+          "$ref": "#/$defs/uuid"
+        }
+      }
+    },
+    "curation": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "draft",
+            "review",
+            "approved",
+            "withdrawn"
+          ]
+        },
+        "audience": {
+          "enum": [
+            "internal",
+            "public",
+            "restricted"
+          ]
+        },
+        "reviewedBy": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "reviewedAt": {
+          "$ref": "#/$defs/instant"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "approved"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "reviewedBy",
+              "reviewedAt"
+            ],
+            "properties": {
+              "reviewedBy": {
+                "minLength": 1
+              },
+              "reviewedAt": {
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "author": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        {
+          "type": "object",
+          "properties": {
+            "literal": {
+              "$ref": "#/$defs/text"
+            },
+            "family": {
+              "$ref": "#/$defs/text"
+            },
+            "given": {
+              "$ref": "#/$defs/text"
+            },
+            "suffix": {
+              "$ref": "#/$defs/text"
+            },
+            "ORCID": {
+              "$ref": "#/$defs/text"
+            }
+          },
+          "anyOf": [
+            {
+              "required": [
+                "literal"
+              ]
+            },
+            {
+              "required": [
+                "family"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "identifiers": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "value"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        }
+      }
+    },
+    "institution": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 192
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "officialUrl": {
+          "$ref": "#/$defs/url"
+        }
+      }
+    },
+    "resource": {
+      "type": "object",
+      "required": [
+        "id",
+        "title"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "subtitle": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "translatedTitle": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "type": {
+          "enum": [
+            "policy",
+            "standard",
+            "guidance_note",
+            "guidance",
+            "handbook",
+            "toolkit",
+            "sourcebook",
+            "template",
+            "checklist",
+            "example",
+            "technical_methodology",
+            "research_paper",
+            "monitoring_report",
+            "brochure",
+            "collection",
+            "other"
+          ]
+        },
+        "institutionId": {
+          "type": "string",
+          "maxLength": 192
+        },
+        "authors": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/author"
+          }
+        },
+        "publisher": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "identifiers": {
+          "$ref": "#/$defs/identifiers"
+        },
+        "series": {
+          "$ref": "#/$defs/text"
+        },
+        "reportNumber": {
+          "$ref": "#/$defs/text"
+        },
+        "aliases": {
+          "type": "array",
+          "maxItems": 100
+        }
+      }
+    },
+    "framework": {
+      "type": "object",
+      "required": [
+        "frameworkId"
+      ],
+      "properties": {
+        "frameworkId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 192
+        },
+        "edition": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "standardIds": {
+          "$ref": "#/$defs/strings"
+        }
+      }
+    },
+    "version": {
+      "type": "object",
+      "required": [
+        "id",
+        "resourceId",
+        "edition"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "resourceId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "edition": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "status": {
+          "enum": [
+            "current",
+            "superseded",
+            "historical",
+            "withdrawn",
+            "uncertain"
+          ]
+        },
+        "publicationDate": {
+          "$ref": "#/$defs/date"
+        },
+        "language": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "officialUrl": {
+          "$ref": "#/$defs/url"
+        },
+        "downloadUrl": {
+          "$ref": "#/$defs/url"
+        },
+        "archiveUrl": {
+          "$ref": "#/$defs/url"
+        },
+        "sourceSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "sourcePackSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "topics": {
+          "$ref": "#/$defs/strings"
+        },
+        "lifecycleStages": {
+          "$ref": "#/$defs/strings"
+        },
+        "sectors": {
+          "$ref": "#/$defs/strings"
+        },
+        "geographies": {
+          "$ref": "#/$defs/strings"
+        },
+        "audiences": {
+          "$ref": "#/$defs/strings"
+        },
+        "frameworks": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/framework"
+          }
+        },
+        "rights": {
+          "$ref": "#/$defs/rights"
+        },
+        "curation": {
+          "$ref": "#/$defs/curation"
+        },
+        "supersededBy": {
+          "$ref": "#/$defs/uuid"
+        },
+        "identifiers": {
+          "$ref": "#/$defs/identifiers"
+        }
+      }
+    },
+    "file": {
+      "type": "object",
+      "required": [
+        "id",
+        "resourceVersionId",
+        "sha256",
+        "size",
+        "filename",
+        "mediaType"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "resourceVersionId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 536870912
+        },
+        "filename": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "mediaType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "sourceUrl": {
+          "$ref": "#/$defs/url"
+        },
+        "downloadedAt": {
+          "$ref": "#/$defs/instant"
+        },
+        "capturedAt": {
+          "$ref": "#/$defs/instant"
+        },
+        "redirects": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "$ref": "#/$defs/url"
+          }
+        },
+        "storage": {
+          "type": "object"
+        },
+        "extraction": {
+          "type": "object"
+        },
+        "rights": {
+          "$ref": "#/$defs/rights"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "fileId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "pageEnd": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "locator": {
+          "$ref": "#/$defs/text"
+        },
+        "section": {
+          "$ref": "#/$defs/text"
+        },
+        "paragraph": {
+          "$ref": "#/$defs/text"
+        },
+        "table": {
+          "$ref": "#/$defs/text"
+        },
+        "caption": {
+          "$ref": "#/$defs/text"
+        },
+        "sourceId": {
+          "$ref": "#/$defs/text"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "locator"
+          ]
+        },
+        {
+          "required": [
+            "page"
+          ]
+        },
+        {
+          "required": [
+            "section"
+          ]
+        },
+        {
+          "required": [
+            "paragraph"
+          ]
+        },
+        {
+          "required": [
+            "table"
+          ]
+        }
+      ]
+    },
+    "mapping": {
+      "type": "object",
+      "required": [
+        "id",
+        "resourceVersionId",
+        "rationale",
+        "source"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "resourceVersionId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "frameworkId": {
+          "type": "string",
+          "maxLength": 192
+        },
+        "edition": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "standardIds": {
+          "$ref": "#/$defs/strings"
+        },
+        "topics": {
+          "$ref": "#/$defs/strings"
+        },
+        "topic": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "requirement",
+            "guidance",
+            "example",
+            "related"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "verificationStatus": {
+          "enum": [
+            "unreviewed",
+            "verified",
+            "rejected",
+            "needs_review"
+          ]
+        },
+        "reviewedBy": {
+          "type": "string"
+        },
+        "reviewedAt": {
+          "$ref": "#/$defs/instant"
+        },
+        "curation": {
+          "$ref": "#/$defs/curation"
+        }
+      }
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "sourceLocator"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 192
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "type": {
+          "enum": [
+            "text",
+            "textarea",
+            "number",
+            "date",
+            "boolean",
+            "select",
+            "table"
+          ]
+        },
+        "canonicalPath": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "sourceLocator": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "options": {
+          "$ref": "#/$defs/strings"
+        },
+        "columns": {
+          "$ref": "#/$defs/strings"
+        },
+        "description": {
+          "$ref": "#/$defs/text"
+        },
+        "extensionProposal": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "rationale"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            "rationale": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            "status": {
+              "enum": [
+                "proposed",
+                "approved",
+                "rejected"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "instrument": {
+      "type": "object",
+      "required": [
+        "id",
+        "resourceVersionId",
+        "title",
+        "source"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "resourceVersionId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "kind": {
+          "enum": [
+            "official_template",
+            "official_outline",
+            "sample_form",
+            "guide_derived_outline",
+            "project_example",
+            "checklist",
+            "matrix",
+            "form"
+          ]
+        },
+        "authorityCategory": {
+          "enum": [
+            "binding_requirement",
+            "official_guidance",
+            "project_commitment",
+            "published_example",
+            "derived_recommendation"
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "fields": {
+          "type": "array",
+          "maxItems": 500,
+          "items": {
+            "$ref": "#/$defs/field"
+          }
+        },
+        "structure": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "maxLength": 4000
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "title",
+                  "sourceLocator"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "fieldIds": {
+                    "$ref": "#/$defs/strings"
+                  },
+                  "sourceLocator": {
+                    "type": "string"
+                  },
+                  "level": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 6
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "approval": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "draft",
+                "review",
+                "approved",
+                "rejected",
+                "withdrawn"
+              ]
+            },
+            "reviewedAt": {
+              "$ref": "#/$defs/instant"
+            },
+            "reviewedBy": {
+              "type": "string"
+            },
+            "audience": {
+              "enum": [
+                "internal",
+                "public"
+              ]
+            },
+            "professionalAcceptance": {
+              "$ref": "#/$defs/sourceFormProfessionalAcceptance"
+            }
+          }
+        },
+        "curation": {
+          "$ref": "#/$defs/curation"
+        },
+        "topics": {
+          "type": "array",
+          "maxItems": 100,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "workProductType": {
+          "enum": [
+            "screening_checklist",
+            "assessment_methodology",
+            "management_plan",
+            "planning_framework",
+            "self_assessment",
+            "implementation_register",
+            "field_inspection",
+            "monitoring_report",
+            "verification_document"
+          ]
+        },
+        "workflows": {
+          "type": "array",
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "prepare",
+              "review",
+              "monitor"
+            ]
+          }
+        },
+        "sourceClassification": {
+          "enum": [
+            "official_template",
+            "official_outline",
+            "guidance",
+            "sample_form",
+            "completed_example",
+            "derived_instrument"
+          ]
+        },
+        "acceptancePolicy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version"
+          ],
+          "properties": {
+            "version": {
+              "const": 1
+            },
+            "sourceBound": {
+              "type": "boolean"
+            },
+            "allFieldsAndSections": {
+              "type": "boolean"
+            },
+            "professionalAttestationRequired": {
+              "type": "boolean"
+            },
+            "permissionIndependent": {
+              "type": "boolean"
+            }
+          }
+        },
+        "definitionRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "definitionHistory": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "object",
+            "required": [
+              "definition",
+              "approval",
+              "supersededAt",
+              "supersededBy",
+              "statement"
+            ],
+            "properties": {
+              "definition": {
+                "type": "object"
+              },
+              "approval": {
+                "type": "object"
+              },
+              "approvalHistory": {
+                "type": "array"
+              },
+              "supersededAt": {
+                "$ref": "#/$defs/instant"
+              },
+              "supersededBy": {
+                "type": "string"
+              },
+              "statement": {
+                "type": "string",
+                "maxLength": 4000
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "approval"
+            ],
+            "properties": {
+              "approval": {
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "const": "approved"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "source": {
+                "required": [
+                  "fileId",
+                  "sha256"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "collection": {
+      "type": "object",
+      "required": [
+        "id",
+        "title"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 192
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 8000
+        },
+        "topics": {
+          "$ref": "#/$defs/strings"
+        },
+        "resourceVersionIds": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/uuid"
+          }
+        },
+        "curation": {
+          "$ref": "#/$defs/curation"
+        }
+      }
+    },
+    "link": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "resourceId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "resourceVersionId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "url": {
+          "$ref": "#/$defs/url"
+        },
+        "type": {
+          "enum": [
+            "official",
+            "download",
+            "archive",
+            "mirror",
+            "rights",
+            "related"
+          ]
+        }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "resourceId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "resourceVersionId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "targetResourceId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "targetVersionId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "type": {
+          "enum": [
+            "is_version_of",
+            "supersedes",
+            "is_supplement_to",
+            "contains",
+            "cites",
+            "derived_from",
+            "related"
+          ]
+        },
+        "rationale": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "sourceFormProfessionalAcceptance": {
+      "type": "object",
+      "required": [
+        "format",
+        "schemaVersion",
+        "instrumentId",
+        "definitionRevision",
+        "definitionSha256",
+        "sourceSha256",
+        "reviewerName",
+        "professionalRole",
+        "qualifications",
+        "scope",
+        "scopeStatement",
+        "sourceExamined",
+        "applicabilityReviewed",
+        "qualificationsAttested",
+        "credentialsVerified",
+        "attestationKind",
+        "reviewedAt",
+        "fieldReviews",
+        "sectionReviews"
+      ],
+      "properties": {
+        "format": {
+          "const": "esia-source-form-professional-acceptance"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "instrumentId": {
+          "$ref": "#/$defs/uuid"
+        },
+        "definitionRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "definitionSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sourceSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reviewerName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "professionalRole": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "qualifications": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "scope": {
+          "enum": [
+            "complete",
+            "limited"
+          ]
+        },
+        "scopeStatement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "sourceExamined": {
+          "const": true
+        },
+        "applicabilityReviewed": {
+          "const": true
+        },
+        "qualificationsAttested": {
+          "const": true
+        },
+        "credentialsVerified": {
+          "const": false
+        },
+        "attestationKind": {
+          "const": "reviewer_supplied_professional_attestation"
+        },
+        "reviewedAt": {
+          "$ref": "#/$defs/instant"
+        },
+        "fieldReviews": {
+          "type": "array",
+          "maxItems": 500,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "fieldId",
+              "decision",
+              "statement"
+            ],
+            "properties": {
+              "fieldId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 192
+              },
+              "decision": {
+                "enum": [
+                  "accepted",
+                  "excluded"
+                ]
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          }
+        },
+        "sectionReviews": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "sectionId",
+              "decision",
+              "statement"
+            ],
+            "properties": {
+              "sectionId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 192
+              },
+              "decision": {
+                "enum": [
+                  "accepted",
+                  "excluded"
+                ]
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          }
+        },
+        "exclusionCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "roleId": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "policyId": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "stageId": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "policyRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "signoff": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+.build/
+.npm-build-cache/
+.local-workspace/
+.env
+.env.*
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+.DS_Store

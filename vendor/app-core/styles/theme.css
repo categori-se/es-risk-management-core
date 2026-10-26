@@ -1,0 +1,91 @@
+/* App profiles supply palette values; this foundation owns semantic roles.
+   Explicit scoped modes override the system preference without changing it. */
+:root,
+[data-app-theme] {
+  --app-background: var(--app-theme-background-light);
+  --app-surface: var(--app-theme-surface-light);
+  --app-surface-raised: var(--app-theme-surface-raised-light, var(--app-surface));
+  --app-text: var(--app-theme-text-light);
+  --app-text-muted: var(--app-theme-text-muted-light);
+  --app-border: var(--app-theme-border-light);
+  --app-border-strong: var(--app-theme-border-strong-light, var(--app-border));
+  --app-accent: var(--app-theme-accent-light);
+  --app-accent-soft: var(--app-theme-accent-soft-light);
+  --app-on-accent: var(--app-theme-on-accent-light);
+  --app-success: var(--app-theme-success-light, var(--app-accent));
+  --app-success-soft: var(--app-theme-success-soft-light, var(--app-accent-soft));
+  --app-warning: var(--app-theme-warning-light);
+  --app-warning-soft: var(--app-theme-warning-soft-light);
+  --app-danger: var(--app-theme-danger-light);
+  --app-danger-soft: var(--app-theme-danger-soft-light);
+  --app-info: var(--app-theme-info-light);
+  --app-info-soft: var(--app-theme-info-soft-light);
+  --app-note: var(--app-theme-note-light, var(--app-info));
+  --app-note-soft: var(--app-theme-note-soft-light, var(--app-info-soft));
+  --app-brand: var(--app-theme-brand-light, var(--app-text));
+  --app-shadow: var(--app-theme-shadow-light);
+  --app-shadow-elevated: var(--app-theme-shadow-elevated-light, var(--app-shadow));
+  --app-font-sans: var(--app-theme-font-sans, system-ui, sans-serif);
+  --app-font-mono: var(--app-theme-font-mono, ui-monospace, monospace);
+  --app-radius-small: var(--app-theme-radius-small, 6px);
+  --app-radius-medium: var(--app-theme-radius-medium, 8px);
+  --app-focus-ring: 0 0 0 3px color-mix(in srgb, var(--app-accent) 24%, transparent);
+  color-scheme: var(--app-theme-color-scheme-light, light);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-app-theme="light"]),
+  [data-app-theme="auto"] {
+    --app-background: var(--app-theme-background-dark, var(--app-theme-background-light));
+    --app-surface: var(--app-theme-surface-dark, var(--app-theme-surface-light));
+    --app-surface-raised: var(--app-theme-surface-raised-dark, var(--app-theme-surface-raised-light, var(--app-surface)));
+    --app-text: var(--app-theme-text-dark, var(--app-theme-text-light));
+    --app-text-muted: var(--app-theme-text-muted-dark, var(--app-theme-text-muted-light));
+    --app-border: var(--app-theme-border-dark, var(--app-theme-border-light));
+    --app-border-strong: var(--app-theme-border-strong-dark, var(--app-theme-border-strong-light, var(--app-border)));
+    --app-accent: var(--app-theme-accent-dark, var(--app-theme-accent-light));
+    --app-accent-soft: var(--app-theme-accent-soft-dark, var(--app-theme-accent-soft-light));
+    --app-on-accent: var(--app-theme-on-accent-dark, var(--app-theme-on-accent-light));
+    --app-success: var(--app-theme-success-dark, var(--app-theme-success-light, var(--app-accent)));
+    --app-success-soft: var(--app-theme-success-soft-dark, var(--app-theme-success-soft-light, var(--app-accent-soft)));
+    --app-warning: var(--app-theme-warning-dark, var(--app-theme-warning-light));
+    --app-warning-soft: var(--app-theme-warning-soft-dark, var(--app-theme-warning-soft-light));
+    --app-danger: var(--app-theme-danger-dark, var(--app-theme-danger-light));
+    --app-danger-soft: var(--app-theme-danger-soft-dark, var(--app-theme-danger-soft-light));
+    --app-info: var(--app-theme-info-dark, var(--app-theme-info-light));
+    --app-info-soft: var(--app-theme-info-soft-dark, var(--app-theme-info-soft-light));
+    --app-note: var(--app-theme-note-dark, var(--app-theme-note-light, var(--app-info)));
+    --app-note-soft: var(--app-theme-note-soft-dark, var(--app-theme-note-soft-light, var(--app-info-soft)));
+    --app-brand: var(--app-theme-brand-dark, var(--app-theme-brand-light, var(--app-text)));
+    --app-shadow: var(--app-theme-shadow-dark, var(--app-theme-shadow-light));
+    --app-shadow-elevated: var(--app-theme-shadow-elevated-dark, var(--app-theme-shadow-elevated-light, var(--app-shadow)));
+    color-scheme: var(--app-theme-color-scheme-dark, var(--app-theme-color-scheme-light, dark));
+  }
+}
+
+[data-app-theme="dark"] {
+  --app-background: var(--app-theme-background-dark, var(--app-theme-background-light));
+  --app-surface: var(--app-theme-surface-dark, var(--app-theme-surface-light));
+  --app-surface-raised: var(--app-theme-surface-raised-dark, var(--app-theme-surface-raised-light, var(--app-surface)));
+  --app-text: var(--app-theme-text-dark, var(--app-theme-text-light));
+  --app-text-muted: var(--app-theme-text-muted-dark, var(--app-theme-text-muted-light));
+  --app-border: var(--app-theme-border-dark, var(--app-theme-border-light));
+  --app-border-strong: var(--app-theme-border-strong-dark, var(--app-theme-border-strong-light, var(--app-border)));
+  --app-accent: var(--app-theme-accent-dark, var(--app-theme-accent-light));
+  --app-accent-soft: var(--app-theme-accent-soft-dark, var(--app-theme-accent-soft-light));
+  --app-on-accent: var(--app-theme-on-accent-dark, var(--app-theme-on-accent-light));
+  --app-success: var(--app-theme-success-dark, var(--app-theme-success-light, var(--app-accent)));
+  --app-success-soft: var(--app-theme-success-soft-dark, var(--app-theme-success-soft-light, var(--app-accent-soft)));
+  --app-warning: var(--app-theme-warning-dark, var(--app-theme-warning-light));
+  --app-warning-soft: var(--app-theme-warning-soft-dark, var(--app-theme-warning-soft-light));
+  --app-danger: var(--app-theme-danger-dark, var(--app-theme-danger-light));
+  --app-danger-soft: var(--app-theme-danger-soft-dark, var(--app-theme-danger-soft-light));
+  --app-info: var(--app-theme-info-dark, var(--app-theme-info-light));
+  --app-info-soft: var(--app-theme-info-soft-dark, var(--app-theme-info-soft-light));
+  --app-note: var(--app-theme-note-dark, var(--app-theme-note-light, var(--app-info)));
+  --app-note-soft: var(--app-theme-note-soft-dark, var(--app-theme-note-soft-light, var(--app-info-soft)));
+  --app-brand: var(--app-theme-brand-dark, var(--app-theme-brand-light, var(--app-text)));
+  --app-shadow: var(--app-theme-shadow-dark, var(--app-theme-shadow-light));
+  --app-shadow-elevated: var(--app-theme-shadow-elevated-dark, var(--app-theme-shadow-elevated-light, var(--app-shadow)));
+  color-scheme: var(--app-theme-color-scheme-dark, var(--app-theme-color-scheme-light, dark));
+}

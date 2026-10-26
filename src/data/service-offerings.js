@@ -1,0 +1,126 @@
+// Generated from service-offerings.json; source SHA256 099786e5933dca4841901a7e3516f88f05df048ba8642386dddca83df5795096.
+// Regenerate with node tools/build-product-catalog.mjs.
+export default {
+  "schemaVersion": 1,
+  "product": "E&S Review",
+  "status": "consultancy_led_service_design",
+  "positioning": "Evidence, assessment and monitoring for environmental and social practitioners.",
+  "description": "Organize authorized evidence, review requirements and human judgments, track corrective actions and retain portable project records. Software supports the practitioner responsible for the work.",
+  "quotePolicy": "Offerings are proposed scopes for discussion. No published subscription, usage allowance, service level or delivery date is promised.",
+  "offerings": [
+    {
+      "id": "consulting",
+      "name": "Due diligence and monitoring consulting",
+      "audience": "Sponsors, lenders and project teams",
+      "outcome": "A defined review, cited findings, corrective-action plan and agreed monitoring deliverables",
+      "revenueStructure": "Professional fees, fixed deliverable scope or retainer",
+      "status": "scope_before_acceptance",
+      "inquirySubject": "E&S consulting scope",
+      "inputs": [
+        "Assignment and intended audience",
+        "Applicable frameworks and reporting period",
+        "Authorized evidence and confidentiality requirements",
+        "Required deliverables and review responsibilities"
+      ]
+    },
+    {
+      "id": "templates",
+      "name": "Reporting and template configuration",
+      "audience": "Consultants and institutional teams",
+      "outcome": "Reviewed field mappings and repeatable client report outputs from core project facts",
+      "revenueStructure": "Implementation and maintenance scope",
+      "status": "scope_before_acceptance",
+      "inquirySubject": "E&S report and template configuration",
+      "inputs": [
+        "Original template and permission to use it",
+        "Canonical facts and required calculations",
+        "Reviewer and acceptance criteria"
+      ]
+    },
+    {
+      "id": "hosted",
+      "name": "Managed individual and team workspaces",
+      "audience": "Practitioners and small consulting firms",
+      "outcome": "A maintained workspace with agreed storage, recovery, updates and support",
+      "revenueStructure": "Proposed subscription with separately scoped expensive processing",
+      "status": "pilot_required",
+      "inquirySubject": "Managed E&S Review pilot",
+      "inputs": [
+        "Users and concurrent engagements",
+        "Sensitivity and authorized data routes",
+        "Storage, retention and recovery needs",
+        "Expected processing and support usage"
+      ]
+    },
+    {
+      "id": "private-deployment",
+      "name": "Private institutional deployment",
+      "audience": "Institutions and confidentiality-sensitive clients",
+      "outcome": "A customer-controlled or dedicated deployment with documented acceptance evidence",
+      "revenueStructure": "Implementation plus support and usage agreement",
+      "status": "deployment_acceptance_required",
+      "inquirySubject": "Private E&S Review deployment",
+      "inputs": [
+        "Infrastructure owner and deployment region",
+        "Identity and access requirements",
+        "Integration, retention and security review scope",
+        "Operational ownership and support needs"
+      ]
+    },
+    {
+      "id": "managed-ai",
+      "name": "Managed AI processing and specialist packages",
+      "audience": "Teams with authorized evidence and defined review tasks",
+      "outcome": "Bounded draft assistance with exact provenance and human review",
+      "revenueStructure": "Proposed included allowance or metered processing after cost review",
+      "status": "pilot_and_quality_acceptance_required",
+      "inquirySubject": "Governed E&S AI pilot",
+      "inputs": [
+        "Task and selected source permissions",
+        "Approved provider/model and sensitivity policy",
+        "Run and monthly cost ceilings",
+        "Representative evaluation and human review plan"
+      ]
+    },
+    {
+      "id": "training",
+      "name": "Training and implementation support",
+      "audience": "Practitioners and institutions",
+      "outcome": "A repeatable evidence-to-report workflow and operator handover",
+      "revenueStructure": "Workshop, advisory or support scope",
+      "status": "scope_before_acceptance",
+      "inquirySubject": "E&S Review training and support",
+      "inputs": [
+        "Participant roles and existing workflow",
+        "Synthetic or authorized exercise data",
+        "Deployment and acceptance objectives"
+      ]
+    },
+    {
+      "id": "integrations",
+      "name": "Portfolio analytics and systems integration",
+      "audience": "Institutional portfolio teams",
+      "outcome": "Scoped integration that preserves project, evidence and assessment authorities",
+      "revenueStructure": "Implementation and ongoing support scope",
+      "status": "discovery_and_acceptance_required",
+      "inquirySubject": "E&S portfolio integration",
+      "inputs": [
+        "Source and target authorities",
+        "API and data rights",
+        "Required portfolio measures and denominators",
+        "Security, performance and acceptance criteria"
+      ]
+    }
+  ],
+  "publicContact": {
+    "url": "https://categori.se/",
+    "email": "aaron@categori.se",
+    "verifiedAt": "2026-10-25",
+    "sourceUrl": "https://categori.se/"
+  },
+  "inquiry": {
+    "mechanism": "prepare_local_brief",
+    "label": "Prepare an inquiry brief",
+    "notice": "Prepare a brief to review and share through your chosen contact channel. Contact links open your chosen mail application; this application does not send a message or attach project evidence."
+  }
+};

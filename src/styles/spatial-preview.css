@@ -1,0 +1,25 @@
+.spatial-preview { margin-block: 1rem; min-width: 0; }
+.spatial-preview h3 { margin-block: .5rem; }
+.spatial-preview-facts { display: grid; grid-template-columns: minmax(8rem, 1fr) minmax(0, 3fr); gap: .4rem .8rem; margin-block: .75rem; }
+.spatial-preview-facts dt { font-weight: 650; }
+.spatial-preview-facts dd { margin: 0; overflow-wrap: anywhere; }
+.spatial-preview-warnings { padding: .75rem .75rem .75rem 1.8rem; color: var(--lw-ink, var(--app-text, #1b211d)); background: var(--lw-raised, var(--app-surface-raised, #f5f3e8)); border-left: 3px solid #a77a23; }
+.spatial-preview-warnings li + li { margin-top: .4rem; }
+.spatial-preview-note { color: var(--lw-muted, var(--app-text-muted, #59616c)); font-size: .875rem; }
+.spatial-preview-toolbar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-block: .75rem; }
+.spatial-preview-toolbar button { min-height: 2.3rem; }
+.spatial-preview-canvas { width: 100%; height: auto; max-height: 32rem; aspect-ratio: 2; display: block; background: #f1f5f7; border: 1px solid #b5c1cb; touch-action: none; cursor: grab; }
+.spatial-preview-canvas:active { cursor: grabbing; }
+.spatial-preview-canvas:focus-visible { outline: 3px solid #27759b; outline-offset: 2px; }
+.spatial-preview-feature { stroke: #176b8a; stroke-width: 2; fill: #2583ab; }
+.spatial-preview-feature path, .spatial-preview-feature circle { vector-effect: non-scaling-stroke; }
+.spatial-preview-area { fill-opacity: .18; }
+.spatial-preview-line { fill: none; }
+.spatial-preview-feature.is-selected { stroke: #a34305; stroke-width: 3; fill: #d78432; }
+.spatial-preview label { display: block; margin-block: .75rem; }
+.spatial-preview select { display: block; max-width: 100%; width: 100%; margin-top: .35rem; }
+.spatial-preview-attributes { overflow-x: auto; }
+.spatial-preview-attributes table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.spatial-preview-attributes th, .spatial-preview-attributes td { border-bottom: 1px solid #c7cdd2; padding: .4rem .6rem; vertical-align: top; text-align: left; overflow-wrap: anywhere; }
+.spatial-preview-attributes th { width: 30%; }
+@media (max-width: 540px) { .spatial-preview-facts { grid-template-columns: 1fr; gap: .15rem; } .spatial-preview-facts dd { margin-bottom: .6rem; } }

@@ -1,0 +1,383 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Customer-owned authenticated E&S Review API using explicitly approved Cognito, IAM, account storage and source bytes. No categori.se identity defaults, anonymous publication routes or workers.",
+  "Parameters": {
+    "DeploymentGeneration": {
+      "Type": "String",
+      "AllowedPattern": "[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}",
+      "Description": "Explicit recovery namespace UUIDv4. Preserve for unchanged API/table/bucket authority; rotate after reviewed API/store replacement. No default is supplied."
+    },
+    "ExecutionRoleArn": {
+      "Type": "String",
+      "AllowedPattern": "arn:aws:iam::[0-9]{12}:role/[A-Za-z0-9+=,.@_/-]+",
+      "Description": "Reviewed role for this source closure. Generate and scope its policy before deployment."
+    },
+    "DeploymentArtifactBucket": {
+      "Type": "String",
+      "Description": "Existing deployment artifact bucket, separate from private project content."
+    },
+    "DeploymentArtifactKey": {
+      "Type": "String",
+      "Description": "Reviewed esia-access.zip object key; this template does not upload it."
+    },
+    "AccessTableName": {
+      "Type": "String",
+      "AllowedPattern": "[A-Za-z0-9_.-]+",
+      "Description": "App-owned table; review existing resources before creating/importing."
+    },
+    "AccountStorageJson": {
+      "Type": "String",
+      "MinLength": 10,
+      "MaxLength": 3000,
+      "Description": "Reviewed canonical account ID to distinct private bucket bindings as JSON. Required; no shared bucket fallback. Provision buckets separately and verify existing-object migration before switching."
+    },
+    "RequirementLibraryIndexJson": {
+      "Type": "String",
+      "Default": "",
+      "MaxLength": 600,
+      "Description": "Optional reviewed immutable private reference index target JSON: bucket,key,versionId,sha256,size. Separate reference bucket; execution role requires exact version-only read grants provisioned separately. No upload or public access is created."
+    },
+    "PolicyOriginalsIndexJson": {
+      "Type": "String",
+      "Default": "",
+      "MaxLength": 600,
+      "Description": "Optional reviewed immutable private policy-original catalog target JSON: bucket,key,versionId,sha256,size. Catalog and every PDF target remain outside private-account/public/deployment buckets; separate exact source entitlements and execution-role version reads are required. No copies, rights grants or workers are created."
+    },
+    "AuthenticatedEngagements": {
+      "Type": "String",
+      "Default": "false",
+      "AllowedValues": [
+        "true",
+        "false"
+      ],
+      "Description": "Enable the reviewed authenticated engagement routes, preserving existing identities and custody bindings."
+    },
+    "CognitoPoolId": {
+      "Type": "String",
+      "AllowedPattern": "[a-z]{2}(?:-[a-z]+)+-[0-9]_[A-Za-z0-9]+"
+    },
+    "CognitoClientId": {
+      "Type": "String",
+      "AllowedPattern": "[a-z0-9]{10,128}"
+    },
+    "ApplicationOrigin": {
+      "Type": "String",
+      "AllowedPattern": "https://[A-Za-z0-9.-]+(?::[0-9]+)?",
+      "Description": "Exact customer HTTPS application and stable resource authority. No slash/path or wildcard."
+    },
+    "ReservedConcurrency": {
+      "Type": "Number",
+      "Default": 2,
+      "MinValue": 1,
+      "MaxValue": 20,
+      "Description": "Explicit bounded foreground capacity; no background polling or worker."
+    },
+    "DeploymentArtifactVersion": {
+      "Type": "String",
+      "MinLength": 1,
+      "Description": "Exact immutable version ID of the approved, signed access ZIP in the deployment artifact bucket."
+    },
+    "CommunitySourceTreeSha256": {
+      "Type": "String",
+      "AllowedPattern": "[a-f0-9]{64}",
+      "Description": "Exact candidate manifest source tree approved for this deployment."
+    }
+  },
+  "Conditions": {
+    "HasRequirementLibrary": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "RequirementLibraryIndexJson"
+            },
+            ""
+          ]
+        }
+      ]
+    },
+    "HasPolicyOriginals": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "PolicyOriginalsIndexJson"
+            },
+            ""
+          ]
+        }
+      ]
+    }
+  },
+  "Resources": {
+    "AccessTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "TableName": {
+          "Ref": "AccessTableName"
+        },
+        "BillingMode": "PAY_PER_REQUEST",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "pk",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "sk",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "pk",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "sk",
+            "KeyType": "RANGE"
+          }
+        ],
+        "SSESpecification": {
+          "SSEEnabled": true
+        },
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        }
+      }
+    },
+    "AccessFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Runtime": "nodejs24.x",
+        "Handler": "index.handler",
+        "Role": {
+          "Ref": "ExecutionRoleArn"
+        },
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Code": {
+          "S3Bucket": {
+            "Ref": "DeploymentArtifactBucket"
+          },
+          "S3Key": {
+            "Ref": "DeploymentArtifactKey"
+          },
+          "S3ObjectVersion": {
+            "Ref": "DeploymentArtifactVersion"
+          }
+        },
+        "Environment": {
+          "Variables": {
+            "ESIA_ACCESS_TABLE": {
+              "Ref": "AccessTable"
+            },
+            "ESIA_API_ID": {
+              "Ref": "AccessApi"
+            },
+            "ESIA_API_STAGE": "$default",
+            "ESIA_DEPLOYMENT_GENERATION": {
+              "Ref": "DeploymentGeneration"
+            },
+            "ESIA_COGNITO_POOL": {
+              "Ref": "CognitoPoolId"
+            },
+            "ESIA_COGNITO_CLIENT": {
+              "Ref": "CognitoClientId"
+            },
+            "ESIA_COGNITO_ISSUER": {
+              "Fn::Sub": "https://cognito-idp.${AWS::Region}.amazonaws.com/${CognitoPoolId}"
+            },
+            "ESIA_ACCOUNT_STORAGE_JSON": {
+              "Ref": "AccountStorageJson"
+            },
+            "ESIA_REQUIREMENT_LIBRARY_INDEX": {
+              "Fn::If": [
+                "HasRequirementLibrary",
+                {
+                  "Ref": "RequirementLibraryIndexJson"
+                },
+                {
+                  "Ref": "AWS::NoValue"
+                }
+              ]
+            },
+            "ESIA_POLICY_ORIGINALS_INDEX": {
+              "Fn::If": [
+                "HasPolicyOriginals",
+                {
+                  "Ref": "PolicyOriginalsIndexJson"
+                },
+                ""
+              ]
+            },
+            "ESIA_AUTHENTICATED_ENGAGEMENTS": {
+              "Ref": "AuthenticatedEngagements"
+            },
+            "ESIA_DEPLOYMENT_ACCOUNT_ID": {
+              "Ref": "AWS::AccountId"
+            },
+            "ESIA_RESOURCE_AUTHORITY": {
+              "Ref": "ApplicationOrigin"
+            },
+            "ESIA_ALLOWED_ORIGINS_JSON": {
+              "Fn::Sub": "[\"${ApplicationOrigin}\"]"
+            },
+            "ESIA_COMMUNITY_SOURCE_SHA256": {
+              "Ref": "CommunitySourceTreeSha256"
+            }
+          }
+        },
+        "ReservedConcurrentExecutions": {
+          "Ref": "ReservedConcurrency"
+        },
+        "Architectures": [
+          "x86_64"
+        ]
+      }
+    },
+    "AccessApi": {
+      "Type": "AWS::ApiGatewayV2::Api",
+      "Properties": {
+        "Name": "esia-scoped-access",
+        "ProtocolType": "HTTP",
+        "CorsConfiguration": {
+          "AllowOrigins": [
+            {
+              "Ref": "ApplicationOrigin"
+            }
+          ],
+          "AllowMethods": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "OPTIONS"
+          ],
+          "AllowHeaders": [
+            "authorization",
+            "content-type"
+          ],
+          "MaxAge": 300
+        }
+      }
+    },
+    "AccessAuthorizer": {
+      "Type": "AWS::ApiGatewayV2::Authorizer",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AccessApi"
+        },
+        "AuthorizerType": "JWT",
+        "Name": "CustomerCognitoAccess",
+        "IdentitySource": [
+          "$request.header.Authorization"
+        ],
+        "JwtConfiguration": {
+          "Audience": [
+            {
+              "Ref": "CognitoClientId"
+            }
+          ],
+          "Issuer": {
+            "Fn::Sub": "https://cognito-idp.${AWS::Region}.amazonaws.com/${CognitoPoolId}"
+          }
+        }
+      }
+    },
+    "AccessIntegration": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AccessApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "AccessFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 30000
+      }
+    },
+    "AccessRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AccessApi"
+        },
+        "RouteKey": "ANY /api/{proxy+}",
+        "AuthorizationType": "JWT",
+        "AuthorizerId": {
+          "Ref": "AccessAuthorizer"
+        },
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "AccessIntegration"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "AccessStage": {
+      "Type": "AWS::ApiGatewayV2::Stage",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AccessApi"
+        },
+        "StageName": "$default",
+        "AutoDeploy": true
+      }
+    },
+    "AccessInvokePermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "AccessFunction"
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceAccount": {
+          "Ref": "AWS::AccountId"
+        },
+        "SourceArn": {
+          "Fn::Sub": "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${AccessApi}/*/*/api/*"
+        }
+      }
+    },
+    "AccessLogs": {
+      "Type": "AWS::Logs::LogGroup",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Sub": "/aws/lambda/${AccessFunction}"
+        },
+        "RetentionInDays": 14
+      }
+    }
+  },
+  "Outputs": {
+    "ApiBaseUrl": {
+      "Value": {
+        "Fn::GetAtt": [
+          "AccessApi",
+          "ApiEndpoint"
+        ]
+      }
+    },
+    "AccessTable": {
+      "Value": {
+        "Ref": "AccessTable"
+      }
+    }
+  }
+}

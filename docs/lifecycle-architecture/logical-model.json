@@ -1,0 +1,3214 @@
+{
+  "format": "esia-project-lifecycle-logical-model",
+  "schemaVersion": 1,
+  "designVersion": "1.0.0",
+  "asOf": "2026-10-25",
+  "status": "proposed_logical_architecture_with_limited_local_business_slice",
+  "purpose": "One coherent versioned understanding of real projects, financing, components, organizations, E&S commitments, evidence and performance. Institutional templates are derived views and validation inputs, never master schemas.",
+  "deliverableIndex": {
+    "currentStateAudit": "docs/lifecycle-architecture/current-state-audit.json",
+    "glossaryAndCardinalities": "This document: glossary, relationships, integrityRules",
+    "logicalSchema": "schemas/project-lifecycle.schema.json",
+    "typescript": "types/project-lifecycle.d.ts",
+    "erDiagram": "docs/lifecycle-architecture/entity-relationships.mmd",
+    "institutionalSources": "docs/lifecycle-architecture/institutional-sources.json",
+    "frameworkCrosswalk": "docs/lifecycle-architecture/framework-crosswalk.json",
+    "templateCoverage": "docs/lifecycle-architecture/template-coverage.csv",
+    "lifecycleWorkflows": "This document: workflows",
+    "disciplineProfiles": "This document: disciplineProfiles",
+    "migrationPlan": "This document: migrationAndBackwardCompatibility",
+    "logicalRelationalDDL": "docs/lifecycle-architecture/logical-core.sql (design only, not a migration)",
+    "apiContracts": "docs/lifecycle-architecture/openapi.json",
+    "eventAndAuditSchemas": "schemas/project-lifecycle.schema.json#/$defs/LedgerAuditEvent and #/$defs/LifecycleDomainEvent (latter proposed only)",
+    "contractValidator": "tools/validate-project-lifecycle-contracts.py --evidence DIRECTORY [--receipt docs/lifecycle-architecture/contract-validation.json]",
+    "contractVerificationReceipt": "docs/lifecycle-architecture/contract-validation.json; current artifact digests and explicit runtime/proposed/historical scope limits",
+    "backlogAndAcceptance": "This document: featureGates, incrementalBacklog, acceptanceContract"
+  },
+  "implementationBoundary": {
+    "existingAuthorities": [
+      {
+        "domain": "Project real-world identity",
+        "source": "server/project-identities.mjs",
+        "store": "project-identities.sqlite project_identities + project_identity_links",
+        "reuse": "Canonical UUID identity + explicit accountId/projectId links. Existing identity publicReferences and descriptive stakeholder/lifecycle metadata remain in place."
+      },
+      {
+        "domain": "Account/project custody and original documents",
+        "source": "server/local-account-workspace.mjs; server/local-workspace-store.mjs",
+        "store": "account-local workspace.sqlite projects JSON + private locations + retained objects",
+        "reuse": "Existing project IDs, workspace IDs, resources, version descriptors, source bytes, source derivations and portable project envelopes."
+      },
+      {
+        "domain": "Personal project custody",
+        "source": "server/personal-project-space.mjs",
+        "store": "personal_projects identity_id/project_id/profile_json and existing per-project vault",
+        "reuse": "Personal project remains a separate existing custody facet; ledger does not reinterpret personal files as account ownership."
+      },
+      {
+        "domain": "Professional engagement and E&S evidence",
+        "source": "server/engagement-store.mjs; src/lib/engagement-domain.js; server/engagement-monitoring.mjs",
+        "store": "Existing engagement tables + authenticated engagement object authority",
+        "reuse": "Mandates, requirements, assertions, findings, actions, obligations, approvals, mappings, publications, monitoring programs/cycles/obligations/submissions/requests/indicators/measurements/missions/events/verifications, baselines and audit."
+      },
+      {
+        "domain": "Hosted identities and authorization",
+        "source": "server/canonical-identity.mjs; server/access-service.mjs; server/access-store.mjs",
+        "store": "Existing verified identity/resource-grant and mutation transaction authority",
+        "reuse": "Current account/resource authorization, case restrictions and protected-source closure. New local ledger has no hosted authority implementation claim."
+      },
+      {
+        "domain": "Framework definitions",
+        "source": "src/lib/framework-register.js; server/requirement-library.mjs; server/policy-originals.mjs",
+        "store": "Versioned framework catalogue + retained exact policy originals and engagement requirement definitions",
+        "reuse": "Existing review prompts remain clearly labeled; proposed authoritative Requirement edition records reference retained exact sources."
+      },
+      {
+        "domain": "Shared categori.se contracts",
+        "source": "vendor/workspace-contracts/schemas/business-context.schema.json; interoperability.schema.json; documents.schema.json; vendor/studio-contracts/schemas/project-manifest.schema.json",
+        "store": "Vendored versioned contract packages, unchanged",
+        "reuse": "Business context, namespaced ResourceReference, immutable DocumentVersionLink and safe portable JSON. Studio Project manifest describes software/project workspace policy, not the real-world investment Project master."
+      }
+    ],
+    "limitedSlice": {
+      "authority": "Additive account-owned business-context extension referencing existing authorities",
+      "implementationFiles": [
+        "src/lib/project-lifecycle.js",
+        "server/project-lifecycle-store.mjs",
+        "server/local-account-workspace.mjs",
+        "server/local-workspace.mjs"
+      ],
+      "currentPersistence": "Additive account-local project-lifecycle.sqlite: lifecycle_ledgers, lifecycle_verifications and lifecycle_restore_receipts. It does not replace source-project or engagement persistence.",
+      "exchangeSchema": "schemas/project-lifecycle.schema.json#/$defs/ProjectLifecycleExchange",
+      "types": "types/project-lifecycle.d.ts",
+      "openapi": "docs/lifecycle-architecture/openapi.json",
+      "collections": [
+        "components",
+        "sites",
+        "activities",
+        "organizations",
+        "roleAssignments",
+        "investments",
+        "financialFacilities",
+        "transactions",
+        "financingParticipants",
+        "allocations",
+        "agreements",
+        "covenants",
+        "engagementScopes",
+        "requirementApplicabilities",
+        "lifecycleEvents"
+      ],
+      "collectionCount": 15,
+      "businessApproval": "Separate immutable ledger snapshot; never an assessment/compliance approval or access grant. Local verification receipts bind exact records; imported verification claims are retained history and cannot authorize a fresh approval.",
+      "deployment": "Local loopback account context only; hosted route, physical relational replacement and cloud migration remain proposed.",
+      "localProfileLimits": {
+        "projectBindings": 100,
+        "recordsPerCollection": 500,
+        "totalRecords": 2000,
+        "exchangeBytes": 4194304,
+        "ledgerRevision": 250,
+        "upsertBatchRecords": 100,
+        "proposalBatchCommands": 30,
+        "moneyIntegerDigits": 18,
+        "moneyFractionDigits": 12,
+        "shareFractionDigits": 6,
+        "extensionNamespacesEnabledByDefault": []
+      },
+      "profileInterpretation": "JSON Schema defines portable shape and selected bounds. The implemented local profile additionally enforces smaller operational limits and current-authority/graph/hash checks. A schema-valid value does not bypass these local limits."
+    },
+    "proposedOnly": [
+      "New relational tables and joins",
+      "Full spatial feature/CRS version store",
+      "New E&S fact/risk/impact/plan/social-outcome entities",
+      "Cross-project hosted ledger authorization",
+      "Hosted API/event transport",
+      "Background jobs and schedules",
+      "Institutional report adapters beyond demonstrated slice"
+    ],
+    "demoVersusAuthority": "Scenario fixtures are isolated acceptance data, not retained real project records or verified institutional compliance. UI previews/derived reports are views. Proposed $defs do not enable new runtime collections.",
+    "explicitNonGoals": [
+      "No full E&S runtime graph rewrite or blanket migration.",
+      "No new source/evidence authority or rewriting existing approved assessment snapshots.",
+      "No native institutional reporting/template-compliance claim from institution-labeled views.",
+      "No automatic framework applicability, crosswalk compliance transfer or AI sign-off.",
+      "No hosted lifecycle endpoints, managed relational/spatial deployment or event transport.",
+      "No hosted worker, queue consumer, recurring schedule or live/AWS call."
+    ]
+  },
+  "glossary": {
+    "ProjectComponent": {
+      "definition": "Physical or functional project component, optionally nested or an associated facility. Associated facilities are explicit relationships, never implicit shared ownership.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "projectId",
+        "name",
+        "kind"
+      ],
+      "attributes": [
+        "projectId",
+        "name",
+        "kind",
+        "parentComponentId",
+        "associatedProjectId"
+      ]
+    },
+    "Site": {
+      "definition": "Spatially located operational or study area; detailed geometry remains a versioned spatial source.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "projectId",
+        "name",
+        "componentIds"
+      ],
+      "attributes": [
+        "projectId",
+        "name",
+        "componentIds",
+        "countryCode",
+        "latitude",
+        "longitude",
+        "geometrySource"
+      ]
+    },
+    "Activity": {
+      "definition": "A time-bounded undertaking such as site clearing, construction, operation or decommissioning. Optional sectorProfileId links the existing application sector profile only after manual business verification; it is neither an institutional risk category nor a compliance/applicability conclusion.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "projectId",
+        "name",
+        "kind",
+        "siteIds"
+      ],
+      "attributes": [
+        "projectId",
+        "name",
+        "kind",
+        "componentId",
+        "siteIds",
+        "sectorProfileId"
+      ]
+    },
+    "Organization": {
+      "definition": "Named legal or institutional organization, including financiers, funds, intermediaries, operators and community bodies. Descriptive organization identity grants no account access.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "name",
+        "kind"
+      ],
+      "attributes": [
+        "name",
+        "kind",
+        "legalName"
+      ]
+    },
+    "OrganizationRoleAssignment": {
+      "definition": "Effective-dated business role linking an organization to explicit project, component, investment, facility or agreement scopes. Separate from professional assignment and access grants.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "organizationId",
+        "role"
+      ],
+      "attributes": [
+        "organizationId",
+        "role",
+        "projectId",
+        "componentId",
+        "investmentId",
+        "financialFacilityId",
+        "agreementId"
+      ]
+    },
+    "Investment": {
+      "definition": "Investor economic interest that may target an organization, fund or intermediary; allocations independently connect its amount to one or several project/component identities.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "name",
+        "kind",
+        "investorOrganizationId",
+        "status"
+      ],
+      "attributes": [
+        "name",
+        "kind",
+        "investorOrganizationId",
+        "investeeOrganizationId",
+        "parentInvestmentId",
+        "amount",
+        "status"
+      ]
+    },
+    "FinancialFacility": {
+      "definition": "Contractual financing envelope distinct from Investment and from individual financial transactions; supports parent facilities and credit lines.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "name",
+        "kind",
+        "borrowerOrganizationId",
+        "agreementIds"
+      ],
+      "attributes": [
+        "name",
+        "kind",
+        "borrowerOrganizationId",
+        "parentFacilityId",
+        "agreementIds",
+        "commitment"
+      ]
+    },
+    "Transaction": {
+      "definition": "One dated financial commitment, flow or reversal; retains original money and currency without silently converting totals.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "investmentId",
+        "kind",
+        "amount",
+        "transactionDate",
+        "status"
+      ],
+      "attributes": [
+        "investmentId",
+        "financialFacilityId",
+        "agreementId",
+        "kind",
+        "amount",
+        "transactionDate",
+        "status"
+      ]
+    },
+    "FinancingParticipant": {
+      "definition": "Organization participation in a particular facility, permitting separate lenders and financiers with distinct roles, shares and commitments.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "financialFacilityId",
+        "organizationId",
+        "role"
+      ],
+      "attributes": [
+        "financialFacilityId",
+        "organizationId",
+        "role",
+        "commitment",
+        "sharePercent"
+      ]
+    },
+    "InvestmentAllocation": {
+      "definition": "Normalized many-to-many allocation of an Investment across projects and optionally components. Amount or share is explicit; unallocated balances and currency conversions remain visible.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "investmentId",
+        "projectId"
+      ],
+      "attributes": [
+        "investmentId",
+        "projectId",
+        "componentId",
+        "amount",
+        "sharePercent"
+      ]
+    },
+    "Agreement": {
+      "definition": "Versioned contract connecting parties, projects and facilities; sourceVersions pin exact retained contract editions and amendments.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "name",
+        "kind",
+        "organizationIds",
+        "projectIds",
+        "financialFacilityIds",
+        "sourceVersions",
+        "status"
+      ],
+      "attributes": [
+        "name",
+        "kind",
+        "organizationIds",
+        "projectIds",
+        "financialFacilityIds",
+        "sourceVersions",
+        "signedOn",
+        "status"
+      ]
+    },
+    "Covenant": {
+      "definition": "Agreement obligation with its exact source passage and links to existing requirements and monitoring obligations. A covenant record does not make a compliance finding.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "agreementId",
+        "title",
+        "text",
+        "componentIds",
+        "requirementRefs",
+        "monitoringObligationRefs"
+      ],
+      "attributes": [
+        "agreementId",
+        "title",
+        "text",
+        "projectId",
+        "componentIds",
+        "source",
+        "locator",
+        "dueDate",
+        "requirementRefs",
+        "monitoringObligationRefs"
+      ]
+    },
+    "EngagementScope": {
+      "definition": "Structured scope overlay for an existing professional Engagement across project parts and periods. Existing mandates, roles and sources remain authoritative.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "engagementId",
+        "projectId",
+        "componentIds",
+        "siteIds"
+      ],
+      "attributes": [
+        "engagementId",
+        "projectId",
+        "componentIds",
+        "siteIds",
+        "periodStart",
+        "periodEnd",
+        "description"
+      ]
+    },
+    "RequirementApplicability": {
+      "definition": "Explicit professional applicability decision for a pinned existing requirement/framework edition at project, component, financing, agreement and temporal scope. Never inherited through a crosswalk.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "projectId",
+        "frameworkEditionId",
+        "requirementRef",
+        "decision",
+        "rationale",
+        "componentIds",
+        "assessedAt",
+        "assessedBy"
+      ],
+      "attributes": [
+        "projectId",
+        "frameworkEditionId",
+        "requirementRef",
+        "decision",
+        "rationale",
+        "componentIds",
+        "investmentId",
+        "financialFacilityId",
+        "agreementId",
+        "assessedAt",
+        "assessedBy"
+      ]
+    },
+    "LifecycleEvent": {
+      "definition": "Lifecycle stage or milestone referencing existing engagement, monitoring cycle, incident/event, action and approved baseline records. Does not copy observations, facts or compliance conclusions.",
+      "authority": "implemented_limited_slice",
+      "requiredAttributes": [
+        "projectId",
+        "phase",
+        "status",
+        "title"
+      ],
+      "attributes": [
+        "projectId",
+        "phase",
+        "status",
+        "title",
+        "engagementId",
+        "cycleId",
+        "eventId",
+        "actionId",
+        "baselineId",
+        "baselineSha256"
+      ]
+    },
+    "Project": {
+      "definition": "Projection of the existing real-world Project identity; business references never create a second project authority.",
+      "authority": "existing_authority_projection",
+      "requiredAttributes": [
+        "identityId",
+        "reference",
+        "accountProjectBindings"
+      ],
+      "attributes": [
+        "identityId",
+        "reference",
+        "accountProjectBindings"
+      ]
+    },
+    "Engagement": {
+      "definition": "Projection reference to existing contractual professional mandate, independent of financing and project identity.",
+      "authority": "existing_authority_projection",
+      "requiredAttributes": [
+        "reference",
+        "projectId",
+        "scopeIds",
+        "deliverableIds"
+      ],
+      "attributes": [
+        "reference",
+        "projectId",
+        "scopeIds",
+        "deliverableIds"
+      ]
+    },
+    "Deliverable": {
+      "definition": "Structured expected professional output; implementation initially maps existing engagement mandate deliverables and obligation/publication records.",
+      "authority": "proposed_extension_of_engagement_mandate",
+      "requiredAttributes": [
+        "engagementRef",
+        "title",
+        "kind",
+        "sourceVersions",
+        "approvalRefs",
+        "status"
+      ],
+      "attributes": [
+        "engagementRef",
+        "title",
+        "kind",
+        "dueDate",
+        "sourceVersions",
+        "approvalRefs",
+        "status"
+      ]
+    },
+    "Risk": {
+      "definition": "Uncertain potential adverse environmental or social event or condition; preserve inherent and residual risk separately.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "scope",
+        "title",
+        "discipline",
+        "receptorIds",
+        "likelihood",
+        "severity",
+        "judgmentIds",
+        "measureIds"
+      ],
+      "attributes": [
+        "scope",
+        "title",
+        "discipline",
+        "cause",
+        "consequence",
+        "receptorIds",
+        "likelihood",
+        "severity",
+        "inherentRating",
+        "residualRating",
+        "judgmentIds",
+        "measureIds"
+      ]
+    },
+    "Impact": {
+      "definition": "Expected or observed change to a receptor caused by an activity, distinguishing adverse and beneficial impacts.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "scope",
+        "activityId",
+        "receptorIds",
+        "direction",
+        "nature",
+        "baselineConditionIds",
+        "observationIds",
+        "judgmentIds"
+      ],
+      "attributes": [
+        "scope",
+        "activityId",
+        "receptorIds",
+        "riskId",
+        "direction",
+        "nature",
+        "duration",
+        "reversibility",
+        "magnitude",
+        "baselineConditionIds",
+        "observationIds",
+        "judgmentIds"
+      ]
+    },
+    "Receptor": {
+      "definition": "Environmental or social receptor such as habitat, water body, workers, community or cultural asset; do not expose sensitive coordinates in public views.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "scope",
+        "name",
+        "kind",
+        "sensitivity"
+      ],
+      "attributes": [
+        "scope",
+        "name",
+        "kind",
+        "stakeholderGroupId",
+        "sensitivity",
+        "spatialFeatureRef"
+      ]
+    },
+    "StakeholderGroup": {
+      "definition": "Affected or interested group with scoped vulnerability characterization; individual identities remain in restricted case storage.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "scope",
+        "name",
+        "kind",
+        "vulnerabilityFactors",
+        "receptorIds"
+      ],
+      "attributes": [
+        "scope",
+        "name",
+        "kind",
+        "vulnerabilityFactors",
+        "receptorIds",
+        "restrictedRegisterRef"
+      ]
+    },
+    "BaselineCondition": {
+      "definition": "Dated, sourced description of a receptor before change; keep season, method and uncertainty explicit.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "scope",
+        "receptorId",
+        "periodStart",
+        "periodEnd",
+        "description",
+        "observationIds",
+        "assertionRefs",
+        "confidence"
+      ],
+      "attributes": [
+        "scope",
+        "receptorId",
+        "indicatorId",
+        "periodStart",
+        "periodEnd",
+        "value",
+        "description",
+        "observationIds",
+        "assertionRefs",
+        "confidence"
+      ]
+    },
+    "ManagementPlan": {
+      "definition": "Versioned management instrument linking risks, requirements, measures, responsibilities and resources.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "scope",
+        "title",
+        "kind",
+        "sourceVersions",
+        "measureIds",
+        "requirementRefs",
+        "ownerOrganizationId",
+        "status"
+      ],
+      "attributes": [
+        "scope",
+        "title",
+        "kind",
+        "sourceVersions",
+        "measureIds",
+        "requirementRefs",
+        "ownerOrganizationId",
+        "budget",
+        "status"
+      ]
+    },
+    "ManagementMeasure": {
+      "definition": "One mitigation or enhancement measure in the mitigation hierarchy with owner, schedule, budget and verification criteria.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "planId",
+        "scope",
+        "description",
+        "hierarchy",
+        "ownerOrganizationId",
+        "riskIds",
+        "impactIds",
+        "indicatorIds",
+        "verificationCriteria",
+        "actionRefs"
+      ],
+      "attributes": [
+        "planId",
+        "scope",
+        "description",
+        "hierarchy",
+        "ownerOrganizationId",
+        "dueDate",
+        "budget",
+        "riskIds",
+        "impactIds",
+        "indicatorIds",
+        "verificationCriteria",
+        "actionRefs"
+      ]
+    },
+    "FrameworkEdition": {
+      "definition": "Versioned attributable institutional framework or statutory instrument, independent of report-template editions.",
+      "authority": "proposed_extension_of_framework_registry",
+      "requiredAttributes": [
+        "frameworkId",
+        "publisherOrganizationId",
+        "title",
+        "edition",
+        "sourceVersions",
+        "authorityStatus"
+      ],
+      "attributes": [
+        "frameworkId",
+        "publisherOrganizationId",
+        "title",
+        "edition",
+        "publishedOn",
+        "effectiveFrom",
+        "effectiveTo",
+        "sourceVersions",
+        "supersedesEditionId",
+        "authorityStatus"
+      ]
+    },
+    "Requirement": {
+      "definition": "Attributable requirement or explicitly labeled review prompt; existing retained catalogue definitions remain authoritative for current engagements.",
+      "authority": "existing_authority_projection",
+      "requiredAttributes": [
+        "frameworkEditionId",
+        "reference",
+        "clause",
+        "title",
+        "text",
+        "textKind",
+        "sourcePassages",
+        "topicIds"
+      ],
+      "attributes": [
+        "frameworkEditionId",
+        "reference",
+        "clause",
+        "title",
+        "text",
+        "textKind",
+        "sourcePassages",
+        "parentRequirementId",
+        "topicIds"
+      ]
+    },
+    "RequirementCrosswalk": {
+      "definition": "Reviewed versioned mapping between exact requirement editions. Relationships describe meaning and never propagate applicability or compliance conclusions.",
+      "authority": "proposed_extension_of_existing_mappings",
+      "requiredAttributes": [
+        "sourceRequirementRef",
+        "targetRequirementRef",
+        "relation",
+        "rationale",
+        "reviewStatus"
+      ],
+      "attributes": [
+        "sourceRequirementRef",
+        "targetRequirementRef",
+        "relation",
+        "rationale",
+        "reviewedBy",
+        "reviewedAt",
+        "reviewStatus"
+      ]
+    },
+    "Study": {
+      "definition": "Study metadata and scope referencing existing original document editions; field methods and limitations are explicit.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "scope",
+        "title",
+        "discipline",
+        "sourceVersions",
+        "method",
+        "limitations",
+        "baselineConditionIds",
+        "observationIds"
+      ],
+      "attributes": [
+        "scope",
+        "title",
+        "discipline",
+        "sourceVersions",
+        "method",
+        "limitations",
+        "baselineConditionIds",
+        "observationIds"
+      ]
+    },
+    "EvidenceAssertion": {
+      "definition": "Reference projection of existing engagement assertion. A source statement and its reliability are separate from the project fact or assessor judgment it may support.",
+      "authority": "existing_authority_projection",
+      "requiredAttributes": [
+        "reference",
+        "passage",
+        "classification",
+        "reviewStatus",
+        "supportingClaimIds",
+        "contradictingClaimIds"
+      ],
+      "attributes": [
+        "reference",
+        "passage",
+        "classification",
+        "reviewStatus",
+        "supportingClaimIds",
+        "contradictingClaimIds"
+      ]
+    },
+    "Observation": {
+      "definition": "Directly recorded dated observation without a professional conclusion; retains original field/measurement evidence and QA state.",
+      "authority": "proposed_extension_of_existing_field_capture_and_measurements",
+      "requiredAttributes": [
+        "scope",
+        "observedAt",
+        "observerId",
+        "method",
+        "description",
+        "sourceVersions",
+        "qaStatus",
+        "limitations"
+      ],
+      "attributes": [
+        "scope",
+        "observedAt",
+        "observerId",
+        "method",
+        "description",
+        "quantity",
+        "sourceVersions",
+        "qaStatus",
+        "limitations"
+      ]
+    },
+    "ProfessionalJudgment": {
+      "definition": "Attributable assessor interpretation using explicit evidence, contradictions, rubric and uncertainty. AI proposals cannot sign or establish a conclusion.",
+      "authority": "proposed_extension_of_existing_findings",
+      "requiredAttributes": [
+        "scope",
+        "question",
+        "rationale",
+        "assessedAt",
+        "assessorId",
+        "assertionRefs",
+        "observationIds",
+        "contradictions",
+        "confidence",
+        "status"
+      ],
+      "attributes": [
+        "scope",
+        "question",
+        "rationale",
+        "assessedAt",
+        "assessorId",
+        "assertionRefs",
+        "observationIds",
+        "contradictions",
+        "confidence",
+        "rubric",
+        "score",
+        "scale",
+        "sourceVersion",
+        "status"
+      ]
+    },
+    "ProjectFact": {
+      "definition": "Scoped proposition explicitly established by an authorized human on retained evidence; retains disputed or corrected predecessor without erasure.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "scope",
+        "predicate",
+        "value",
+        "assertionRefs",
+        "observationIds",
+        "judgmentIds",
+        "status",
+        "basis"
+      ],
+      "attributes": [
+        "scope",
+        "predicate",
+        "value",
+        "assertionRefs",
+        "observationIds",
+        "judgmentIds",
+        "status",
+        "establishedBy",
+        "establishedAt",
+        "supersedesFactId",
+        "basis"
+      ]
+    },
+    "Indicator": {
+      "definition": "Typed environmental or social indicator definition. Thresholds and outcome targets retain source and period; cross-project aggregation requires comparable units and denominators.",
+      "authority": "proposed_extension_of_existing_indicators",
+      "requiredAttributes": [
+        "scope",
+        "name",
+        "discipline",
+        "unit",
+        "method",
+        "frequency",
+        "disaggregationDimensions"
+      ],
+      "attributes": [
+        "scope",
+        "name",
+        "discipline",
+        "unit",
+        "method",
+        "frequency",
+        "threshold",
+        "disaggregationDimensions",
+        "denominatorDefinition",
+        "existingIndicatorRef"
+      ]
+    },
+    "IndicatorMeasurement": {
+      "definition": "Dated site and period value for an indicator with sampling method, worker class, uncertainty, QA and exact source evidence.",
+      "authority": "proposed_extension_of_existing_measurements",
+      "requiredAttributes": [
+        "indicatorId",
+        "periodStart",
+        "periodEnd",
+        "observedAt",
+        "value",
+        "unit",
+        "workerClass",
+        "assertionRefs",
+        "qaStatus"
+      ],
+      "attributes": [
+        "indicatorId",
+        "siteId",
+        "periodStart",
+        "periodEnd",
+        "observedAt",
+        "value",
+        "unit",
+        "workerClass",
+        "denominator",
+        "sampleSize",
+        "detectionLimit",
+        "observationId",
+        "assertionRefs",
+        "qaStatus",
+        "existingMeasurementRef"
+      ]
+    },
+    "SocialOutcome": {
+      "definition": "Measured social result against a specified baseline and affected group, without inferring causality from a trend.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "scope",
+        "stakeholderGroupId",
+        "baselineConditionId",
+        "indicatorId",
+        "measurementIds",
+        "assessedAt",
+        "attributionLimitations"
+      ],
+      "attributes": [
+        "scope",
+        "stakeholderGroupId",
+        "baselineConditionId",
+        "indicatorId",
+        "measurementIds",
+        "assessedAt",
+        "judgmentId",
+        "attributionLimitations"
+      ]
+    },
+    "Grievance": {
+      "definition": "Restricted case metadata with receipt, acknowledgment, response, appeal and closure; individual content is held by existing restricted case authority.",
+      "authority": "proposed_extension_of_existing_events",
+      "requiredAttributes": [
+        "scope",
+        "existingEventRef",
+        "receivedAt",
+        "category",
+        "status",
+        "restrictedCaseRef",
+        "actionRefs"
+      ],
+      "attributes": [
+        "scope",
+        "existingEventRef",
+        "receivedAt",
+        "acknowledgedAt",
+        "respondedAt",
+        "closedAt",
+        "category",
+        "status",
+        "restrictedCaseRef",
+        "actionRefs"
+      ]
+    },
+    "IncidentNotification": {
+      "definition": "Notice sent to a specifically identified recipient under a sourced reporting obligation; timestamps do not infer that another recipient was notified.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "recipientOrganizationId",
+        "status"
+      ],
+      "attributes": [
+        "recipientOrganizationId",
+        "awarenessAt",
+        "notifiedAt",
+        "dueAt",
+        "requirementRef",
+        "sourceVersion",
+        "status"
+      ]
+    },
+    "Incident": {
+      "definition": "Existing restricted E&S event with occurrence, awareness and per-recipient notification times; redacted public metadata never expose victims or sensitive geometry.",
+      "authority": "proposed_extension_of_existing_events",
+      "requiredAttributes": [
+        "scope",
+        "existingEventRef",
+        "occurredAt",
+        "awarenessAt",
+        "notifications",
+        "severity",
+        "category",
+        "restrictedCaseRef",
+        "actionRefs"
+      ],
+      "attributes": [
+        "scope",
+        "existingEventRef",
+        "occurredAt",
+        "awarenessAt",
+        "notifications",
+        "severity",
+        "category",
+        "restrictedCaseRef",
+        "actionRefs"
+      ]
+    },
+    "Assessment": {
+      "definition": "Repeated or overlapping professional evaluation over an explicit scope and period with pinned requirement editions, sources and immutable approved baseline.",
+      "authority": "existing_authority_projection",
+      "requiredAttributes": [
+        "scope",
+        "engagementRef",
+        "kind",
+        "assessmentDate",
+        "findingRefs",
+        "requirementRefs",
+        "sourceVersions"
+      ],
+      "attributes": [
+        "scope",
+        "engagementRef",
+        "kind",
+        "assessmentDate",
+        "findingRefs",
+        "requirementRefs",
+        "sourceVersions",
+        "baselineRef",
+        "baselineSha256",
+        "supersedesAssessmentId"
+      ]
+    },
+    "AssessmentFinding": {
+      "definition": "Projection reference of existing engagement finding; applicability, evidence coverage, adequacy and performance remain distinct judgments.",
+      "authority": "existing_authority_projection",
+      "requiredAttributes": [
+        "reference",
+        "requirementRef",
+        "applicability",
+        "coverage",
+        "adequacy",
+        "performance",
+        "supportingAssertionRefs",
+        "contradictoryAssertionRefs"
+      ],
+      "attributes": [
+        "reference",
+        "requirementRef",
+        "applicability",
+        "coverage",
+        "adequacy",
+        "performance",
+        "supportingAssertionRefs",
+        "contradictoryAssertionRefs",
+        "judgmentId"
+      ]
+    },
+    "CorrectiveAction": {
+      "definition": "Projection/extension of existing action with responsible organization, linked deficiencies, deadlines, budget, dependencies and evidence-based verification.",
+      "authority": "proposed_extension_of_existing_actions",
+      "requiredAttributes": [
+        "reference",
+        "scope",
+        "description",
+        "ownerOrganizationId",
+        "findingRefs",
+        "commitmentIds",
+        "dependencyActionRefs",
+        "verificationCriteria",
+        "verificationRefs",
+        "status"
+      ],
+      "attributes": [
+        "reference",
+        "scope",
+        "description",
+        "ownerOrganizationId",
+        "findingRefs",
+        "commitmentIds",
+        "dueDate",
+        "budget",
+        "dependencyActionRefs",
+        "verificationCriteria",
+        "verificationRefs",
+        "status"
+      ]
+    },
+    "Commitment": {
+      "definition": "Project promise arising from a plan, consultation or contract, independently tracked from the corrective action used to deliver it.",
+      "authority": "proposed_extension_of_existing_obligations",
+      "requiredAttributes": [
+        "scope",
+        "description",
+        "ownerOrganizationId",
+        "sourcePassages",
+        "actionRefs",
+        "indicatorIds",
+        "status"
+      ],
+      "attributes": [
+        "scope",
+        "description",
+        "ownerOrganizationId",
+        "sourcePassages",
+        "agreementId",
+        "covenantId",
+        "dueDate",
+        "actionRefs",
+        "indicatorIds",
+        "status"
+      ]
+    },
+    "Verification": {
+      "definition": "Projection reference of existing independent verification against explicit criteria, retained closure evidence and authorized reviewer.",
+      "authority": "existing_authority_projection",
+      "requiredAttributes": [
+        "reference",
+        "scope",
+        "targetRef",
+        "verifiedAt",
+        "verifierId",
+        "criteria",
+        "assertionRefs",
+        "outcome",
+        "limitations"
+      ],
+      "attributes": [
+        "reference",
+        "scope",
+        "targetRef",
+        "verifiedAt",
+        "verifierId",
+        "criteria",
+        "assertionRefs",
+        "outcome",
+        "limitations"
+      ]
+    },
+    "Approval": {
+      "definition": "Existing authorized professional process decision tied to a fixed content revision/hash. Business-context approval is separately typed and does not imply assessment approval.",
+      "authority": "existing_authority_projection",
+      "requiredAttributes": [
+        "reference",
+        "targetRef",
+        "contentRevision",
+        "contentSha256",
+        "decision",
+        "actorId",
+        "decidedAt",
+        "authorityBasis",
+        "statement"
+      ],
+      "attributes": [
+        "reference",
+        "targetRef",
+        "contentRevision",
+        "contentSha256",
+        "decision",
+        "actorId",
+        "decidedAt",
+        "authorityBasis",
+        "statement"
+      ]
+    },
+    "MonitoringProgram": {
+      "definition": "Existing monitoring program reusing its approved assessment baseline, requirements, indicators, actions and obligations.",
+      "authority": "existing_authority_projection",
+      "requiredAttributes": [
+        "reference",
+        "scope",
+        "baselineRef",
+        "baselineSha256",
+        "cycleRefs",
+        "indicatorIds",
+        "obligationRefs"
+      ],
+      "attributes": [
+        "reference",
+        "scope",
+        "baselineRef",
+        "baselineSha256",
+        "cycleRefs",
+        "indicatorIds",
+        "obligationRefs"
+      ]
+    },
+    "MonitoringCycle": {
+      "definition": "Existing periodic supervision cycle; cycles can overlap but remain independently reviewed against exact periods and baseline snapshots.",
+      "authority": "existing_authority_projection",
+      "requiredAttributes": [
+        "reference",
+        "programRef",
+        "periodStart",
+        "periodEnd",
+        "submissionRefs",
+        "findingRefs"
+      ],
+      "attributes": [
+        "reference",
+        "programRef",
+        "periodStart",
+        "periodEnd",
+        "dueDate",
+        "submissionRefs",
+        "findingRefs",
+        "baselineRef"
+      ]
+    },
+    "Report": {
+      "definition": "Issued existing publication rendition or proposed template view of exact baseline content; rendering never becomes a second record authority.",
+      "authority": "existing_authority_projection",
+      "requiredAttributes": [
+        "publicationRef",
+        "baselineRef",
+        "baselineSha256",
+        "templateId",
+        "templateVersion",
+        "mappingVersion",
+        "unmappedFields",
+        "generatedAt"
+      ],
+      "attributes": [
+        "publicationRef",
+        "baselineRef",
+        "baselineSha256",
+        "templateId",
+        "templateVersion",
+        "renditionSource",
+        "mappingVersion",
+        "unmappedFields",
+        "generatedAt"
+      ]
+    },
+    "ConsultationEvent": {
+      "definition": "Dated meaningful engagement and disclosure event retaining accessibility, SEP deviations, feedback and responses without publishing personal identities.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "scope",
+        "occurredOn",
+        "methods",
+        "languages",
+        "stakeholderGroupIds",
+        "disclosedSourceVersions",
+        "disclosureLocations",
+        "sepDeviation",
+        "feedback",
+        "response",
+        "commitmentIds"
+      ],
+      "attributes": [
+        "scope",
+        "occurredOn",
+        "methods",
+        "languages",
+        "stakeholderGroupIds",
+        "disclosedSourceVersions",
+        "disclosureLocations",
+        "leadDays",
+        "sepDeviation",
+        "deviationRationale",
+        "feedback",
+        "response",
+        "commitmentIds",
+        "restrictedParticipantRegisterRef"
+      ]
+    },
+    "PortfolioExposure": {
+      "definition": "Dated original-currency intermediary/fund exposure by product and sector, retaining estimated status and denominator before aggregation.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "investmentId",
+        "product",
+        "sector",
+        "amount",
+        "asOf",
+        "estimated",
+        "denominator",
+        "exclusionDecision"
+      ],
+      "attributes": [
+        "investmentId",
+        "product",
+        "sector",
+        "amount",
+        "asOf",
+        "estimated",
+        "denominator",
+        "riskCategory",
+        "screeningAssessmentRef",
+        "exclusionDecision"
+      ]
+    },
+    "Entitlement": {
+      "definition": "Eligibility and benefit owed under an exact approved resettlement/compensation instrument; personal roster stays restricted.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "scope",
+        "stakeholderGroupId",
+        "planId",
+        "eligibilityBasis",
+        "benefitDescription",
+        "sourcePassage",
+        "restrictedBeneficiaryRef"
+      ],
+      "attributes": [
+        "scope",
+        "stakeholderGroupId",
+        "planId",
+        "eligibilityBasis",
+        "benefitDescription",
+        "amount",
+        "sourcePassage",
+        "restrictedBeneficiaryRef"
+      ]
+    },
+    "EntitlementDelivery": {
+      "definition": "Scheduled and actual entitlement delivery with retained evidence and human verification; payment does not establish livelihood restoration.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "entitlementId",
+        "scheduledOn",
+        "assertionRefs",
+        "status"
+      ],
+      "attributes": [
+        "entitlementId",
+        "scheduledOn",
+        "deliveredOn",
+        "amount",
+        "assertionRefs",
+        "verifiedBy",
+        "verifiedAt",
+        "status"
+      ]
+    },
+    "LivelihoodOutcome": {
+      "definition": "Longitudinal livelihood result relative to baseline with subgroup disaggregation and attribution limitations.",
+      "authority": "proposed",
+      "requiredAttributes": [
+        "stakeholderGroupId",
+        "baselineConditionId",
+        "indicatorId",
+        "measurementIds",
+        "assessedAt",
+        "attributionLimitations"
+      ],
+      "attributes": [
+        "stakeholderGroupId",
+        "baselineConditionId",
+        "indicatorId",
+        "measurementIds",
+        "assessedAt",
+        "judgmentId",
+        "attributionLimitations"
+      ]
+    },
+    "SourcePassage": {
+      "definition": "Exact passage in the existing retained original. OCR/extracted candidates must preserve derivative identity and original-page review in existing extraction binding. Quote hashing does not prove meaning or professional sufficiency.",
+      "authority": "existing_retained_original_and_extraction_binding"
+    },
+    "ExactSourceVersion": {
+      "definition": "Locator into existing project resource/version authority. Verify project/resource/version closure and full-object SHA256 before use. The version remains owned by its existing authority; no file bytes, local paths, signed URLs or grants appear here.",
+      "authority": "existing_project_resource_version"
+    },
+    "ProjectBinding": {
+      "definition": "References existing account project and explicit real-world identity link. No project title or parallel project authority.",
+      "authority": "existing_project_identity_link"
+    },
+    "FinancialExit": {
+      "definition": "A financier exits an investment; distinct from operational shutdown, project closure or completion of long-term obligations.",
+      "authority": "derived_financial_view"
+    },
+    "ApprovedBusinessContext": {
+      "definition": "Immutable approved ledger snapshot separate from all professional E&S approvals.",
+      "authority": "limited_slice_contract"
+    }
+  },
+  "relationships": [
+    {
+      "name": "identity_custody",
+      "from": "Project",
+      "to": "ProjectBinding",
+      "cardinality": "1 : 0..*",
+      "via": "identityId",
+      "integrity": "Existing explicit project_identity_links governs linkage. A name, institution identifier or account association cannot merge identities or confer access."
+    },
+    {
+      "name": "project_components",
+      "from": "ProjectBinding",
+      "to": "ProjectComponent",
+      "cardinality": "1 : 0..*",
+      "via": "projectId",
+      "integrity": "Component belongs to exactly one current account Project; project must have an explicit real-world identity link."
+    },
+    {
+      "name": "component_hierarchy",
+      "from": "ProjectComponent",
+      "to": "ProjectComponent",
+      "cardinality": "parent 0..1 : children 0..*",
+      "via": "parentComponentId",
+      "integrity": "Acyclic hierarchy, no self-parent; parent and child must share projectId. Associated facility relationship is explicit and distinct from containment."
+    },
+    {
+      "name": "associated_facility",
+      "from": "ProjectComponent",
+      "to": "ProjectBinding",
+      "cardinality": "0..* : 0..1",
+      "via": "associatedProjectId",
+      "integrity": "Only kind=associated_facility may link another Project. Link does not imply ownership, funding allocation or another project access grant."
+    },
+    {
+      "name": "project_sites",
+      "from": "ProjectBinding",
+      "to": "Site",
+      "cardinality": "1 : 0..*",
+      "via": "projectId",
+      "integrity": "Every site belongs to one current Project. Its component IDs must belong to that Project."
+    },
+    {
+      "name": "component_sites",
+      "from": "ProjectComponent",
+      "to": "Site",
+      "cardinality": "0..* : 0..*",
+      "via": "Site.componentIds",
+      "integrity": "Normalized ComponentSite relationship in a future relational implementation; empty means project-wide or unresolved, never infer a component."
+    },
+    {
+      "name": "project_activities",
+      "from": "ProjectBinding",
+      "to": "Activity",
+      "cardinality": "1 : 0..*",
+      "via": "projectId",
+      "integrity": "Activity component and sites must be in its project."
+    },
+    {
+      "name": "organization_roles",
+      "from": "Organization",
+      "to": "OrganizationRoleAssignment",
+      "cardinality": "1 : 0..*",
+      "via": "organizationId",
+      "integrity": "Each assignment has one organization and at least one structured scope, effective dates and independent provenance. Role is descriptive, never an authorization grant."
+    },
+    {
+      "name": "organization_investments",
+      "from": "Organization",
+      "to": "Investment",
+      "cardinality": "investor 1 : 0..*; investee 0..1 : 0..*",
+      "via": "investorOrganizationId / investeeOrganizationId",
+      "integrity": "Both ends resolve to explicit Organization IDs. Investor and investee identity are not derived from institution names."
+    },
+    {
+      "name": "fund_subinvestments",
+      "from": "Investment",
+      "to": "Investment",
+      "cardinality": "parent 0..1 : children 0..*",
+      "via": "parentInvestmentId",
+      "integrity": "Acyclic economic chain supports fund/intermediary/subinvestment. Project identity and financing chain are independent; never count parent and child twice in a portfolio total."
+    },
+    {
+      "name": "investment_projects",
+      "from": "Investment",
+      "to": "ProjectBinding",
+      "cardinality": "0..* : 0..*",
+      "via": "InvestmentAllocation",
+      "integrity": "Each allocation has one Investment and one Project, optionally a component of that project. Amount or share required; partial/unallocated balances preserved."
+    },
+    {
+      "name": "investment_transactions",
+      "from": "Investment",
+      "to": "Transaction",
+      "cardinality": "1 : 0..*",
+      "via": "investmentId",
+      "integrity": "Each Transaction is dated, typed, status-bearing and denominated in explicit original currency. Reversal history is append-only."
+    },
+    {
+      "name": "facility_transactions",
+      "from": "FinancialFacility",
+      "to": "Transaction",
+      "cardinality": "0..1 : 0..*",
+      "via": "financialFacilityId",
+      "integrity": "Referenced facility is explicit; optional facility does not mean a fabricated facility can be inferred."
+    },
+    {
+      "name": "facility_hierarchy",
+      "from": "FinancialFacility",
+      "to": "FinancialFacility",
+      "cardinality": "parent 0..1 : children 0..*",
+      "via": "parentFacilityId",
+      "integrity": "No cycles or self-parent; parent/child commitments are not automatically additive."
+    },
+    {
+      "name": "facility_borrower",
+      "from": "Organization",
+      "to": "FinancialFacility",
+      "cardinality": "borrower 1 : 0..*",
+      "via": "borrowerOrganizationId",
+      "integrity": "Borrower is separate from all participating financiers and from the project owner."
+    },
+    {
+      "name": "facility_financiers",
+      "from": "Organization",
+      "to": "FinancialFacility",
+      "cardinality": "0..* : 0..*",
+      "via": "FinancingParticipant",
+      "integrity": "Each participation has one organization + facility + role, effective dates and optional share/commitment. Multiple lenders and roles supported."
+    },
+    {
+      "name": "agreement_parties",
+      "from": "Organization",
+      "to": "Agreement",
+      "cardinality": "0..* : 0..*",
+      "via": "Agreement.organizationIds",
+      "integrity": "Future AgreementParty join; party roles can use scoped OrganizationRoleAssignment. A historical agreement retains exact party IDs and source versions."
+    },
+    {
+      "name": "agreement_projects",
+      "from": "ProjectBinding",
+      "to": "Agreement",
+      "cardinality": "0..* : 0..*",
+      "via": "Agreement.projectIds",
+      "integrity": "One contract can cover multiple existing Projects; no parallel Project records."
+    },
+    {
+      "name": "facility_agreements",
+      "from": "FinancialFacility",
+      "to": "Agreement",
+      "cardinality": "0..* : 0..*",
+      "via": "agreementIds / financialFacilityIds",
+      "integrity": "One logical AgreementFacility edge with reciprocal exchange views; validate consistency rather than store conflicting authorities."
+    },
+    {
+      "name": "agreement_covenants",
+      "from": "Agreement",
+      "to": "Covenant",
+      "cardinality": "1 : 0..*",
+      "via": "agreementId",
+      "integrity": "Each covenant belongs to one agreement. Source passage must identify an exact retained edition; amendment changes create a new revision."
+    },
+    {
+      "name": "project_engagement_scopes",
+      "from": "ProjectBinding",
+      "to": "Engagement",
+      "cardinality": "1 : 0..* through scopes; each current Engagement belongs to one project",
+      "via": "EngagementScope",
+      "integrity": "Multiple or overlapping mandates reuse one Project. Existing engagement projectId must equal scope projectId. Existing current implementation has one project per engagement; future cross-project mandate requires explicit shared contract evolution."
+    },
+    {
+      "name": "engagement_deliverables",
+      "from": "Engagement",
+      "to": "Deliverable",
+      "cardinality": "1 : 0..*",
+      "via": "engagementRef",
+      "integrity": "Map existing mandate.deliverables and obligations/publications with an explicit promotion map; do not duplicate approved mandate content."
+    },
+    {
+      "name": "framework_requirements",
+      "from": "FrameworkEdition",
+      "to": "Requirement",
+      "cardinality": "1 : 0..*",
+      "via": "frameworkEditionId",
+      "integrity": "Every requirement belongs to one exact edition. Parent requirements remain in the same edition and are acyclic."
+    },
+    {
+      "name": "requirement_applicability",
+      "from": "Requirement",
+      "to": "RequirementApplicability",
+      "cardinality": "1 : 0..*",
+      "via": "requirementRef + frameworkEditionId",
+      "integrity": "Pinned requirement edition and professional rationale scoped independently to project/component/financing/agreement/time; no applicability inference from financing alone."
+    },
+    {
+      "name": "requirement_crosswalk",
+      "from": "Requirement",
+      "to": "Requirement",
+      "cardinality": "0..* : 0..*",
+      "via": "RequirementCrosswalk",
+      "integrity": "Directed edition-specific relationship. equivalent/overlapping/broader/narrower/related/conflicting never transfers compliance decisions."
+    },
+    {
+      "name": "assessment_findings",
+      "from": "Assessment",
+      "to": "AssessmentFinding",
+      "cardinality": "1 : 0..*",
+      "via": "findingRefs",
+      "integrity": "Repeated/overlapping assessments refer to exact scoped requirement versions and evidence. Approved finding content stays in the original engagement baseline."
+    },
+    {
+      "name": "assertion_source",
+      "from": "EvidenceAssertion",
+      "to": "SourcePassage",
+      "cardinality": "1 : 1..* logically; current assertion 1 : 1 source",
+      "via": "passage / existing assertion.versionId + sourceSha256",
+      "integrity": "Existing implementation assertion uses one exact original and quote/locator. Multiple passages require multiple assertions or a future grouped claim, never a silent source overwrite."
+    },
+    {
+      "name": "finding_evidence",
+      "from": "AssessmentFinding",
+      "to": "EvidenceAssertion",
+      "cardinality": "0..* : 0..*",
+      "via": "supportingAssertionRefs / contradictoryAssertionRefs",
+      "integrity": "Retain support and contradictions separately with professional dispositions. Retrieval matches are not evidence assertions."
+    },
+    {
+      "name": "observation_evidence",
+      "from": "Observation",
+      "to": "ExactSourceVersion",
+      "cardinality": "0..* : 1..* for verified observations",
+      "via": "sourceVersions",
+      "integrity": "Raw field original and measurement source remain independently retained; every transformation identifies its method and derivative."
+    },
+    {
+      "name": "facts_judgments_evidence",
+      "from": "ProjectFact",
+      "to": "ProfessionalJudgment",
+      "cardinality": "0..* : 0..*",
+      "via": "judgmentIds + assertionRefs + observationIds",
+      "integrity": "Fact establishment is an authorized human decision; observation, statement, inference and fact remain separately typed. Contradictions can dispute an established fact."
+    },
+    {
+      "name": "risk_receptors",
+      "from": "Risk",
+      "to": "Receptor",
+      "cardinality": "0..* : 0..*",
+      "via": "receptorIds",
+      "integrity": "Risk is potential; an observed impact is separately linked to Activity, receptor, baseline and observation."
+    },
+    {
+      "name": "baseline_receptor",
+      "from": "Receptor",
+      "to": "BaselineCondition",
+      "cardinality": "1 : 0..*",
+      "via": "receptorId",
+      "integrity": "Multiple seasonal/temporal baselines may coexist. Do not substitute a recent measurement for the prior baseline."
+    },
+    {
+      "name": "plan_measures",
+      "from": "ManagementPlan",
+      "to": "ManagementMeasure",
+      "cardinality": "1 : 0..*",
+      "via": "planId / measureIds",
+      "integrity": "One logical plan-measure relationship, explicit mitigation hierarchy, responsibilities, budget, schedule and verification criteria."
+    },
+    {
+      "name": "measures_risks_impacts",
+      "from": "ManagementMeasure",
+      "to": "Risk / Impact",
+      "cardinality": "0..* : 0..*",
+      "via": "riskIds / impactIds",
+      "integrity": "Measures address explicit risks/impacts; mitigation completion does not by itself establish outcome effectiveness."
+    },
+    {
+      "name": "program_cycles",
+      "from": "MonitoringProgram",
+      "to": "MonitoringCycle",
+      "cardinality": "1 : 0..*",
+      "via": "programRef / cycleRefs",
+      "integrity": "All cycles reuse existing approved baseline, requirements, indicators, submissions, findings and actions. Overlap is allowed and explicit."
+    },
+    {
+      "name": "indicator_measurements",
+      "from": "Indicator",
+      "to": "IndicatorMeasurement",
+      "cardinality": "1 : 0..*",
+      "via": "indicatorId",
+      "integrity": "Measurement retains site, period, unit, worker/group dimension, denominator, method/QA and source; no aggregation across incompatible definitions."
+    },
+    {
+      "name": "social_outcomes",
+      "from": "StakeholderGroup",
+      "to": "SocialOutcome / LivelihoodOutcome",
+      "cardinality": "1 : 0..*",
+      "via": "stakeholderGroupId",
+      "integrity": "Compare against explicit baseline and indicators; retain disaggregation and limits to attributing outcome to project."
+    },
+    {
+      "name": "consultation_commitments",
+      "from": "ConsultationEvent",
+      "to": "Commitment",
+      "cardinality": "0..* : 0..*",
+      "via": "commitmentIds",
+      "integrity": "Feedback, response, accessibility, disclosure timing and deviations are evidence; no automatic judgment of meaningful consultation."
+    },
+    {
+      "name": "entitlement_delivery",
+      "from": "Entitlement",
+      "to": "EntitlementDelivery",
+      "cardinality": "1 : 0..*",
+      "via": "entitlementId",
+      "integrity": "Partial and repeated delivery are retained with money, dates, evidence and verification. Payment is not livelihood restoration."
+    },
+    {
+      "name": "finding_actions",
+      "from": "AssessmentFinding",
+      "to": "CorrectiveAction",
+      "cardinality": "0..* : 0..*",
+      "via": "findingRefs",
+      "integrity": "Action retains underlying deficiency, owner, deadline, budget and dependencies; closure requires authorized verification of retained evidence."
+    },
+    {
+      "name": "commitment_actions",
+      "from": "Commitment",
+      "to": "CorrectiveAction",
+      "cardinality": "0..* : 0..*",
+      "via": "commitmentIds / actionRefs",
+      "integrity": "A commitment can need several actions; one action can fulfill several commitments without duplicating authority."
+    },
+    {
+      "name": "case_actions",
+      "from": "Incident / Grievance",
+      "to": "CorrectiveAction",
+      "cardinality": "0..* : 0..*",
+      "via": "actionRefs",
+      "integrity": "Sensitive personal facts and geometry remain in existing restricted case authority; redaction follows transitive source/geometry closure."
+    },
+    {
+      "name": "action_verification",
+      "from": "CorrectiveAction",
+      "to": "Verification",
+      "cardinality": "1 : 0..*",
+      "via": "verificationRefs",
+      "integrity": "A failed verification may reopen an action; verifier identity and authority are checked against current roles."
+    },
+    {
+      "name": "assessment_approval",
+      "from": "Assessment",
+      "to": "Approval",
+      "cardinality": "1 : 0..*",
+      "via": "targetRef + contentSha256",
+      "integrity": "Approvals pin exact immutable content revision/hash and professional authority; imported local attestations never become hosted verified identity."
+    },
+    {
+      "name": "baseline_reports",
+      "from": "Assessment / MonitoringCycle",
+      "to": "Report",
+      "cardinality": "1 : 0..*",
+      "via": "baselineRef + baselineSha256",
+      "integrity": "Many institutional reports are derived views of one frozen dataset and mapping version; report fields do not become authoritative duplicates."
+    }
+  ],
+  "integrityRules": [
+    {
+      "id": "ID-01",
+      "rule": "Stable application IDs survive renames, export/import, physical storage moves and template changes. UUIDs for new records; exact historical opaque IDs preserved.",
+      "scope": "runtime",
+      "enforcement": "shape + identity uniqueness"
+    },
+    {
+      "id": "ID-02",
+      "rule": "Project bindings must resolve through current explicit canonical identity links. The same identity may have multiple account project facets; facets never merge by name.",
+      "scope": "runtime",
+      "enforcement": "existing authority lookup"
+    },
+    {
+      "id": "ID-03",
+      "rule": "Organization identity is explicit. Existing stakeholder labels and accountCustodyIds are descriptive candidates, not verified organizations or access grants.",
+      "scope": "human",
+      "enforcement": "explicit reconciliation"
+    },
+    {
+      "id": "REF-01",
+      "rule": "Every current internal ID resolves to exactly one expected entity type in the permitted account/project scope; reject dangling refs and type confusion in the current graph. Historical snapshots receive structural/schema and digest checks; these checks do not prove that archived external authority existed, was authorized, or retained exact bytes at the claimed past time.",
+      "scope": "runtime_current_and_historical_limits",
+      "enforcement": "current transactional graph authority validator; history structural/hash validation only"
+    },
+    {
+      "id": "REF-02",
+      "rule": "Component containment, parent investment, parent facility and action dependency graphs are acyclic. A component parent shares projectId.",
+      "scope": "runtime",
+      "enforcement": "cycle detection + scope checks"
+    },
+    {
+      "id": "REF-03",
+      "rule": "All component/site scopes, allocation components, covenant components and engagement scopes agree with their referenced Project.",
+      "scope": "runtime",
+      "enforcement": "project closure"
+    },
+    {
+      "id": "REF-04",
+      "rule": "An engagement/cycle/event/action/baseline reference must resolve in its existing owning engagement and project; a baseline hash must equal the existing retained baseline hash.",
+      "scope": "runtime",
+      "enforcement": "existing engagement authority lookup"
+    },
+    {
+      "id": "REF-05",
+      "rule": "Logical inverse relationships are one edge, not competing authorities. AgreementFacility and ComponentSite have normalized joins in the proposed relational model.",
+      "scope": "runtime",
+      "enforcement": "reciprocal validation / normalized joins"
+    },
+    {
+      "id": "FIN-01",
+      "rule": "Financial amounts are exact decimal strings with explicit ISO currency; no floating-point totals or silent currency conversion.",
+      "scope": "runtime",
+      "enforcement": "decimal arithmetic"
+    },
+    {
+      "id": "FIN-02",
+      "rule": "Allocation percentages and comparable participant shares cannot exceed 100 in any overlapping effective-date partition. Allocation amounts cannot exceed the attributable original-currency investment total within that partition. Sequential non-overlapping allocations are not summed as simultaneous exposure.",
+      "scope": "limited_slice_contract",
+      "enforcement": "exact decimal sums + explicit effective-date/currency partitions; verify with period-boundary acceptance"
+    },
+    {
+      "id": "FIN-03",
+      "rule": "Never add fund/intermediary parent exposures and their subinvestments as independent economic exposure. Distinguish original amount, outstanding, committed and disbursed.",
+      "scope": "proposed",
+      "enforcement": "explicit reporting measure and consolidation boundary"
+    },
+    {
+      "id": "FIN-04",
+      "rule": "Partial allocations and unknown amounts are represented as missing/unallocated values; unknown never becomes zero. Mixed currencies and estimated values are flagged in reports.",
+      "scope": "runtime_and_proposed",
+      "enforcement": "bounded slice report + future portfolio reporting"
+    },
+    {
+      "id": "FIN-05",
+      "rule": "Activity.sectorProfileId must resolve through existing getSectorProfile in src/lib/sector-risk-profiles.js. It is a manually reviewed application classification, not an institutional E&S category. Sector exposure uses verified scoped activities for effective leaf allocations at their component/project scope; missing or multiple candidate profiles remain unknown rather than being guessed. asOf filters financial allocation validity only.",
+      "scope": "limited_slice_contract",
+      "enforcement": "existing profile registry lookup + explicit verification + bounded allocation-effective-date aggregation"
+    },
+    {
+      "id": "TIME-01",
+      "rule": "effectiveFrom<=effectiveTo; periodStart<=periodEnd; event occurrence, assessment, awareness, notification, record and approval times are distinct. No date inferred from upload.",
+      "scope": "runtime_and_proposed",
+      "enforcement": "calendar and temporal validation"
+    },
+    {
+      "id": "TIME-02",
+      "rule": "Late lifecycle entry is allowed; completed predecessors are never fabricated. Repeated and overlapping assessments/cycles preserve independent period and version IDs.",
+      "scope": "runtime_and_proposed",
+      "enforcement": "nonlinear lifecycle policy"
+    },
+    {
+      "id": "TIME-03",
+      "rule": "The limited report asOf selector filters financial allocation effective dates only. Assessment context is an explicitly referenced retained approved baseline or a current working-review projection; it is not a reconstruction of all knowledge/authority as of a past date. Full effective-time plus recorded-time querying remains gated design work.",
+      "scope": "runtime_and_proposed",
+      "enforcement": "ReportTemporalScope constant contract + explicit assessment context/source hash selection"
+    },
+    {
+      "id": "VER-01",
+      "rule": "CAS expectedRevision protects each mutation. Record revision and root ledger revision increase monotonically; server-owned actor/time fields cannot be forged on upsert.",
+      "scope": "runtime",
+      "enforcement": "transaction + CAS"
+    },
+    {
+      "id": "VER-02",
+      "rule": "History snapshots retain exact prior business contexts, with structural validation, verified digests and a complete revision sequence. Hashes establish internal retained-content consistency, not independent origin, past authority, original source custody or a trusted timestamp. Corrections create new revisions and never edit approved bytes.",
+      "scope": "runtime",
+      "enforcement": "snapshot structural/hash and history chain checks; fresh current local verification before new approval"
+    },
+    {
+      "id": "VER-03",
+      "rule": "Approved business-context snapshots freeze only ledger context. They never replace engagement baselines, grant source access or establish compliance.",
+      "scope": "runtime",
+      "enforcement": "separate approval type"
+    },
+    {
+      "id": "VER-04",
+      "rule": "Approved engagement assessment snapshots retain original content, schema interpretation, source pins, approval/audit chains and original hashes; additive projection defaults do not rewrite them.",
+      "scope": "existing",
+      "enforcement": "existing validateEngagementPackages"
+    },
+    {
+      "id": "SRC-01",
+      "rule": "All current citation/source references pin project/resource/version plus full-object hash and resolve current source authority. Exact bytes and declared integrity are checked before local verification/new business approval. Historical source-pin structure and snapshot digests alone cannot prove archived original bytes or past source authority; existing engagement evidence/custody rules remain separate.",
+      "scope": "runtime_current_and_existing_evidence",
+      "enforcement": "current source authority and retained-byte verification; explicitly limited historical claims"
+    },
+    {
+      "id": "SRC-02",
+      "rule": "Composite document integrity is not a full-object SHA256. Preserve shared DocumentVersionLink integrity.type and its exact algorithm metadata; do not relabel COMPOSITE as FULL_OBJECT.",
+      "scope": "existing_and_proposed",
+      "enforcement": "shared document conformance"
+    },
+    {
+      "id": "SRC-03",
+      "rule": "OCR, extraction and spatial derivatives retain exact original source/version/hash, transformation version and derivative identity. OCR quote eligibility requires existing original-page human review.",
+      "scope": "existing",
+      "enforcement": "extraction binding validator"
+    },
+    {
+      "id": "EPI-01",
+      "rule": "Observation records what was measured or seen. EvidenceAssertion states what an exact source supports. ProfessionalJudgment interprets. ProjectFact requires explicit authorized human establishment.",
+      "scope": "proposed",
+      "enforcement": "separate entity types and sign-off policy"
+    },
+    {
+      "id": "EPI-02",
+      "rule": "Human verification means the stated proposition and source binding were checked; it is not a legal signature, source ownership or framework compliance conclusion.",
+      "scope": "runtime_and_proposed",
+      "enforcement": "server-controlled verify command + authority label"
+    },
+    {
+      "id": "EPI-03",
+      "rule": "AI/extracted/imported candidates remain unreviewed until an authorized human verifies them. Preserve model/method, prompt hash, exact sources, uncertainty and rejection history.",
+      "scope": "runtime_and_existing",
+      "enforcement": "server resets candidate review status"
+    },
+    {
+      "id": "REQ-01",
+      "rule": "Every institutional requirement is edition-specific, attributable and labeled authoritative_text/review_prompt/paraphrase. A review prompt is never relabeled as authoritative policy text.",
+      "scope": "existing_and_proposed",
+      "enforcement": "retained catalogue wording and source validation"
+    },
+    {
+      "id": "REQ-02",
+      "rule": "Requirement applicability is scoped to Project/component/financing/agreement/period and has a rationale and accountable assessor. Framework selection alone is not applicability.",
+      "scope": "runtime_and_proposed",
+      "enforcement": "explicit decision record"
+    },
+    {
+      "id": "REQ-03",
+      "rule": "Crosswalks use explicit directed relations between exact editions. No relation, including equivalent, transfers applicability, adequacy, compliance or approval conclusions.",
+      "scope": "existing_and_proposed",
+      "enforcement": "no automatic conclusion propagation"
+    },
+    {
+      "id": "REQ-04",
+      "rule": "Evidence coverage, adequacy, applicability, implementation, effectiveness and compliance/performance remain independent fields. Missing evidence does not become a definitive noncompliance conclusion.",
+      "scope": "existing_and_proposed",
+      "enforcement": "separate dimensions and professional rationale"
+    },
+    {
+      "id": "MON-01",
+      "rule": "Measurements require explicit unit, period, method, QA, detection-limit/uncertainty where relevant, and denominator before ratios or aggregation; never compare incomparable populations.",
+      "scope": "proposed",
+      "enforcement": "profile-specific validation"
+    },
+    {
+      "id": "CASE-01",
+      "rule": "Grievance/incident personal content and sensitive geometry use existing restricted case controls. Public/search/report projection observes source and geometry protection closure.",
+      "scope": "existing_and_proposed",
+      "enforcement": "existing case and disclosure authorization"
+    },
+    {
+      "id": "CASE-02",
+      "rule": "Incident occurrence, organization awareness and each lender/regulator notification are separate timestamps with sourced deadline rules.",
+      "scope": "proposed",
+      "enforcement": "recipient-specific IncidentNotification"
+    },
+    {
+      "id": "AUTH-01",
+      "rule": "Descriptive roles, external institutional identifiers, imported attestations and reference links never grant access. All reads/writes, index retrieval and exports re-evaluate current host authority.",
+      "scope": "runtime_and_existing",
+      "enforcement": "existing account guards / hosted access-service"
+    },
+    {
+      "id": "AUTH-02",
+      "rule": "Local loopback account isolation and professional declared roles are distinct from hosted authenticated user/resource grants; do not claim hosted authorization for the new local ledger.",
+      "scope": "runtime",
+      "enforcement": "deployment boundary"
+    },
+    {
+      "id": "EXT-01",
+      "rule": "Extensions use a registered namespace, pinned schema URI/version, bounded JSON and safe keys. Core relationships, approval, actor and source identity cannot be overridden by extensions.",
+      "scope": "runtime_and_proposed",
+      "enforcement": "registry + bounded portable JSON"
+    },
+    {
+      "id": "XCH-01",
+      "rule": "Exchange round-trip preserves IDs, original currency/decimals, missing values, exact source pins, extension payloads, content revision, history, digests and approval semantics.",
+      "scope": "runtime_and_proposed",
+      "enforcement": "strict export/import and semantic closure"
+    },
+    {
+      "id": "XCH-02",
+      "rule": "Imports validate referenced current authorities, current retained original-byte proof, complete historical structure and digest consistency atomically before commit. Imported history does not independently prove past authority/custody or create local verification receipts. Same ID+revision with different content is a conflict; exact duplicate import is idempotent.",
+      "scope": "runtime",
+      "enforcement": "atomic same-account empty restore or exact replay; current authority/byte checks; history structural/hash checks"
+    },
+    {
+      "id": "OPS-01",
+      "rule": "No hosted worker, recurring schedule, queue consumer or physical database replacement is introduced by this design. Explicit manual jobs have byte/request/time limits and a stop condition.",
+      "scope": "operational",
+      "enforcement": "cost-conscious AGENTS.md policy"
+    }
+  ],
+  "epistemicModel": {
+    "observation": {
+      "entity": "Observation / IndicatorMeasurement",
+      "meaning": "What an identified observer measured or directly saw at a stated time using a stated method.",
+      "example": "Noise meter reported a particular dB value at a named site/time.",
+      "cannotInfer": "Whether the legal averaging-period limit is exceeded or the project is compliant."
+    },
+    "evidenceAssertion": {
+      "entity": "Existing engagement assertion / EvidenceAssertion projection",
+      "meaning": "A quoted exact source passage supports a particular statement, with provenance and human review status.",
+      "example": "A retained monitoring report states its consultant measured a particular value.",
+      "cannotInfer": "The consultant measurement is correct, representative, independent or sufficient."
+    },
+    "professionalJudgment": {
+      "entity": "Existing finding / ProfessionalJudgment proposal",
+      "meaning": "An attributable professional interprets observations/evidence using scoped criteria and explicit uncertainty/contradictions.",
+      "example": "Assessor judges evidence insufficient to evaluate permit compliance for the reporting period.",
+      "cannotInfer": "A judgment under another framework or later period."
+    },
+    "establishedFact": {
+      "entity": "ProjectFact proposal",
+      "meaning": "An authorized human explicitly establishes a scoped proposition on retained support, with correction/dispute history.",
+      "example": "The approved as-built plan and site verification establish the location of a component as of a stated date.",
+      "cannotInfer": "Timeless certainty or irrevocability; later evidence can dispute/correct it."
+    },
+    "promotion": "No automatic promotion between layers. A new human-authored decision records its exact input refs, rationale, scope and date while preserving the original layers."
+  },
+  "workflows": [
+    {
+      "phase": 1,
+      "id": "origination",
+      "name": "Project origination and scoping",
+      "entry": "May start with an already operating project; unknown historical dates remain unknown.",
+      "records": [
+        "Project",
+        "ProjectBinding",
+        "Organization",
+        "OrganizationRoleAssignment",
+        "ProjectComponent",
+        "Site",
+        "Activity",
+        "LifecycleEvent",
+        "EngagementScope"
+      ],
+      "reuse": "Existing canonical identity + account project; map external identifiers and explicit component hierarchy without creating another Project.",
+      "outputs": [
+        "Bounded current scope",
+        "Missing critical identity/site/role information",
+        "Candidate requirements and engagement scope"
+      ],
+      "humanGate": "Confirm identity match, custody and intended scope."
+    },
+    {
+      "phase": 2,
+      "id": "screening",
+      "name": "E&S screening and categorization",
+      "entry": "Can occur for a new investment, subinvestment, expansion or periodic rescreening.",
+      "records": [
+        "Investment",
+        "InvestmentAllocation",
+        "FrameworkEdition",
+        "RequirementApplicability",
+        "Risk",
+        "Receptor",
+        "StakeholderGroup",
+        "Assessment",
+        "AssessmentFinding",
+        "EvidenceAssertion",
+        "ProfessionalJudgment",
+        "LifecycleEvent"
+      ],
+      "reuse": "Same Project, source editions and requirements; screening judgment is scoped and edition-specific.",
+      "outputs": [
+        "Screening assessment and reasoned risk/category decision",
+        "Study/data gaps",
+        "Profile-specific due-diligence plan"
+      ],
+      "humanGate": "Authorized assessor verifies evidence and classification rubric; AI proposes only."
+    },
+    {
+      "phase": 3,
+      "id": "due_diligence",
+      "name": "Due diligence and gap analysis",
+      "entry": "Repeated and overlapping disciplines/mandates are valid.",
+      "records": [
+        "Engagement",
+        "EngagementScope",
+        "Deliverable",
+        "Study",
+        "BaselineCondition",
+        "Observation",
+        "EvidenceAssertion",
+        "Requirement",
+        "RequirementCrosswalk",
+        "RequirementApplicability",
+        "Assessment",
+        "AssessmentFinding",
+        "ProfessionalJudgment",
+        "CorrectiveAction",
+        "ManagementPlan"
+      ],
+      "reuse": "Requirements, exact sources and assertions stay in their existing engagement authority; multiple lenders derive their own findings.",
+      "outputs": [
+        "Evidence traceable gap analysis",
+        "Contradiction dispositions",
+        "Prioritized management measures and actions"
+      ],
+      "humanGate": "Independent review and original-source confirmation; no cross-framework conclusion transfer."
+    },
+    {
+      "phase": 4,
+      "id": "appraisal",
+      "name": "Appraisal and investment approval",
+      "entry": "Financier appraisal may overlap or follow another lender decision.",
+      "records": [
+        "Investment",
+        "FinancialFacility",
+        "FinancingParticipant",
+        "Assessment",
+        "AssessmentFinding",
+        "Approval",
+        "ManagementPlan",
+        "Commitment",
+        "Deliverable",
+        "Report",
+        "LifecycleEvent"
+      ],
+      "reuse": "Freeze exact assessment baseline and business-context snapshot separately.",
+      "outputs": [
+        "Appraisal view with outstanding gaps/conditions",
+        "Approved assessment baseline",
+        "Separate investment/business approval trail"
+      ],
+      "humanGate": "Current approver authority and scope-specific evidence; a business-ledger approval is not E&S approval."
+    },
+    {
+      "phase": 5,
+      "id": "commitment",
+      "name": "Financial commitment and closing",
+      "entry": "One Project may close several facilities/transactions at different times.",
+      "records": [
+        "Agreement",
+        "Covenant",
+        "Transaction",
+        "FinancialFacility",
+        "FinancingParticipant",
+        "InvestmentAllocation",
+        "Commitment",
+        "RequirementApplicability",
+        "LifecycleEvent"
+      ],
+      "reuse": "Agreements pin retained originals; covenants link existing requirements and monitoring obligations.",
+      "outputs": [
+        "Original-currency commitment/disbursement view",
+        "Conditions/covenant register",
+        "Monitoring responsibilities and triggers"
+      ],
+      "humanGate": "Verify signed agreement editions, parties, amounts, conditions and applicability; preserve estimated/unknown values."
+    },
+    {
+      "phase": 6,
+      "id": "construction",
+      "name": "Construction and implementation monitoring",
+      "entry": "Monitoring can begin before every financing closes; components have different schedules.",
+      "records": [
+        "Activity",
+        "MonitoringProgram",
+        "MonitoringCycle",
+        "Indicator",
+        "IndicatorMeasurement",
+        "Observation",
+        "Incident",
+        "Grievance",
+        "AssessmentFinding",
+        "CorrectiveAction",
+        "Verification",
+        "Report",
+        "LifecycleEvent"
+      ],
+      "reuse": "Program derives from the existing approved baseline, carrying forward requirement/source/action IDs with new cycle findings.",
+      "outputs": [
+        "Bounded site/period monitoring",
+        "Incident notification status",
+        "Verified action progress",
+        "Approved cycle report"
+      ],
+      "humanGate": "Review QA and completeness, protect case data, verify action evidence before closure."
+    },
+    {
+      "phase": 7,
+      "id": "operations",
+      "name": "Operational supervision",
+      "entry": "May be the first recorded phase for a mature project; no invented earlier assessments.",
+      "records": [
+        "MonitoringProgram",
+        "MonitoringCycle",
+        "IndicatorMeasurement",
+        "SocialOutcome",
+        "LivelihoodOutcome",
+        "ConsultationEvent",
+        "Commitment",
+        "Covenant",
+        "AssessmentFinding",
+        "CorrectiveAction",
+        "Verification",
+        "Report"
+      ],
+      "reuse": "Three or more successive cycles reuse indicators/requirements/commitments but freeze independent evidence and professional judgments.",
+      "outputs": [
+        "Comparable performance trends with explicit denominators",
+        "Changed-circumstance and overdue-action attention",
+        "Institution-specific reporting views"
+      ],
+      "humanGate": "Evaluate effectiveness and residual risk separately from implementation or paperwork completion."
+    },
+    {
+      "phase": 8,
+      "id": "restructuring",
+      "name": "Project restructuring and expansion",
+      "entry": "Can overlap operations/construction and trigger repeat screening/due diligence.",
+      "records": [
+        "ProjectComponent",
+        "Site",
+        "Activity",
+        "OrganizationRoleAssignment",
+        "Investment",
+        "InvestmentAllocation",
+        "Agreement",
+        "Covenant",
+        "RequirementApplicability",
+        "Risk",
+        "Assessment",
+        "LifecycleEvent"
+      ],
+      "reuse": "Same real-world identity unless an explicit identity determination says otherwise; add new components/financial revisions and preserve prior effective periods.",
+      "outputs": [
+        "Change-impact assessment",
+        "Amendment and reallocation history",
+        "New or revised management/monitoring scope"
+      ],
+      "humanGate": "Explicitly reassess applicability and source/requirement editions; no automatic carry-forward of compliance."
+    },
+    {
+      "phase": 9,
+      "id": "exit",
+      "name": "Financial exit and closure",
+      "entry": "Financier exit and physical project closure are distinct and can occur in different years.",
+      "records": [
+        "Transaction",
+        "Investment",
+        "Agreement",
+        "Covenant",
+        "Commitment",
+        "CorrectiveAction",
+        "Verification",
+        "Assessment",
+        "Approval",
+        "Report",
+        "LifecycleEvent"
+      ],
+      "reuse": "Financial status changes do not delete continuing social/environmental obligations or project identity.",
+      "outputs": [
+        "Exit transaction and residual obligation view",
+        "Closure assessment with evidence and open commitments",
+        "Immutable approved closure baseline"
+      ],
+      "humanGate": "Identify unresolved obligations and funded responsibility; financial repayment is not environmental or social closure."
+    },
+    {
+      "phase": 10,
+      "id": "post_closure",
+      "name": "Post-closure outcome verification",
+      "entry": "A new verification engagement may be recorded years after lender exit.",
+      "records": [
+        "Engagement",
+        "EngagementScope",
+        "BaselineCondition",
+        "IndicatorMeasurement",
+        "SocialOutcome",
+        "LivelihoodOutcome",
+        "ProjectFact",
+        "ProfessionalJudgment",
+        "Verification",
+        "Assessment",
+        "Report",
+        "LifecycleEvent"
+      ],
+      "reuse": "Compare new retained observations against original baselines and commitments while preserving dates, source versions and attribution limits.",
+      "outputs": [
+        "Long-term outcome verification",
+        "Reopened obligations/actions if warranted",
+        "Public or restricted evidence-governed reporting view"
+      ],
+      "humanGate": "Independent evidence review; distinguish verified outcome from causal inference and past compliance."
+    }
+  ],
+  "disciplineProfiles": [
+    {
+      "id": "biodiversity_ecosystems",
+      "name": "Biodiversity and ecosystem services",
+      "entities": [
+        "Receptor",
+        "BaselineCondition",
+        "Risk",
+        "Impact",
+        "ManagementMeasure",
+        "Indicator",
+        "IndicatorMeasurement",
+        "Verification"
+      ],
+      "fields": [
+        "Receptor.kind=habitat|species",
+        "spatial feature and sensitivity",
+        "seasonal survey method/effort",
+        "mitigation hierarchy",
+        "habitat condition/area and species trend",
+        "offset additionality/permanence evidence"
+      ],
+      "validation": [
+        "Retain survey season, effort, spatial method and uncertainty.",
+        "Critical habitat determination and offset adequacy are professional judgments with attributable rubric/source.",
+        "Restrict sensitive species coordinates."
+      ]
+    },
+    {
+      "id": "pollution_environmental_quality",
+      "name": "Air, water, soil, noise and pollution",
+      "entities": [
+        "Site",
+        "BaselineCondition",
+        "Indicator",
+        "IndicatorMeasurement",
+        "Observation",
+        "Incident",
+        "ManagementMeasure"
+      ],
+      "fields": [
+        "sample site/time/depth",
+        "analytical method and laboratory QA",
+        "unit/detection limit",
+        "threshold source and averaging period",
+        "measurement uncertainty",
+        "discharge/emission context"
+      ],
+      "validation": [
+        "Do not compare instantaneous readings to incompatible averaging-period limits.",
+        "Preserve censored/below-detection results in a typed profile extension until Quantity supports them directly.",
+        "Flag qualified/rejected laboratory results."
+      ]
+    },
+    {
+      "id": "climate_energy_resource_efficiency",
+      "name": "Climate, energy, water and resource efficiency",
+      "entities": [
+        "Activity",
+        "Indicator",
+        "IndicatorMeasurement",
+        "Risk",
+        "ManagementMeasure",
+        "Study"
+      ],
+      "fields": [
+        "emission scopes and inventory boundary",
+        "activity data and emission-factor edition",
+        "gross/avoided emissions distinction",
+        "energy/water consumption denominator",
+        "physical climate hazard/scenario/horizon"
+      ],
+      "validation": [
+        "Factor/scenario/method versions and original units remain explicit.",
+        "Separate estimated values and uncertainty from verified inventory data.",
+        "No implicit carbon credit or climate-alignment conclusion."
+      ]
+    },
+    {
+      "id": "labour_occupational_health",
+      "name": "Labor, working conditions and occupational health",
+      "entities": [
+        "StakeholderGroup",
+        "IndicatorMeasurement",
+        "Incident",
+        "Grievance",
+        "ManagementPlan",
+        "CorrectiveAction"
+      ],
+      "fields": [
+        "site/period",
+        "workerClass",
+        "direct/contractor/primary-supply population",
+        "hours-worked denominator",
+        "injury/illness definitions",
+        "worker grievance response"
+      ],
+      "validation": [
+        "Fatalities/injury counts and rates use explicit worker population and exposure hours.",
+        "Protect health/union/complainant details using existing case authority.",
+        "Labor conformity is not inferred from absence of complaints."
+      ]
+    },
+    {
+      "id": "land_resettlement_livelihoods",
+      "name": "Land acquisition, displacement and livelihood restoration",
+      "entities": [
+        "StakeholderGroup",
+        "BaselineCondition",
+        "Entitlement",
+        "EntitlementDelivery",
+        "LivelihoodOutcome",
+        "ConsultationEvent",
+        "Grievance"
+      ],
+      "fields": [
+        "eligibility cutoff/source",
+        "asset/household entitlement register pointer",
+        "scheduled and actual compensation",
+        "relocation assistance",
+        "baseline income/livelihood indicators",
+        "vulnerable-group outcome disaggregation"
+      ],
+      "validation": [
+        "Individual rosters and valuation details remain restricted.",
+        "Payment completion does not establish livelihood restoration.",
+        "Retain inflation/price basis, denominator and follow-up period for comparisons."
+      ]
+    },
+    {
+      "id": "indigenous_peoples",
+      "name": "Indigenous peoples and culturally appropriate engagement",
+      "entities": [
+        "StakeholderGroup",
+        "ConsultationEvent",
+        "Commitment",
+        "ManagementPlan",
+        "ProfessionalJudgment"
+      ],
+      "fields": [
+        "identification basis",
+        "culturally appropriate method/language",
+        "representative institutions",
+        "consultation/consent process evidence",
+        "benefit-sharing and impact measures"
+      ],
+      "validation": [
+        "Consent/FPIC judgments require the exact applicable framework conditions and professional review.",
+        "Do not infer consent from attendance or silence.",
+        "Apply culturally sensitive access and retention controls."
+      ]
+    },
+    {
+      "id": "community_health_security",
+      "name": "Community health, safety and security",
+      "entities": [
+        "Receptor",
+        "Risk",
+        "Impact",
+        "IndicatorMeasurement",
+        "Incident",
+        "ManagementMeasure"
+      ],
+      "fields": [
+        "community exposure and vulnerable group",
+        "traffic/emergency preparedness",
+        "security personnel and conduct",
+        "disease/vector context",
+        "recipient-specific incident notifications"
+      ],
+      "validation": [
+        "Separate occurrence, awareness and reporting deadlines.",
+        "Survivor/victim pointers remain restricted.",
+        "Serious-event categorization and reporting obligations are sourced judgments."
+      ]
+    },
+    {
+      "id": "cultural_heritage",
+      "name": "Cultural heritage",
+      "entities": [
+        "Receptor",
+        "Study",
+        "ConsultationEvent",
+        "ManagementMeasure",
+        "Incident"
+      ],
+      "fields": [
+        "tangible/intangible asset",
+        "chance-find procedure",
+        "consultation and access arrangements",
+        "sensitive site geometry",
+        "expert significance judgment"
+      ],
+      "validation": [
+        "Protect sacred/archaeological location data.",
+        "Keep chance-find observations distinct from expert significance determinations."
+      ]
+    },
+    {
+      "id": "stakeholder_engagement_grievances",
+      "name": "Stakeholder engagement, disclosure and grievance response",
+      "entities": [
+        "StakeholderGroup",
+        "ConsultationEvent",
+        "Commitment",
+        "Grievance",
+        "SocialOutcome"
+      ],
+      "fields": [
+        "date/method/language/accessibility",
+        "disclosed exact document editions/locations",
+        "leadDays",
+        "SEP deviations and rationale",
+        "feedback/response",
+        "acknowledgment/appeal/closure dates"
+      ],
+      "validation": [
+        "Document disclosure timing and accessibility; evaluate adequacy separately.",
+        "Never expose participant or complainant identities in ordinary reports/search.",
+        "Retain responses and unresolved feedback rather than count attendance as effectiveness."
+      ]
+    },
+    {
+      "id": "financial_intermediaries_funds",
+      "name": "Financial intermediaries, funds and portfolios",
+      "entities": [
+        "Organization",
+        "Investment",
+        "InvestmentAllocation",
+        "PortfolioExposure",
+        "Assessment",
+        "MonitoringCycle",
+        "Report"
+      ],
+      "fields": [
+        "parent investment/subinvestment",
+        "product/sector exposure",
+        "original currency/asOf/estimated flag",
+        "portfolio denominator",
+        "exclusion and screening decision",
+        "risk-category rubric/source edition"
+      ],
+      "validation": [
+        "No double count of fund investment and financed subprojects.",
+        "No mixed-currency or mixed-date percentages without explicit conversion/denominator rules.",
+        "Aggregate disclosure observes underlying project/case authorization."
+      ]
+    },
+    {
+      "id": "waste_hazardous_materials",
+      "name": "Waste and hazardous materials",
+      "entities": [
+        "Activity",
+        "IndicatorMeasurement",
+        "ManagementMeasure",
+        "Incident",
+        "Commitment"
+      ],
+      "fields": [
+        "waste classification/source edition",
+        "hazardous/nonhazardous stream",
+        "quantity and unit",
+        "chain-of-custody transport/treatment source",
+        "storage conditions",
+        "licensed receiver reference"
+      ],
+      "validation": [
+        "Retain exact disposal/manifest sources and original units.",
+        "A shipping record is evidence of transfer, not proof of safe final disposal."
+      ]
+    },
+    {
+      "id": "closure_cumulative_outcomes",
+      "name": "Cumulative impacts, closure and post-closure outcomes",
+      "entities": [
+        "Impact",
+        "ManagementPlan",
+        "Commitment",
+        "Verification",
+        "SocialOutcome",
+        "LivelihoodOutcome",
+        "Assessment"
+      ],
+      "fields": [
+        "cumulative study boundary",
+        "associated facility interactions",
+        "closure liability and responsibility",
+        "residual risk",
+        "outcome verification period",
+        "attribution limitations"
+      ],
+      "validation": [
+        "Separate financial exit, physical closure and fulfillment of long-term obligations.",
+        "Retain baseline and counterfactual limitations; outcome trends do not prove causation."
+      ]
+    }
+  ],
+  "historicalRecords": {
+    "identifiers": {
+      "application": "Stable existing opaque IDs; UUIDs for newly created entities. Preserve IDs across round-trip, rename, storage move and report views.",
+      "external": "{namespace: absolute URI, value: original identifier, label?: text}; allow multiple institutional aliases, retain publisher/edition in relevant requirement/source entities.",
+      "authorityReferences": "Use unchanged shared ResourceReference shape with authority, resource_id, resource_type, workspace_id and exact version_id when frozen."
+    },
+    "timeDimensions": {
+      "effectiveFrom/effectiveTo": "Inclusive calendar validity of a role, relationship or business record; missing end means no recorded end, not verified current truth. Overlapping allocation/participant ceilings are checked at all interval boundaries.",
+      "eventAt/occurredAt": "When a real-world milestone, incident or observation occurred.",
+      "recordedAt": "When the system recorded a business event, independent of occurrence.",
+      "assessedAt/assessmentDate": "When an assessor made the scoped professional judgment.",
+      "approvedAt/decidedAt": "When an authorized human approved exact immutable content.",
+      "source capturedAt/publishedOn/documentDate": "Distinct source acquisition/publication/document dates; upload does not establish event or policy effective date.",
+      "limitedReport.asOf": "Financial allocation effective date only, default current UTC calendar date. Report.temporalScope explicitly denies historical-knowledge reconstruction. Assessment selection remains an explicit retained baseline or current review.",
+      "futureBitemporalQuery": "A complete effective_at + known_at read profile, including historical authority/source closure, is proposed and disabled until durable provenance and query semantics are validated."
+    },
+    "revisionPolicy": "CAS per ledger mutation; server-owned actor/time; full prior snapshots and append-only audit chain. New fact/requirement/document editions get explicit supersession/correction relationships rather than destructive overwrite.",
+    "approvedSnapshots": {
+      "existingAssessment": "Retain exact existing baseline envelope/content/hash, complete original histories/audit, source versions and authorization interpretation. Do not rewrite approved bytes for optional additive arrays or display defaults.",
+      "businessContext": "Canonical snapshot={context,revision,projects,entities,extensions}; SHA256 over defined stable JSON excluding sha256 field. Store approvedBy/At/statement separately; revision is pinned content revision.",
+      "hashSemantics": "Use the existing stableJson recursive key-sort convention for ledger JSON; UTF-8 JSON without whitespace. Arrays preserve order. Require finite portable JSON and exact decimal strings; this is not claimed to be RFC 8785 or a legal signature."
+    },
+    "corrections": "Append a correction event with target record/revision, reason, replacement revision and exact affected snapshots. Approved old content stays readable under its original authority; do not silently rebase historical reports.",
+    "validationBoundary": {
+      "implementedCurrent": "Current graph uses existing Project/identity/engagement/framework/source authority lookups on read/write/import; current source bytes are verified for explicit local verification and new business approval.",
+      "implementedHistorical": "Full shape/structural validation and complete snapshot/audit digest/sequence consistency. Archived snapshots are retained exact content under their original recorded interpretation.",
+      "notProvenByHashes": [
+        "Independent origin or authenticity of imported historical assertions.",
+        "Past account participation, source grants, professional role authority or trusted event/record time.",
+        "Availability or integrity of archived original bytes that are no longer in the current retained-source graph.",
+        "Professional E&S approval or compliance; business approval has a separate scope."
+      ],
+      "freshApproval": "An import retains historical verification/approval claims as history. A new approval requires fresh local verification receipts for exact current record hashes and current retained-source byte proof; imported fields cannot create those receipts.",
+      "futureDurableAuthorityGate": "Before claiming historical authority/custody verification, define and validate native versioned authority export manifests, original retained-source/archive closure, issuer/identity verification and trusted approval provenance. These checks are proposed and are not established by a self-consistent JSON hash chain."
+    },
+    "provenanceRules": {
+      "human": "Identify acting user/local actor, method, record date and exact supporting sources; manual entry is not inherently verified.",
+      "import": "Record source system/export edition, batch ID, original IDs, transformation/mapping version and source hash in registered provenance extension when not core. Validate in scratch transaction.",
+      "extraction": "Record extractor/method version, exact source edition/hash, passage/range/page and derivative identity; candidate remains unreviewed.",
+      "ai": "Identify model/method and prompt hash with exact inputs and limitations; user verification is separate, server-controlled and attributable. AI cannot approve content or grant access.",
+      "quality": "Retain review status, representativeness, completeness, QA, uncertainty, independence and contradictory evidence. Verified source binding does not mean sufficient professional evidence."
+    }
+  },
+  "storageAndInteroperability": {
+    "decision": "Specify logical relational/spatial/object/search interfaces before selecting or deploying a physical replacement. Existing SQLite JSON/local files and authenticated object persistence remain current authorities.",
+    "relationalCore": {
+      "status": "proposed_not_migrated",
+      "keyPolicy": "tenant_account_id + stable entity ID; explicit ProjectBinding references existing account project and identity. Composite foreign keys enforce tenancy/type/project closure; application checks add graph cycles and current authority checks.",
+      "tables": [
+        {
+          "name": "lifecycle_ledger",
+          "key": [
+            "account_id"
+          ],
+          "columns": [
+            "revision",
+            "schema_version",
+            "json_or_extension_metadata"
+          ],
+          "purpose": "One current business-context extension per account; not a new Project authority."
+        },
+        {
+          "name": "lifecycle_project_binding",
+          "key": [
+            "account_id",
+            "project_id"
+          ],
+          "columns": [
+            "identity_id"
+          ],
+          "purpose": "Projection/reference of existing identity link, validated against its authority; not independent identity matching."
+        },
+        {
+          "name": "project_component",
+          "key": [
+            "account_id",
+            "id"
+          ],
+          "columns": [
+            "project_id",
+            "parent_component_id",
+            "kind",
+            "associated_project_id",
+            "revision",
+            "valid_from",
+            "valid_to"
+          ],
+          "purpose": "Nested/associated physical component; scoped parent FK and cycle guard."
+        },
+        {
+          "name": "site / activity / component_site / activity_site",
+          "key": [
+            "account_id",
+            "id_or_edge_ids"
+          ],
+          "columns": [
+            "project_id",
+            "component_id",
+            "site_id",
+            "sector_profile_id",
+            "revision",
+            "valid_from",
+            "valid_to"
+          ],
+          "purpose": "Normalized site/activity scope and joins; geometry held in versioned spatial profile. sector_profile_id references an adapter pin to the existing app sector-profile registry, not an institutional category."
+        },
+        {
+          "name": "organization / organization_role_assignment",
+          "key": [
+            "account_id",
+            "id"
+          ],
+          "columns": [
+            "organization_id",
+            "scope_kind",
+            "scope_id",
+            "role",
+            "valid_from",
+            "valid_to",
+            "revision"
+          ],
+          "purpose": "Explicit business identity and time-bounded roles; no resource access grants."
+        },
+        {
+          "name": "investment / financial_facility / financial_transaction",
+          "key": [
+            "account_id",
+            "id"
+          ],
+          "columns": [
+            "parent_id",
+            "investor_id",
+            "investee_id",
+            "borrower_id",
+            "investment_id",
+            "facility_id",
+            "transaction_kind",
+            "amount_decimal",
+            "currency",
+            "transaction_date",
+            "revision"
+          ],
+          "purpose": "Separate economic interest, contractual financing and flows; exact numeric SQL DECIMAL/NUMERIC scale policy."
+        },
+        {
+          "name": "financing_participant / investment_allocation",
+          "key": [
+            "account_id",
+            "id"
+          ],
+          "columns": [
+            "organization_id",
+            "facility_id",
+            "investment_id",
+            "project_id",
+            "component_id",
+            "amount_decimal",
+            "currency",
+            "share_percent",
+            "valid_from",
+            "valid_to"
+          ],
+          "purpose": "Multiple financiers and cross-project/component allocation; partition aggregation by scope/time/currency."
+        },
+        {
+          "name": "agreement / agreement_party / agreement_project / agreement_facility / covenant",
+          "key": [
+            "account_id",
+            "id_or_edge_ids"
+          ],
+          "columns": [
+            "agreement_id",
+            "organization_id",
+            "project_id",
+            "facility_id",
+            "source_reference",
+            "requirement_reference",
+            "revision"
+          ],
+          "purpose": "Single normalized edge per relationship and pinned contract/covenant sources."
+        },
+        {
+          "name": "engagement_scope / requirement_applicability / lifecycle_event",
+          "key": [
+            "account_id",
+            "id"
+          ],
+          "columns": [
+            "project_id",
+            "existing_engagement_id",
+            "existing_requirement_id",
+            "framework_edition_id",
+            "decision",
+            "period_start",
+            "period_end",
+            "existing_cycle_event_action_baseline_refs",
+            "revision"
+          ],
+          "purpose": "Scope overlay and lifecycle links into current engagement/requirement/monitoring authority."
+        },
+        {
+          "name": "external_reference / registered_extension / source_reference",
+          "key": [
+            "account_id",
+            "owner_type",
+            "owner_id",
+            "reference_or_namespace"
+          ],
+          "columns": [
+            "namespace",
+            "value",
+            "schema_uri",
+            "schema_version",
+            "payload_json",
+            "version_id",
+            "sha256"
+          ],
+          "purpose": "Namespaced interoperable references and typed bounded extensions; never opaque relationship replacement."
+        },
+        {
+          "name": "lifecycle_record_revision / ledger_history / ledger_approval_snapshot / audit_event",
+          "key": [
+            "account_id",
+            "entity_id_or_revision_or_sequence"
+          ],
+          "columns": [
+            "content_revision",
+            "snapshot_json",
+            "sha256",
+            "actor_id",
+            "recorded_at",
+            "previous_sha256"
+          ],
+          "purpose": "Append-only history and approved business snapshots independent of existing assessment baselines."
+        },
+        {
+          "name": "future risk/receptor/impact/baseline/measure/outcome joins",
+          "key": [
+            "account_id",
+            "id_or_edge_ids"
+          ],
+          "columns": [
+            "explicit_domain_FKs",
+            "profile_version",
+            "revision",
+            "provenance"
+          ],
+          "purpose": "Deploy only after bounded domain slices and authorization/provenance validation; no generic EAV replacement of core relationships."
+        }
+      ],
+      "indexes": [
+        "(account_id, project_id, entity_type)",
+        "(account_id, parent_component_id)",
+        "(account_id, investment_id, project_id, component_id)",
+        "(account_id, facility_id, organization_id)",
+        "(account_id, agreement_id)",
+        "(account_id, existing_engagement_id, period_start, period_end)",
+        "(account_id, source_version_id, source_sha256)",
+        "(account_id, namespace, external_value)",
+        "(account_id, recorded_at, audit_sequence)"
+      ],
+      "transactions": "Validate current external authorities, tenant scope, graph closure, decimal balances and expectedRevision, then atomically append history/audit and commit current content. No partially imported graph or deferred privileged source resolution."
+    },
+    "spatialProfile": {
+      "runtime": "Site optional WGS84 latitude/longitude pair + exact geometrySource reference. Existing source geometry edit/derivation authority remains unchanged.",
+      "proposed": "Versioned GeoJSON geometry/FeatureCollection as retained source objects; relational spatial-feature metadata holds stable feature ID, project/component/site/receptor refs, bbox, source edition/hash, CRS/transformation method/version, effective period and sensitivity.",
+      "coordinatePolicy": "GeoJSON output uses WGS84 longitude/latitude order. Preserve original CRS/coordinates and full transformation provenance when importing; never silently relabel a projected CRS. Use explicit antimeridian and invalid-polygon handling.",
+      "storageOptions": "Local GeoJSON + bounded bbox index; self-hosted SQLite spatial extension or PostgreSQL/PostGIS after measured need; managed equivalent behind same adapter. No PostGIS dependency is imposed on local mode.",
+      "authorization": "Geometry disclosure follows existing source/case protection closure. Public generalized locations are separately reviewed derived projections, never in-place edits of sensitive originals."
+    },
+    "evidenceObjectContract": {
+      "authority": "Existing project resources/versions + unchanged shared DocumentVersionLink; exact bytes stay in existing object/source custody.",
+      "reference": "ExactSourceVersion projectId/resourceId/versionId/full-object sha256 resolves existing descriptor; interop carries shared authority/workspace/document/version + integrity type, size and media type.",
+      "integrity": "Verify full bytes/length and declared integrity before reuse; preserve COMPOSITE part semantics when present. Do not substitute a source title, download URL or matching filename for exact identity.",
+      "transport": "No absolute filesystem paths, signed URLs, credentials, capability grants or source bytes in lifecycle JSON. Authorized byte retrieval remains the existing mediated source endpoint.",
+      "archival": "Manual bounded idempotent intake; reuse verified retained bytes, explicit refresh only. Retention/deletion holds follow current source and approval policy; never delete a source required by an approved assessment.",
+      "derivatives": "Text/OCR/spatial/previews/search indices are replaceable derived artifacts with original source hash and transform version. They cannot replace retained originals or grant citation eligibility."
+    },
+    "searchAndRetrieval": {
+      "authority": "Derived index only; existing local evidence extraction/index limits and current source authorization remain in force.",
+      "keys": [
+        "account/workspace",
+        "project ID + identity link revision",
+        "engagement ID",
+        "exact document/version/hash",
+        "corpus/algorithm/profile version",
+        "restricted-source disclosure classification"
+      ],
+      "content": "Lexical/spatial/optional semantic features over authorized projected metadata and exact passages. Exclude restricted personal/case content unless explicitly authorized and correctly partitioned.",
+      "retrieval": "Recheck current account/source/case grants and source version/hash at query and fetch. Return candidate refs/passages with method/coverage/limits; similarity is not evidence, fact, applicability or compliance.",
+      "invalidation": "Explicit source selection/revision/profile/authorization changes invalidate derived cache keys. Build on demand with byte/time/count ceilings; no background polling consumer."
+    },
+    "jsonSchemaInterfaces": {
+      "root": "schemas/project-lifecycle.schema.json#/$defs/ProjectLifecycleExchange",
+      "runtimeDefinitions": [
+        "RecordEnvelope",
+        "Provenance",
+        "ExactSourceVersion",
+        "Money",
+        "LedgerEntities",
+        "LedgerSnapshot",
+        "LedgerHistoryEntry",
+        "LedgerApprovalSnapshot",
+        "LedgerAuditEvent"
+      ],
+      "proposedDefinitions": "All remaining domain entities remain design-only or explicit existing-authority projections. Adding a new definition does not allow it as a LedgerEntities collection.",
+      "shapeVsSemantics": "JSON Schema covers keys/types/enums/bounds and selected paired fields. Runtime must enforce current authority/FKs/cycles, period order, decimal sums, identity, approval authority, exact histories/hashes and source bytes."
+    },
+    "apiContracts": {
+      "localSlice": {
+        "base": "/api/project-lifecycle",
+        "authority": "Existing loopback account selection and guards; actor metadata is local process attribution. No new remote authentication claim.",
+        "read": "GET current ledger; response is strict ProjectLifecycleExchange. Missing ledger yields an empty account-scoped projection without inventing Project/source entities.",
+        "commands": "POST commands using expectedRevision and one explicit mutation; server controls IDs/revisions/actor/time/verification. Stale revision =>409, malformed fields/refs=>400, scope denial=>403/404, bounded size violation=>413.",
+        "exchange": "Explicit export/import with current authority/source closure plus complete structural/hash-validated history/audit/business approvals. Historical origin/authority is not proven by hashes. Validate atomically before empty-ledger restore; exact duplicate import is idempotent.",
+        "report": "Bounded read-derived report over one ledger revision and current-authorized refs. asOf selects financial allocation validity only; assessmentContexts pin a retained approved baseline or current working review with separate projection hashes. Report.temporalScope explicitly states no historical knowledge reconstruction. InstitutionView is a partial minimized field exchange with all compliance flags false.",
+        "approval": "Business snapshot approval pins exact LedgerSnapshot hash/revision and requires fresh installation-local current-record verification; cannot approve an existing assessment or imply framework compliance."
+      },
+      "proposedHosted": {
+        "status": "not_implemented",
+        "base": "/v1/accounts/{accountId}/project-lifecycle",
+        "authorization": "Use existing verified identity/resource grants with tenant-scoped current authority on every read/write/export/search; IDs and imported roles never grant access.",
+        "concurrency": "ETag content revision + If-Match for mutation; optional Idempotency-Key scoped to account+actor+operation+body hash.",
+        "pagination": "Cursor-bound account/project filters with deterministic order, explicit page limit and total byte cap; no unbounded list or cross-tenant scan.",
+        "errors": "Stable {code,message,requestId,details} without private IDs/paths; 409 for CAS/content conflict; preserve redaction boundaries.",
+        "versionNegotiation": "application/vnd.esia.project-lifecycle+json; schemaVersion=1. Fail closed for unsupported write schema; allow explicit versioned read adapters only.",
+        "events": "After commit, append audit/outbox event in the same transaction; delivery adapter optional and bounded. Do not deploy event transport until volume/idle/stop policy is known."
+      }
+    },
+    "eventAndAuditContract": {
+      "runtime": "LedgerAuditEvent is append-only {id,sequence,revision,command:{type,collection?,recordId?,statement?,resultSha256},actorId,recordedAt,previousSha256,sha256}; verify complete chain and command.resultSha256 linkage to the actual resulting snapshot. The audit chain detects tampering within retained data; it is not an external timestamp service or legal digital signature.",
+      "proposedEvents": [
+        "lifecycle.record.created",
+        "lifecycle.record.revised",
+        "lifecycle.record.verified",
+        "lifecycle.context.approved",
+        "lifecycle.exchange.imported",
+        "lifecycle.authority_reference.invalidated"
+      ],
+      "proposedPayload": "{eventId,eventType,eventSchemaVersion,accountRef,projectRefs,aggregateId,aggregateRevision,occurredAt,recordedAt,actorRef,correlationId,causationId,changedEntityRefs,contentSha256}; restricted source/person content excluded.",
+      "delivery": "At-least-once only if an outbox adapter is later enabled; idempotent event consumers key by eventId+schemaVersion and recheck authorization. No idle consumer or schedule in current implementation."
+    },
+    "extensions": {
+      "shape": "{ namespace:key: {schema:absoluteURI,schemaVersion:positiveInteger,value:boundedJSON} } using safe namespace:key keys. Registry owns allowlist, schemas, migrators and visibility/retention policy.",
+      "rules": [
+        "Core IDs, actor/revision, source integrity, scopes, access and approval semantics cannot be overridden.",
+        "New cross-entity relationships belong in typed canonical fields/joins, not extension free text.",
+        "A generic external template field can be retained only with its exact template/field provenance and an explicit unresolved mapping.",
+        "Imports reject/quarantine unsupported write namespaces/versions; known payload round-trip is exact.",
+        "No code, function invocation, HTML execution, local paths, credentials or signed transports."
+      ],
+      "promotion": "A repeatedly useful extension becomes a reviewed canonical attribute through an explicit versioned migration with a reversible mapping and old payload retained for provenance."
+    },
+    "importExportRoundTrip": {
+      "content": "Preserve all stable IDs/revisions, exact source refs/hashes, namespaced aliases, original decimals/currencies, temporal dimensions, missing-vs-zero, complete histories/approved snapshots/audit and registered extension payloads.",
+      "validationOrder": [
+        "Portable JSON size/depth/key safety",
+        "Schema and supported version/extension registry",
+        "Existing current account/project/identity authority closure",
+        "Current internal refs and type/scope closure; historical snapshot structural checks without claiming historical external authority",
+        "Current date/decimal/overlapping-period/cycle/reciprocal relationship invariants",
+        "Canonical snapshot digests and complete audit/history; hashes do not prove independent origin",
+        "Current actor/source/case authorization and current retained-source byte proof; imported review claims do not create local receipts",
+        "Atomic CAS commit or explicit no-change idempotent import"
+      ],
+      "transforms": "Every institution import/export mapping has a pinned template edition, field path, canonical attribute, transformation version, unit/currency/terminology conversion and validation result. Unresolvable values stay explicit; never fabricate evidence or compliance."
+    },
+    "deploymentCompatibility": [
+      {
+        "mode": "local",
+        "current": "Existing Node/SQLite/private files, on-demand bounded operations and loopback account guards.",
+        "interface": "Same application IDs, JSON Schema, exact source links and adapters.",
+        "limit": "No hosted identity/access guarantee; declared local actor/roles retain explicit labels."
+      },
+      {
+        "mode": "self_hosted",
+        "current": "Design option only.",
+        "interface": "Relational/object/search adapters can use local filesystem, S3-compatible object storage and PostgreSQL or SQLite with explicit auth host.",
+        "limit": "Requires verified identity/resource authorization adapter and tested backup/migration policy before enablement."
+      },
+      {
+        "mode": "managed",
+        "current": "Existing authenticated application has its own object/access adapters; new lifecycle hosted adapter is proposed.",
+        "interface": "Same business/schema API over managed relational/object/search providers; never embed AWS IDs/paths as business identity.",
+        "limit": "No new queues/workers/schedules; cost estimate, request budget, idle behavior and bounded stop condition before any hosted background operation."
+      }
+    ]
+  },
+  "migrationAndBackwardCompatibility": {
+    "principle": "Additive extension; preserve all current Project/document/identity/evidence authorities and approved assessment bytes. No deployment or destructive physical migration in this architecture artifact.",
+    "stages": [
+      {
+        "order": 1,
+        "action": "Inventory and pin existing authority/schema versions; take bounded local export/hash fixtures.",
+        "gate": "Current approved baseline/source/export conformance passes without transformation."
+      },
+      {
+        "order": 2,
+        "action": "Add the account-owned lifecycle business ledger and strict typed envelope; default absence to no ledger in a read projection.",
+        "gate": "Existing workspace/project export formats and approved snapshots remain byte-identical; no invented records."
+      },
+      {
+        "order": 3,
+        "action": "Create explicit ProjectBinding from verified current account/identity link; let users add structured organizations/components/financing.",
+        "gate": "No name-based merge; multi-project investment allocation and cross-scope rejection demonstrated."
+      },
+      {
+        "order": 4,
+        "action": "Offer manual preview of existing stakeholder/lifecycle metadata and engagement deliverable/free-text dates as candidates.",
+        "gate": "Explicit reconciliation/promotion map preserves original values and IDs; ambiguous organization/source/time stays unmapped."
+      },
+      {
+        "order": 5,
+        "action": "Add read adapters for existing engagement/assertion/finding/action/monitoring/source references and template views.",
+        "gate": "Current scope + source/case authorization rechecked; no copied evidence authority."
+      },
+      {
+        "order": 6,
+        "action": "Introduce proposed E&S domain records one bounded vertical slice at a time after domain-specific validation.",
+        "gate": "Typed registered profiles, original-source provenance and human workflow demonstrated."
+      },
+      {
+        "order": 7,
+        "action": "Select physical relational/spatial persistence only after query volume, access patterns, tenancy and migration/rollback evidence justify it.",
+        "gate": "Rehearsed dry run, counts/ID/hash reconciliation, idempotence and read rollback; no automatic data conversion or cloud deployment."
+      },
+      {
+        "order": 8,
+        "action": "Implement hosted authorization adapter and institution/report connectors only through explicit capability contracts.",
+        "gate": "Native current-authority security tests and cost-bounded operational review pass before hosted enablement."
+      }
+    ],
+    "legacyHandling": {
+      "sourceProjects": "Retain esia-local-project package versions and schema reader floors; new ledger uses independently versioned exchange, not an implicit bump of every source-project snapshot.",
+      "engagements": "Keep esia-engagement-package/exchange/snapshot v1 and current optional monitoring/register semantics. Proposed new fields need explicit additive contract/version plan; never smuggle them into approved snapshots.",
+      "stakeholders": "Existing lifecycle[]/stakeholders[] stay descriptive. A user can promote to new structured IDs while keeping source links and ambiguity; no automatic account-to-organization equivalence.",
+      "unknownFields": "Reject unknown core fields. Preserve known registered extension payloads exactly; unsupported namespace/version imports are read-only/quarantined or fail atomically, never silently discarded.",
+      "oldReaders": "Old applications must not write newer ledger contracts. Explicit schemaVersion capability negotiation and export adapter required; old source/engagement readers remain unaffected."
+    },
+    "rollback": "Disable new ledger routes/views and retain additive ledger bytes. Do not downgrade or rewrite source documents, existing project data or approved baselines. A future physical migration requires backup + restore rehearsal and a reader-floor policy."
+  },
+  "featureGates": [
+    {
+      "id": "local_business_context",
+      "status": "limited_slice_implemented_pending_release_acceptance",
+      "enablement": "Local loopback account context; requires current Project/identity/engagement/source adapters and strict CAS/history/source checks.",
+      "validation": "Three isolated local acceptance scenarios, schema export/import round-trip, original approved-record preservation, authorization rejection and bounded performance."
+    },
+    {
+      "id": "full_es_domain",
+      "status": "design_only_disabled",
+      "enablement": "A separate domain slice must add explicit typed schemas/adapters/authorization and human review process. Adding a proposed $defs type does not enable writes.",
+      "validation": "Discipline-specific provenance, observation/evidence/judgment/fact separation, restricted-source closure and immutable baseline tests."
+    },
+    {
+      "id": "native_institutional_templates",
+      "status": "mapping_analysis_only",
+      "enablement": "Exact versioned institution template adapters, validated transformed fields and explicit unresolved mappings.",
+      "validation": "Same canonical IDs across multiple real template formats, independent evidence/rubric review, no invented or automatically transferred compliance conclusion."
+    },
+    {
+      "id": "relational_spatial_replacement",
+      "status": "design_only_not_migrated",
+      "enablement": "Measured need, selected physical profile, dry-run reconciliation and explicit controlled migration implementation.",
+      "validation": "ID/count/hash reconciliation, FK/tenant/time/currency invariants, idempotence, backup/restore and rollback rehearsal."
+    },
+    {
+      "id": "hosted_authorization_api_events",
+      "status": "design_only_not_deployed",
+      "enablement": "Verified native principal/resource grants, explicit hosting adapter and deployment configuration; no caller-controlled actor authority.",
+      "validation": "Negative cross-tenant/case/source access, current authorization per read/export/search, cost/request budgets and bounded idle/stop behavior before any optional worker."
+    }
+  ],
+  "incrementalBacklog": [
+    {
+      "id": "LIFE-01",
+      "priority": "now",
+      "scope": "Limited local business ledger and Project references",
+      "acceptance": [
+        "Strict15collection schema",
+        "Current authority closure",
+        "Server actor/provenance control",
+        "CAS/history/audit/approval snapshot",
+        "Existing baseline/source bytes unchanged"
+      ],
+      "delivery": "limited_vertical_slice"
+    },
+    {
+      "id": "LIFE-02",
+      "priority": "now",
+      "scope": "Three isolated local acceptance scenarios and derived institutional report views",
+      "acceptance": [
+        "A multi-lender/components/transactions/frameworks/engagements",
+        "B fund/intermediary/subinvestment/sector exposure mapping",
+        "C three monitoring-cycle references/incident/action/restructure/exit"
+      ],
+      "delivery": "local_fixtures_and_views"
+    },
+    {
+      "id": "LIFE-03",
+      "priority": "next",
+      "scope": "Reviewed stakeholder/organization and deliverable promotion",
+      "acceptance": [
+        "Ambiguous name candidates remain unresolved",
+        "Explicit role effective dates",
+        "Original metadata retained",
+        "No custody-derived grants"
+      ],
+      "delivery": "proposed"
+    },
+    {
+      "id": "LIFE-04",
+      "priority": "next",
+      "scope": "Read-only E&S graph adapters over existing engagement authority",
+      "acceptance": [
+        "Exact assertion/source/baseline refs",
+        "Protected case transitive disclosure",
+        "No duplicate evidence store",
+        "Support/contradiction kept distinct"
+      ],
+      "delivery": "proposed"
+    },
+    {
+      "id": "LIFE-05",
+      "priority": "next",
+      "scope": "Risk/receptor/baseline/management measure profile slice",
+      "acceptance": [
+        "Separate observation/evidence/judgment/fact",
+        "Attributable human verification",
+        "Spatial/source provenance",
+        "Environmental and social pilot profiles"
+      ],
+      "delivery": "proposed"
+    },
+    {
+      "id": "LIFE-06",
+      "priority": "next",
+      "scope": "Versioned institutional requirement/applicability and crosswalk adapters",
+      "acceptance": [
+        "Authoritative text vs review prompts",
+        "Edition and temporal scope",
+        "Directed explicit relations",
+        "No conclusion transfer"
+      ],
+      "delivery": "proposed"
+    },
+    {
+      "id": "LIFE-07",
+      "priority": "later",
+      "scope": "Outcome and portfolio monitoring schemas",
+      "acceptance": [
+        "Currency/date/denominator consistency",
+        "No economic double counting",
+        "Entitlement delivery vs livelihood outcome",
+        "Profile-specific QA and restrictions"
+      ],
+      "delivery": "proposed"
+    },
+    {
+      "id": "LIFE-08",
+      "priority": "later",
+      "scope": "Relational/spatial persistence selection and migration rehearsal",
+      "acceptance": [
+        "Measured need and query plans",
+        "Local/self-hosted/managed portability",
+        "FK/tenant/history/source invariants",
+        "Idempotent dry run/rollback"
+      ],
+      "delivery": "design_only"
+    },
+    {
+      "id": "LIFE-09",
+      "priority": "later",
+      "scope": "Hosted lifecycle authorization/API/events adapter",
+      "acceptance": [
+        "Current native grants on reads/writes/export/search",
+        "No imported privilege escalation",
+        "Bounded request volume and stop conditions",
+        "No idle consumer/schedule by default"
+      ],
+      "delivery": "design_only"
+    },
+    {
+      "id": "LIFE-10",
+      "priority": "later",
+      "scope": "Durable historical authority/custody and bitemporal query profile",
+      "acceptance": [
+        "Native attributable authority export manifests and exact archived-source closure",
+        "Separate effective_at and known_at semantics",
+        "Historical grants/role interpretation and approval provenance verified independently of JSON hashes",
+        "No claim that the limited financial asOf query reconstructs past assessment knowledge"
+      ],
+      "delivery": "design_only_disabled"
+    }
+  ],
+  "acceptanceContract": {
+    "scenarioA": {
+      "name": "Multi-lender infrastructure investment",
+      "required": [
+        "One existing Project with at least three nested/associated components",
+        "Several financing organizations/facilities and separate transactions",
+        "Different pinned framework applicability decisions",
+        "At least two existing E&S engagement refs"
+      ],
+      "assertions": [
+        "No competing Project/source/evidence IDs",
+        "Allocation amounts/shares bounded and exact",
+        "Account/project/component closure",
+        "No cross-framework compliance inheritance",
+        "Institutional views derive from same IDs"
+      ]
+    },
+    "scenarioB": {
+      "name": "Financial intermediary",
+      "required": [
+        "One Investment in an Organization.kind=fund|financial_intermediary",
+        "Parent/subinvestment chain with explicit investors/investees",
+        "Allocations across multiple existing Projects/components",
+        "Sector/product exposure and aggregated monitoring mapping"
+      ],
+      "assertions": [
+        "No parent/child economic double count",
+        "Currency/asOf/denominator and estimated status visible",
+        "Screening judgment remains attributable",
+        "Unallocated/excluded/unknown values visible"
+      ]
+    },
+    "scenarioC": {
+      "name": "Longitudinal supervision",
+      "required": [
+        "Screening/due-diligence/appraisal/commitment lifecycle records",
+        "Three distinct existing monitoring cycle/baseline refs",
+        "Significant existing incident/event and action refs",
+        "Restructuring then financial exit/closure and post-closure verification scope"
+      ],
+      "assertions": [
+        "Earlier snapshots/hashes remain exact after changes",
+        "Sources/baseline refs resolve to original authority",
+        "Out-of-scope refs and unauthorized mutation/export rejected",
+        "Open obligations persist after exit"
+      ]
+    },
+    "negativeChecks": [
+      "Unknown fields/collections",
+      "Dangling or wrong-type refs",
+      "Cross-project hierarchy/scope",
+      "Cyclic component/investment/facility graph",
+      "Over-allocation and incompatible-currency arithmetic",
+      "Forged review/actor/timestamp",
+      "Stale CAS revision",
+      "Tampered/missing snapshot history/hash",
+      "Source version/hash mismatch",
+      "Restricted-case disclosure",
+      "Cross-framework conclusion transfer",
+      "Unknown extension schema/unsafe JSON"
+    ],
+    "performance": "Benchmark the implemented local profile (<=500 records per collection, <=2000 records total, <=100 project bindings, <=4MiB exchange, <=250 ledger revisions), graph-validation latency and memory locally. Report actual measured results with dataset size; no unmeasured production performance claim.",
+    "executionPolicy": "All development, acceptance fixtures and browser journeys are local with protected APIs blocked. No AWS commands, production queue receives, live app writes, hosted workers or recurring jobs are required."
+  }
+}

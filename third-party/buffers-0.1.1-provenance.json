@@ -1,0 +1,87 @@
+{
+  "format": "esia-exact-package-manual-license-evidence",
+  "schemaVersion": 1,
+  "package": "buffers",
+  "version": "0.1.1",
+  "dependencyPath": [
+    "exceljs",
+    "unzipper",
+    "binary",
+    "buffers"
+  ],
+  "npmArchive": {
+    "url": "https://registry.npmjs.org/buffers/-/buffers-0.1.1.tgz",
+    "integrity": "sha512-9q/rDEGSb/Qsvv2qvzIzdluL5k7AaJOTrw23z9reQthrbF7is4CtlT0DXyO1oei2DCp4uojjzQ7igaSHp1kAEQ==",
+    "bytes": 4195,
+    "sha256": "f8de49c60e467005182d9687b5d87775bbcec6385ac63220b7741327441deb6d",
+    "verifiedFromExistingCache": true
+  },
+  "author": "James Halliday <mail@substack.net> (http://substack.net)",
+  "licensedUpstream": {
+    "repository": "https://github.com/bitpay/node-buffers",
+    "commit": "1b745ee35d33eb166e15ef1866073a07c6d7de87",
+    "originalRepository": "https://github.com/substack/node-buffers",
+    "packageUrl": "https://raw.githubusercontent.com/bitpay/node-buffers/1b745ee35d33eb166e15ef1866073a07c6d7de87/package.json",
+    "readmeUrl": "https://raw.githubusercontent.com/bitpay/node-buffers/1b745ee35d33eb166e15ef1866073a07c6d7de87/README.markdown",
+    "declaredLicense": "MIT/X11"
+  },
+  "copyrightAndLicenseTextEvidence": {
+    "url": "https://sources.debian.org/copyright/license/node-buffers/0.1.1-2/",
+    "copyright": "2015 James Halliday <mail@substack.net> (http://substack.net)",
+    "scope": "Debian copyright record identifies the exact upstream license commit and supplies MIT text; no Debian packaging files are included in this application."
+  },
+  "files": [
+    {
+      "path": "index.js",
+      "npmBytes": 7057,
+      "npmSha256": "97801e296ba5f3c32242f647e1daac5917e300367fed7935ab1e62f40adb1b8a",
+      "licensedUpstreamBytes": 7057,
+      "licensedUpstreamSha256": "97801e296ba5f3c32242f647e1daac5917e300367fed7935ab1e62f40adb1b8a",
+      "comparison": "byte_identical"
+    },
+    {
+      "path": "package.json",
+      "npmBytes": 424,
+      "npmSha256": "7091616d3b687b0de9dfbc6a1f8ab61e01742a3ec87f977bef64d1f299e231b9",
+      "licensedUpstreamBytes": 451,
+      "licensedUpstreamSha256": "eb42a43d5b685e6de2f2f4a5e18a70255be72349def7eedf504b912dd908913e",
+      "comparison": "only license:MIT/X11 field added upstream"
+    },
+    {
+      "path": "README.markdown",
+      "npmBytes": 2757,
+      "npmSha256": "99e8a68c4949c4cbe64b480c8717fb616d1d78ea7715c0e394a5186e6c3a5ace",
+      "licensedUpstreamBytes": 2783,
+      "licensedUpstreamSha256": "3d43971a444ee578cefe75c5a532ad0e5e7bd7492ed6721545f2cc712d0c0c90",
+      "comparison": "only MIT/X11 license section appended upstream"
+    },
+    {
+      "path": "examples/slice.js",
+      "npmBytes": 224,
+      "npmSha256": "8bff15364cb53bc2c6523dbec1dea1017696eb8b59fdf4c8d7cd31eea3a3750b",
+      "licensedUpstreamBytes": 224,
+      "licensedUpstreamSha256": "8bff15364cb53bc2c6523dbec1dea1017696eb8b59fdf4c8d7cd31eea3a3750b",
+      "comparison": "byte_identical"
+    },
+    {
+      "path": "examples/splice.js",
+      "npmBytes": 366,
+      "npmSha256": "edf9fc9a0cfab7ed73edfff9a1409e65918b8f2cd34eeef04b3c6a1838ffc1cb",
+      "licensedUpstreamBytes": 366,
+      "licensedUpstreamSha256": "edf9fc9a0cfab7ed73edfff9a1409e65918b8f2cd34eeef04b3c6a1838ffc1cb",
+      "comparison": "byte_identical"
+    },
+    {
+      "path": "test/buffers.js",
+      "npmBytes": 6548,
+      "npmSha256": "9d0d9671bde206620d50e08f9f855fe7898efd74727d4b6f0913650ea252997f",
+      "licensedUpstreamBytes": 6548,
+      "licensedUpstreamSha256": "9d0d9671bde206620d50e08f9f855fe7898efd74727d4b6f0913650ea252997f",
+      "comparison": "byte_identical"
+    }
+  ],
+  "finding": "All six locked npm files were checked. Runtime, examples and tests match the licensed upstream tree exactly; package metadata and README differ only by the upstream license additions. No dependency/runtime bytes changed.",
+  "recordedPackageLicenseField": "absent; generated metadata remains Not declared",
+  "manualNotice": "third-party/buffers-0.1.1-NOTICE.txt",
+  "claimLimit": "Exact buffers0.1.1 tree only. This evidence does not license application source, other dependencies or source documents."
+}

@@ -1,0 +1,73 @@
+erDiagram
+    %% Logical architecture: existing authorities remain authoritative.
+    %% Proposed relational tables/joins are not deployed by this diagram.
+    Project ||--o{ ProjectBinding : "existing explicit identity link"
+    ProjectBinding ||--o{ ProjectComponent : contains
+    ProjectComponent o|--o{ ProjectComponent : "acyclic parent"
+    ProjectComponent }o--o| ProjectBinding : "associated facility link"
+    ProjectBinding ||--o{ Site : locates
+    ProjectComponent }o--o{ Site : "ComponentSite join"
+    ProjectBinding ||--o{ Activity : includes
+    Activity }o--o{ Site : "ActivitySite join"
+    Organization ||--o{ OrganizationRoleAssignment : "effective dated role"
+    Organization ||--o{ Investment : invests
+    Organization o|--o{ Investment : receives
+    Investment o|--o{ Investment : "fund or FI subinvestment"
+    Investment ||--o{ InvestmentAllocation : allocates
+    ProjectBinding ||--o{ InvestmentAllocation : receives
+    ProjectComponent o|--o{ InvestmentAllocation : "optional component"
+    Investment ||--o{ Transaction : records
+    FinancialFacility o|--o{ Transaction : finances
+    FinancialFacility o|--o{ FinancialFacility : "acyclic parent"
+    Organization ||--o{ FinancialFacility : borrows
+    Organization ||--o{ FinancingParticipant : participates
+    FinancialFacility ||--o{ FinancingParticipant : includes
+    Organization }o--o{ Agreement : "AgreementParty join"
+    ProjectBinding }o--o{ Agreement : "AgreementProject join"
+    FinancialFacility }o--o{ Agreement : "AgreementFacility join"
+    Agreement ||--o{ Covenant : obliges
+    Covenant }o--o{ Requirement : references
+    ProjectBinding ||--o{ EngagementScope : scopes
+    Engagement ||--o{ EngagementScope : "existing mandate"
+    ProjectComponent }o--o{ EngagementScope : covers
+    Engagement ||--o{ Deliverable : expects
+    FrameworkEdition ||--o{ Requirement : defines
+    Requirement ||--o{ RequirementApplicability : "scoped decision"
+    Requirement }o--o{ Requirement : "edition pinned crosswalk"
+    ProjectBinding ||--o{ RequirementApplicability : "project scope"
+    Engagement ||--o{ Assessment : evaluates
+    Assessment ||--o{ AssessmentFinding : "existing finding refs"
+    Requirement ||--o{ AssessmentFinding : evaluates
+    AssessmentFinding }o--o{ EvidenceAssertion : "support and contradiction"
+    EvidenceAssertion ||--|{ SourcePassage : cites
+    ExactSourceVersion ||--o{ SourcePassage : anchors
+    Observation }o--o{ ExactSourceVersion : "retained original"
+    ProfessionalJudgment }o--o{ Observation : interprets
+    ProfessionalJudgment }o--o{ EvidenceAssertion : weighs
+    ProjectFact }o--o{ ProfessionalJudgment : "explicit human establishment"
+    Receptor ||--o{ BaselineCondition : describes
+    Risk }o--o{ Receptor : threatens
+    Activity ||--o{ Impact : causes
+    Impact }o--o{ Receptor : affects
+    ManagementPlan ||--o{ ManagementMeasure : includes
+    ManagementMeasure }o--o{ Risk : mitigates
+    ManagementMeasure }o--o{ Impact : manages
+    MonitoringProgram ||--o{ MonitoringCycle : supervises
+    Indicator ||--o{ IndicatorMeasurement : measures
+    Site o|--o{ IndicatorMeasurement : locates
+    StakeholderGroup ||--o{ SocialOutcome : experiences
+    StakeholderGroup ||--o{ LivelihoodOutcome : experiences
+    ConsultationEvent }o--o{ Commitment : records
+    Entitlement ||--o{ EntitlementDelivery : delivers
+    AssessmentFinding }o--o{ CorrectiveAction : addresses
+    Commitment }o--o{ CorrectiveAction : implements
+    Incident }o--o{ CorrectiveAction : triggers
+    Grievance }o--o{ CorrectiveAction : triggers
+    CorrectiveAction ||--o{ Verification : verifies
+    Assessment ||--o{ Approval : "existing immutable baseline"
+    Assessment ||--o{ Report : "derived template view"
+    MonitoringCycle ||--o{ Report : "derived cycle view"
+    ProjectBinding ||--o{ LifecycleEvent : "late or overlapping phase"
+    LifecycleLedger ||--o{ LedgerHistoryEntry : "append only prior context"
+    LifecycleLedger ||--o{ LedgerApprovalSnapshot : "business context only"
+    LifecycleLedger ||--o{ LedgerAuditEvent : "hash chained commands"

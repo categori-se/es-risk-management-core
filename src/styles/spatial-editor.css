@@ -1,0 +1,47 @@
+.se-modal-open { overflow: hidden; }
+.se-overlay { --se-ink: var(--lw-ink, var(--app-text, #1b2922)); --se-muted: var(--lw-muted, var(--app-text-muted, #53665b)); --se-surface: var(--lw-surface, var(--app-surface, #fff)); --se-raised: var(--lw-raised, var(--app-surface-raised, #f4f6f3)); --se-line: var(--lw-line, var(--lw-border, var(--app-border, #cbd6ce))); --se-accent: var(--lw-accent, var(--app-accent, #165c3a)); --se-danger: var(--lw-danger, var(--app-danger, #9c3030)); position: fixed; inset: 0; z-index: 1200; display: grid; place-items: center; padding: 1rem; background: rgb(14 23 31 / 65%); color: var(--se-ink); font: 16px/1.5 var(--se-font-family, system-ui, sans-serif); }
+.se-overlay[data-theme=dark] { --se-ink: var(--lw-ink, var(--app-text, #e4ece6)); --se-muted: var(--lw-muted, var(--app-text-muted, #acbdb2)); --se-surface: var(--lw-surface, var(--app-surface, #15231b)); --se-raised: var(--lw-raised, var(--app-surface-raised, #1d3025)); --se-line: var(--lw-line, var(--lw-border, var(--app-border, #405448))); --se-accent: var(--lw-accent, var(--app-accent, #91c9a5)); --se-danger: var(--lw-danger, var(--app-danger, #f2aaa3)); --se-map: #101f27; }
+.spatial-editor { box-sizing: border-box; width: min(100%, 94rem); max-height: calc(100dvh - 2rem); overflow: auto; padding: 1.2rem; border: 1px solid var(--se-line); border-radius: .6rem; background: var(--se-surface); color: var(--se-ink); box-shadow: 0 1rem 4rem rgb(0 0 0 / 30%); }
+.se-header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; position: sticky; top: -1.2rem; z-index: 3; margin: -1.2rem -1.2rem .7rem; padding: 1rem 1.2rem; background: var(--se-surface); border-bottom: 1px solid var(--se-line); }
+.se-header h2 { margin: 0; font-size: 1.4rem; overflow-wrap: anywhere; }
+.spatial-editor button { min-height: 2.5rem; padding: .45rem .75rem; border: 1px solid var(--se-line); border-radius: .35rem; background: var(--se-surface); color: var(--se-accent); font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; }
+.spatial-editor button:hover:not(:disabled) { background: var(--se-raised); border-color: var(--se-accent); }
+.spatial-editor button:disabled { cursor: default; opacity: .6; }
+.spatial-editor button:focus-visible, .spatial-editor input:focus-visible, .spatial-editor textarea:focus-visible, .spatial-editor select:focus-visible { outline: 3px solid #27759b; outline-offset: 2px; }
+.se-note, .se-identity { color: var(--se-muted); font-size: .875rem; overflow-wrap: anywhere; }
+.se-identity { font-family: ui-monospace, monospace; }
+.se-source-details { font-size: .8rem; margin-block: .5rem; }
+.spatial-editor summary { color: var(--se-accent); cursor: pointer; }
+.se-source-details .se-identity { font-size: .75rem; }
+.se-status { padding: .5rem .7rem; background: var(--se-raised); font-size: .85rem; }
+.se-error { padding: .75rem; border-left: 4px solid var(--se-danger); background: var(--se-raised); color: var(--se-danger); }
+.se-content { display: grid; grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr); gap: 1.2rem; align-items: start; }
+.se-content[hidden], .spatial-editor [hidden] { display: none !important; }
+.se-map { min-width: 0; position: sticky; top: .5rem; }
+.se-map .spatial-preview { margin-top: 0; }
+.se-map .spatial-preview h3 { margin-block: 0 .25rem; }
+.se-map .spatial-preview-canvas { max-height: 62vh; background: var(--se-map, #f1f5f7); border-color: var(--se-line); }
+.se-map .spatial-preview-note { color: var(--se-muted); margin-block: .4rem; }
+.se-map .spatial-preview-toolbar { margin-block: .5rem; }
+.spatial-editor-layer-details { font-size: .8rem; }
+.spatial-editor-layer-details .spatial-preview-facts { grid-template-columns: minmax(8rem, 1fr) minmax(0, 3fr); }
+.se-inspector { min-width: 0; }
+.spatial-editor label { display: block; margin-block: .6rem; font-size: .9rem; font-weight: 600; }
+.spatial-editor input, .spatial-editor textarea, .spatial-editor select { box-sizing: border-box; width: 100%; margin-top: .3rem; padding: .5rem; border: 1px solid var(--se-line); border-radius: .2rem; background: var(--se-surface); color: inherit; font: inherit; color-scheme: light dark; }
+.spatial-editor textarea { resize: vertical; min-height: 4rem; font-family: ui-monospace, monospace; font-weight: 400; }
+.spatial-editor fieldset { margin: 1rem 0; padding: .65rem .8rem; border: 1px solid var(--se-line); min-width: 0; }
+.spatial-editor legend { padding-inline: .3rem; font-weight: 650; }
+.se-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.se-footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1rem; position: sticky; bottom: -1.2rem; z-index: 4; border-top: 1px solid var(--se-line); margin: 1rem -1.2rem -1.2rem; padding: .6rem 1.2rem .7rem; background: var(--se-surface); box-shadow: 0 -.4rem 1rem rgb(0 0 0 / 8%); }
+.se-footer label { margin-block: 0; }
+.se-footer textarea { min-height: 3rem; max-height: 8rem; }
+.se-footer button { margin-bottom: .6rem; }
+.se-footer [data-spatial-edit-action=save] { color: var(--se-surface); background: var(--se-accent); border-color: var(--se-accent); }
+.se-footer [data-spatial-edit-action=save]:hover:not(:disabled) { color: var(--se-ink); background: var(--se-raised); }
+.se-choice { padding: .8rem; margin-block: .8rem; border: 2px solid #b27b24; background: var(--se-raised); }
+.se-choice button + button { margin-left: .5rem; }
+.spatial-editor-vertex { stroke: #fff; stroke-width: 2; fill: #2455ab; vector-effect: non-scaling-stroke; cursor: move; }
+.spatial-editor-vertex.is-selected { fill: #bc4e13; stroke: #301d0e; }
+.spatial-editor-vertex:focus-visible { outline: none; stroke: #f7d03a; stroke-width: 4; }
+@media (max-width: 900px) { .se-content { grid-template-columns: minmax(0, 1fr); } .se-map { position: static; } .se-map .spatial-preview-canvas { max-height: 45vh; } }
+@media (max-width: 540px) { .se-overlay { padding: .25rem; } .spatial-editor { padding: .8rem; max-height: calc(100dvh - .5rem); } .se-footer { grid-template-columns: minmax(0, 1fr) auto; margin-inline: -.8rem; margin-bottom: -.8rem; padding-inline: .8rem; bottom: -.8rem; gap: .5rem; } .se-footer label { font-size: .75rem; } .se-footer textarea { min-height: 3.5rem; } .se-footer button { max-width: 7rem; } .se-header { flex-wrap: wrap; top: -.8rem; margin-inline: -.8rem; margin-top: -.8rem; padding: .7rem .8rem; } }

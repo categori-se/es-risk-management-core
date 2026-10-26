@@ -1,0 +1,38 @@
+title: "[Workflow idea] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Discuss a professional workflow, self-hosting question or extension design using synthetic data. Keep client/employer documents, credentials and identifying logs private. Report vulnerabilities through SECURITY.md instead. This form does not establish source publication or service availability.
+  - type: dropdown
+    id: subject
+    attributes:
+      label: Discussion subject
+      options:
+        - Professional workflow
+        - Local or self-hosted installation
+        - Extension or integration
+        - Documentation or contribution
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Intended professional outcome or question
+      description: Describe who needs the result and which deliverable or decision it supports.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Synthetic example and installation context
+      description: Include the source commit, deployment profile, OS and relevant optional tools. Do not attach confidential project data.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Suggested approach and how to evaluate it
+      description: Explain what would demonstrate success, including custody, source references or compatibility needs.
+    validations:
+      required: true

@@ -1,0 +1,57 @@
+.oversight-comparison {--cp-bg:var(--app-background,var(--lw-bg,#f6f3ed));--cp-surface:var(--app-surface,var(--lw-surface,#fff));--cp-raised:var(--app-surface-raised,var(--lw-raised,#f8f6f1));--cp-ink:var(--app-text,var(--lw-ink,#1b211d));--cp-muted:var(--app-text-muted,var(--lw-muted,#58645c));--cp-line:var(--app-border,var(--lw-line,#d6dcd6));--cp-border:var(--app-border-strong,var(--lw-line,#b9c8bf));--cp-accent:var(--app-accent,var(--lw-accent,#17664b));--cp-soft:var(--app-accent-soft,var(--lw-soft,#e3f0e8));--cp-danger:var(--app-danger,var(--lw-danger,#9c3030));--cp-danger-soft:var(--app-danger-soft,#fff3f3);--cp-focus:var(--app-info,#337bcb);box-sizing:border-box;display:grid;gap:1.3rem;width:100%;min-width:0;max-width:1560px;margin:0 auto;padding:clamp(1rem,2.3vw,2rem);color:var(--cp-ink);background:var(--cp-bg);font:1rem/1.55 var(--app-font-sans,system-ui,sans-serif);}
+.oversight-comparison *,.oversight-comparison *::before,.oversight-comparison *::after {box-sizing:border-box;}
+.oversight-comparison :is(h1,h2,h3,h4,p,span,small) {overflow-wrap:anywhere;}
+.oversight-comparison h1 {font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.15;margin:.25rem 0 .65rem;}
+.oversight-comparison h2 {font-size:1.45rem;line-height:1.3;margin:0 0 .65rem;}
+.oversight-comparison h3 {font-size:1.1rem;margin:0 0 .5rem;line-height:1.35;}
+.oversight-comparison h4 {font-size:1.05rem;margin:1.2rem 0 .5rem;}
+.oversight-comparison p {margin:.45rem 0 .75rem;}
+.oversight-comparison a {color:var(--cp-accent);text-underline-offset:.2em;overflow-wrap:anywhere;}
+.oversight-comparison .cp-eyebrow {font-size:.76rem;font-weight:750;letter-spacing:.07em;text-transform:uppercase;color:var(--cp-accent);margin:0 0 .4rem;}
+.oversight-comparison .cp-small,.oversight-comparison small {font-size:.84rem;color:var(--cp-muted);}
+.oversight-comparison :is(button,input,select) {font:inherit;max-width:100%;}
+.oversight-comparison :is(button,input,select,a,summary,[tabindex]):focus-visible {outline:3px solid var(--cp-focus);outline-offset:3px;}
+.oversight-comparison button {display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;min-width:0;padding:.55rem .85rem;border:1px solid var(--cp-border);border-radius:6px;background:var(--cp-surface);color:var(--cp-ink);font-weight:650;cursor:pointer;white-space:normal;text-align:center;}
+.oversight-comparison button:hover {background:var(--cp-raised);}
+.oversight-comparison button:disabled {opacity:.55;cursor:wait;}
+.oversight-comparison .cp-primary {background:var(--app-theme-accent-light,#17664b);border-color:var(--app-theme-accent-light,#17664b);color:var(--app-theme-on-accent-light,#fff);}
+.oversight-comparison .cp-primary:hover {filter:brightness(.9);}
+.oversight-comparison :is(input:not([type=checkbox]),select) {width:100%;min-width:0;min-height:2.75rem;padding:.6rem .7rem;border:1px solid var(--cp-border);border-radius:5px;background:var(--cp-surface);color:var(--cp-ink);}
+.oversight-comparison label {display:grid;gap:.35rem;min-width:0;font-weight:600;}
+.oversight-comparison .cp-checkbox {display:flex;align-items:start;gap:.65rem;align-self:end;font-size:.88rem;font-weight:500;padding:.65rem 0;}
+.oversight-comparison input[type=checkbox] {width:1.15rem;height:1.15rem;flex:none;accent-color:var(--cp-accent);margin:.18rem 0 0;}
+.oversight-comparison fieldset {min-width:0;margin:0;padding:1.15rem;border:1px solid var(--cp-line);border-radius:8px;background:var(--cp-surface);}
+.oversight-comparison legend {font-size:1.15rem;font-weight:750;padding:0 .45rem;}
+.oversight-comparison .cp-selection,.oversight-comparison .cp-periods {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;min-width:0;}
+.oversight-comparison .cp-periods:not(:empty) {margin-top:1rem;}
+.oversight-comparison .cp-actions {display:flex;flex-wrap:wrap;gap:.65rem;align-items:center;margin-top:1rem;}
+.oversight-comparison .cp-notice,.oversight-comparison .cp-empty {padding:.9rem 1rem;border:1px solid var(--cp-line);border-left:4px solid var(--cp-accent);border-radius:6px;background:var(--cp-raised);overflow-wrap:anywhere;}
+.oversight-comparison .cp-status {overflow-wrap:anywhere;}
+.oversight-comparison .cp-status:empty {display:none;}
+.oversight-comparison .cp-status[role=alert] {padding:.85rem 1rem;border:1px solid var(--cp-danger);border-radius:5px;background:var(--cp-danger-soft);color:var(--cp-danger);}
+.oversight-comparison [data-comparison-result] {display:grid;gap:1.2rem;min-width:0;}
+.oversight-comparison .cp-card {min-width:0;padding:1.15rem;border:1px solid var(--cp-line);border-radius:8px;background:var(--cp-surface);}
+.oversight-comparison .cp-metrics {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:.65rem;}
+.oversight-comparison .cp-metric {min-width:0;padding:.85rem;border:1px solid var(--cp-line);border-radius:6px;background:var(--cp-surface);}
+.oversight-comparison .cp-metric strong {display:block;font-size:1.65rem;line-height:1.2;}
+.oversight-comparison .cp-metric span {display:block;margin-top:.3rem;font-size:.82rem;color:var(--cp-muted);}
+.oversight-comparison .cp-facts {display:grid;gap:.2rem;margin:.6rem 0;}
+.oversight-comparison .cp-facts dt {font-size:.8rem;font-weight:600;color:var(--cp-muted);}
+.oversight-comparison .cp-facts dd {font-size:.86rem;margin:0 0 .45rem;overflow-wrap:anywhere;}
+.oversight-comparison code {font-family:var(--app-font-mono,ui-monospace,monospace);font-size:.78rem;overflow-wrap:anywhere;word-break:break-word;}
+.oversight-comparison .cp-table-region {width:100%;max-width:100%;min-width:0;overflow-x:auto;border:1px solid var(--cp-line);border-radius:6px;overscroll-behavior-inline:contain;background:var(--cp-surface);margin:.65rem 0;}
+.oversight-comparison table {width:100%;min-width:740px;border-collapse:collapse;table-layout:fixed;}
+.oversight-comparison caption {text-align:left;padding:.8rem;font-weight:700;}
+.oversight-comparison :is(th,td) {text-align:left;vertical-align:top;padding:.8rem;border-bottom:1px solid var(--cp-line);overflow-wrap:anywhere;}
+.oversight-comparison thead th {font-size:.82rem;background:var(--cp-raised);}
+.oversight-comparison [data-comparison-breakdown] table {min-width:1080px;}
+.oversight-comparison .cp-display-filters {display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:.8rem;align-items:end;}
+.oversight-comparison [data-comparison-project-results] {display:grid;gap:.8rem;margin-top:1rem;}
+.oversight-comparison summary {cursor:pointer;font-weight:650;overflow-wrap:anywhere;}
+.oversight-comparison details {min-width:0;margin:.7rem 0;}
+.oversight-comparison .cp-project {margin:0;}
+.oversight-comparison .cp-project>summary {display:grid;gap:.3rem;}
+.oversight-comparison .cp-project>summary>span {font-size:.86rem;font-weight:400;color:var(--cp-muted);}
+@media(prefers-color-scheme:dark) {.oversight-comparison {--cp-bg:var(--app-background,var(--lw-bg,#101316));--cp-surface:var(--app-surface,var(--lw-surface,#171b20));--cp-raised:var(--app-surface-raised,var(--lw-raised,#20262d));--cp-ink:var(--app-text,var(--lw-ink,#f2f5f3));--cp-muted:var(--app-text-muted,var(--lw-muted,#aeb8b3));--cp-line:var(--app-border,var(--lw-line,#354139));--cp-border:var(--app-border-strong,var(--lw-line,#43505a));--cp-accent:var(--app-accent,var(--lw-accent,#87d3a4));--cp-soft:var(--app-accent-soft,var(--lw-soft,#183126));--cp-danger:var(--app-danger,var(--lw-danger,#ee8f8f));--cp-danger-soft:var(--app-danger-soft,#382126);--cp-focus:var(--app-info,#82c7d2);}}
+@media(max-width:700px) {.oversight-comparison {padding:1rem;gap:1.05rem;}.oversight-comparison .cp-selection,.oversight-comparison .cp-periods,.oversight-comparison .cp-display-filters {grid-template-columns:1fr;}.oversight-comparison fieldset,.oversight-comparison .cp-card {padding:.9rem;}.oversight-comparison .cp-actions>button {flex:1 1 100%;}}
+@media print {.oversight-comparison {max-width:none;padding:0;font-size:10pt;}.oversight-comparison [data-comparison-selection],.oversight-comparison .cp-status,.oversight-comparison .cp-actions,.oversight-comparison .cp-display-filters {display:none;}.oversight-comparison .cp-table-region {overflow:visible;border:0;}.oversight-comparison table {min-width:0;}}

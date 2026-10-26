@@ -1,0 +1,319 @@
+{
+  "schemaVersion": 1,
+  "format": "vendored-workspace-contracts-provenance",
+  "package": "@categori/workspace-contracts",
+  "version": "0.1.0-alpha.11",
+  "declaredUpstream": "https://github.com/categori-se/app-workspace-contracts",
+  "upstreamCommit": null,
+  "upstreamMatchVerified": false,
+  "observedUpstreamVersion": "0.1.0-alpha.10",
+  "originEvidence": "Existing repository audit snapshot and application Git history; no new upstream download. A matching public alpha.11 release has not been verified.",
+  "declaredLicense": "Apache-2.0",
+  "noticesRetained": [
+    "LICENSE",
+    "NOTICE"
+  ],
+  "publicationClearance": "pending_owner_and_contribution_review",
+  "rightsStatement": "Existing package LICENSE/NOTICE are retained. This inventory records bytes and declared provenance; it does not establish employment/client contribution ownership or an upstream grant for the alpha.11 modifications.",
+  "baseline": {
+    "kind": "private_application_history",
+    "repository": "categori-se/esia-analysis",
+    "commit": "4cc1d12e6dd86304cf52ae4f2e8d40375316057d",
+    "version": "0.1.0-alpha.10"
+  },
+  "recordedChangeCommit": "9a9fbb222ca6b3007fc3dcf55020e0b3c24de985",
+  "inventoryFormat": "Relative path, size and SHA256; sorted directory traversal; SOURCE-MANIFEST.json excluded to avoid self-reference.",
+  "inventorySha256": "e8fba9da077741e1f455940dd97f5075353d36dcb314a030f8bd7cae6b8addd1",
+  "files": [
+    {
+      "path": "LICENSE",
+      "size": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "NOTICE",
+      "size": 213,
+      "sha256": "ad92e2180457a6ae2c7ce9235831a24e6f264fe4b82f38281b7dcb6d4acd8942"
+    },
+    {
+      "path": "README.md",
+      "size": 20306,
+      "sha256": "b0d73f88f91a3fe07cb554c4ac4db7776528fab646d7124e473d57690fdcd917"
+    },
+    {
+      "path": "conformance/identity.json",
+      "size": 425252,
+      "sha256": "6122d0852443c3730d57d23e6ac355a2daefe75078e5bd6aed69b31b210ec4a2"
+    },
+    {
+      "path": "package.json",
+      "size": 1841,
+      "sha256": "7223b3e790053b883750c3c3cfbb3840af7bd0134da6a050cf0226695c6d1b1b"
+    },
+    {
+      "path": "python/categori_workspace_contracts/__init__.py",
+      "size": 814,
+      "sha256": "db693457b14629ba55368539b71f41214b8dec4c8f5755ada854f22b0e68cf3f"
+    },
+    {
+      "path": "python/categori_workspace_contracts/identity.py",
+      "size": 38501,
+      "sha256": "dcbdf2078fe7a3559b0e7c84b65b9846c18de070722457182e3e9038425b27bf"
+    },
+    {
+      "path": "schemas/business-context.schema.json",
+      "size": 1060,
+      "sha256": "3ddaa53896e7b7ca52fd001d21efca7d5817a8cfc5a2174ee4c679e4be0a1b9a"
+    },
+    {
+      "path": "schemas/collections.schema.json",
+      "size": 5381,
+      "sha256": "a22b734762fad43bfa5cd40c90e5f218a4127f3b6aadb33ebfb224616d0def3e"
+    },
+    {
+      "path": "schemas/documents.schema.json",
+      "size": 3785,
+      "sha256": "42008e7b4d8ba0dc84447d14e03cda997bc43b224b90c433a7dcf97ed98598cd"
+    },
+    {
+      "path": "schemas/identity.schema.json",
+      "size": 4395,
+      "sha256": "79b334d80d6d140ebb73371fe86abebe7537539180dbd79cd0476cb09d0ab24a"
+    },
+    {
+      "path": "schemas/interoperability.schema.json",
+      "size": 2031,
+      "sha256": "7e13cb26812337e64bd585026fe98b39fbe358c969e90901d6bb2a0abc948913"
+    },
+    {
+      "path": "schemas/releases.schema.json",
+      "size": 21419,
+      "sha256": "63a64629672e801a7328ce3a5fdc63f4fbaa288182d73345eaa07fd757dcd711"
+    },
+    {
+      "path": "schemas/workspace-contracts.schema.json",
+      "size": 20925,
+      "sha256": "76359bd5b17c5f8f0814a4dff405691fcfd9848b9a6a5e12bdf93f9260180a60"
+    },
+    {
+      "path": "src/business-context.js",
+      "size": 3220,
+      "sha256": "ac9652ee2b3610341599014b4f60d3904e11b9d308a74204306845aff16e0cc5"
+    },
+    {
+      "path": "src/collaboration.js",
+      "size": 26808,
+      "sha256": "a180ab513142d7c0a99f62105f80f267621e26a602d51338d9dabb1265f39a21"
+    },
+    {
+      "path": "src/collections.js",
+      "size": 7342,
+      "sha256": "8b12ab197d25f62bd072498e102ee9d209ce3aa680513fc8a920b3d94b4c065d"
+    },
+    {
+      "path": "src/demo.js",
+      "size": 13121,
+      "sha256": "10080fd870f73fe9fcd4ce3bb203deb9d135b25625c83b3379691e23c3295215"
+    },
+    {
+      "path": "src/documents.js",
+      "size": 4952,
+      "sha256": "43a8ea613eeb928a116c828cfad218577f5b375287b866a912a877ea613af304"
+    },
+    {
+      "path": "src/identity.js",
+      "size": 12866,
+      "sha256": "63adec9aff45ad8f9604e8d141ad950d9816d322cc273de1db6f4da578e7ff0b"
+    },
+    {
+      "path": "src/index.js",
+      "size": 4535,
+      "sha256": "cac2d1235e6e2f3724a10aef7ce64d1ba41914e461c06839ec3a09f3bdb49b04"
+    },
+    {
+      "path": "src/interoperability.js",
+      "size": 7222,
+      "sha256": "8278fdbd3032f89ed96896aaa654c2bd0a02add692b6bc425d6a874c9b07d822"
+    },
+    {
+      "path": "src/preservation.js",
+      "size": 3227,
+      "sha256": "9841646e91c07072ea690586eb9510e5e1eea1de577c9e135bf6a7f583db9dab"
+    },
+    {
+      "path": "src/publication.js",
+      "size": 14969,
+      "sha256": "663fb4c7840e8c91197d68541bcea32a6960228f99b526a2e6aab8327e6a89b3"
+    },
+    {
+      "path": "src/releases.js",
+      "size": 19837,
+      "sha256": "71ed6b8947b1c4afe5b8ef996043bde9c1d6a175dda634961b6e46ebb8047c4b"
+    },
+    {
+      "path": "src/repository.js",
+      "size": 16034,
+      "sha256": "d49a93eb7c8bff9df099e4df604d8f44a91996a3ff64c6ec32106151204b1128"
+    },
+    {
+      "path": "src/resource-pools.js",
+      "size": 4171,
+      "sha256": "3bb41f95737213de90136e8d265465ebf7e741f21681bf8c1e4942f49c55d205"
+    },
+    {
+      "path": "src/retained.js",
+      "size": 4288,
+      "sha256": "1889bbd9f8f582d5f1c10a18e60c3a57eae12dd71d8782ce0a91b8134ecf4b9f"
+    },
+    {
+      "path": "src/source-manifest.js",
+      "size": 9201,
+      "sha256": "713bbc09160d8adde7e91c749e3e14b198e0fd311dd4d99ee32c6fd72ad493ce"
+    },
+    {
+      "path": "src/working-state.js",
+      "size": 17371,
+      "sha256": "2985a309964a6b8e162f2750e3bc86826c37e71da9170d99a06fb1e7c1e1c8e3"
+    },
+    {
+      "path": "test/business-context.test.js",
+      "size": 2781,
+      "sha256": "aec820473e6424a25736d52c8bc637779b959d1e0a345f69822403668b1a9b1f"
+    },
+    {
+      "path": "test/collections.test.js",
+      "size": 5151,
+      "sha256": "a217493d3385b7325f5796af4c99f75c54ba7de3b9a09f76b0479892d8d6e9ad"
+    },
+    {
+      "path": "test/contracts.test.js",
+      "size": 25858,
+      "sha256": "dc46c7d12dde9c64dd306ab0d6973eb2c6b95dcea4c80cf2e1fa63c9da15fd16"
+    },
+    {
+      "path": "test/documents.test.js",
+      "size": 8958,
+      "sha256": "86af8122771cbb46840419a18537da85c9582fb485367bfd548097c68ac3c012"
+    },
+    {
+      "path": "test/identity-conformance.test.js",
+      "size": 2945,
+      "sha256": "528aa59d945b4ac597a8452527a3e54ee7b024e4a6cfe050aa5ea9bf296eef37"
+    },
+    {
+      "path": "test/identity-conformance.test.py",
+      "size": 4439,
+      "sha256": "a8e5114bbdde1dae5ddae9921166058524b4f942b346e375f1f939b1f9ee28a8"
+    },
+    {
+      "path": "test/identity.test.js",
+      "size": 10877,
+      "sha256": "7a6e3f53f76adbd65f587cc07b539358190fab715a5851002e75cc2d177379aa"
+    },
+    {
+      "path": "test/interoperability-fixtures.json",
+      "size": 6675,
+      "sha256": "511d3b040923db0b9901e64c4f2f6f03507c89eaddd2c0faebb5c6fa1285ae7f"
+    },
+    {
+      "path": "test/interoperability.test.js",
+      "size": 4589,
+      "sha256": "20e2d58c16db82d037eb76938c8be42225cb956695c829a701ec3ccc7650e451"
+    },
+    {
+      "path": "test/preservation.test.js",
+      "size": 1362,
+      "sha256": "17a66e5afc608a4f317e3053c0ed60e679cc263b5d1195f54ec4b1c24de8a0a5"
+    },
+    {
+      "path": "test/releases-fixtures.json",
+      "size": 34063,
+      "sha256": "65753d29d0930454417b520be1254edfcfcdd6ffc97d6a051bcee9eb00739728"
+    },
+    {
+      "path": "test/releases.test.js",
+      "size": 13738,
+      "sha256": "6f269a01c012acb0990e2d825d769b69289567eb17454ac3eba53c41167f4f51"
+    },
+    {
+      "path": "test/resource-pools.test.js",
+      "size": 2265,
+      "sha256": "890bf9237621287327ab9d5c44f6759a3058d10d535989d5630abd49d5d1258b"
+    },
+    {
+      "path": "test/retained.test.js",
+      "size": 3892,
+      "sha256": "47ab7f30db09cd4c3979552112733a2bbf56391ede76fb1d9c241b0a25bd2c4b"
+    },
+    {
+      "path": "test/working-state.test.js",
+      "size": 11584,
+      "sha256": "0ab909cccb40597c5fd8be08aa113c2fb4dc9c5066b65aa9e85816083ea7a45c"
+    }
+  ],
+  "patches": [
+    {
+      "path": "README.md",
+      "change": "modified",
+      "baselineSha256": "86f3859843a9998eb4c081375f9b829d903450a80d8ce441ffa0b69bedc1741b",
+      "sha256": "b0d73f88f91a3fe07cb554c4ac4db7776528fab646d7124e473d57690fdcd917",
+      "recordedChangeCommit": "9a9fbb222ca6b3007fc3dcf55020e0b3c24de985"
+    },
+    {
+      "path": "conformance/identity.json",
+      "change": "modified",
+      "baselineSha256": "a1192646229b3b92a9526f2d95426f6523d7d7bee5b3cd280b475c624e970972",
+      "sha256": "6122d0852443c3730d57d23e6ac355a2daefe75078e5bd6aed69b31b210ec4a2",
+      "recordedChangeCommit": "9a9fbb222ca6b3007fc3dcf55020e0b3c24de985"
+    },
+    {
+      "path": "package.json",
+      "change": "modified",
+      "baselineSha256": "56db8d1315117deb1ea2a17d4f6ddcf88fe7b707d17b02401369b74d854b850d",
+      "sha256": "7223b3e790053b883750c3c3cfbb3840af7bd0134da6a050cf0226695c6d1b1b",
+      "recordedChangeCommit": "9a9fbb222ca6b3007fc3dcf55020e0b3c24de985"
+    },
+    {
+      "path": "python/categori_workspace_contracts/__init__.py",
+      "change": "modified",
+      "baselineSha256": "544770c2ef33ae80b763075f10a925287b81ed6489967a88c7039f97636c5006",
+      "sha256": "db693457b14629ba55368539b71f41214b8dec4c8f5755ada854f22b0e68cf3f",
+      "recordedChangeCommit": "9a9fbb222ca6b3007fc3dcf55020e0b3c24de985"
+    },
+    {
+      "path": "python/categori_workspace_contracts/identity.py",
+      "change": "modified",
+      "baselineSha256": "44e7e4690bafdb15f75c41573c495236de6a9eb0189c09c0c9cf924349c64002",
+      "sha256": "dcbdf2078fe7a3559b0e7c84b65b9846c18de070722457182e3e9038425b27bf",
+      "recordedChangeCommit": "9a9fbb222ca6b3007fc3dcf55020e0b3c24de985"
+    },
+    {
+      "path": "schemas/workspace-contracts.schema.json",
+      "change": "modified",
+      "baselineSha256": "01d2d1625cf9fd4cbb6b92e12986af75bebd8e6ea56680a4354e20f7ae270a99",
+      "sha256": "76359bd5b17c5f8f0814a4dff405691fcfd9848b9a6a5e12bdf93f9260180a60",
+      "recordedChangeCommit": "9a9fbb222ca6b3007fc3dcf55020e0b3c24de985"
+    },
+    {
+      "path": "src/collaboration.js",
+      "change": "modified",
+      "baselineSha256": "3472270d93c5a7b3ddfe69c90a640490c9eefb77776542b98c5719ab91e73437",
+      "sha256": "a180ab513142d7c0a99f62105f80f267621e26a602d51338d9dabb1265f39a21",
+      "recordedChangeCommit": "9a9fbb222ca6b3007fc3dcf55020e0b3c24de985"
+    },
+    {
+      "path": "src/index.js",
+      "change": "modified",
+      "baselineSha256": "f45b9488de8dac7a1c7d329a1e6831f0133afc9da43194e1862e495c729723d0",
+      "sha256": "cac2d1235e6e2f3724a10aef7ce64d1ba41914e461c06839ec3a09f3bdb49b04",
+      "recordedChangeCommit": "9a9fbb222ca6b3007fc3dcf55020e0b3c24de985"
+    },
+    {
+      "path": "src/resource-pools.js",
+      "change": "modified",
+      "baselineSha256": "156691179ac0ec58ff480ca1393735ffc3d3726c7e8d9b419ff19ddd9d28deef",
+      "sha256": "3bb41f95737213de90136e8d265465ebf7e741f21681bf8c1e4942f49c55d205",
+      "recordedChangeCommit": "9a9fbb222ca6b3007fc3dcf55020e0b3c24de985"
+    }
+  ]
+}

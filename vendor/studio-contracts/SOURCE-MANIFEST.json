@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "package": "@categori/studio-contracts",
+  "version": "0.5.0",
+  "upstream": "https://github.com/categori-se/ai-studio-contracts",
+  "gitCommit": "5c65bcd789d950b998ca16a957f4352c7c7de0b2",
+  "gitTag": "v0.5.0",
+  "license": "Apache-2.0",
+  "modified": false,
+  "acquisition": "Verified existing local public source; no network request.",
+  "files": [
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "4f558bf22704f71b1a8210017cde82fa509bb6378f4ddabf361240b3d285461e"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "524393ea39d10127757dc0b242b10b8762dbacb1c191ff7676bb0fe02c5411c3"
+    },
+    {
+      "path": "README.md",
+      "sha256": "13d9994670b94407d457773c623d68576c892378abf77c2666b71f00aeb15fa3"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "6d0fdb5c91f3378b14239c53f7736d08e100669267d695430efeb6a534d72aac"
+    },
+    {
+      "path": "package.json",
+      "sha256": "7d1a8d1fb2e4c11cf59237aeb29cb4913c7d0541acebcc03e2767cb1630e9824"
+    },
+    {
+      "path": "schemas/document-evaluation-result.schema.json",
+      "sha256": "452667b46e13f855729ea9bfd66685ebaed6fc48d5371ee0901d42c1d537594b"
+    },
+    {
+      "path": "schemas/document-review-decision.schema.json",
+      "sha256": "366a706308a74eeac74a7c274b7e5a2be408a45bfe15a6095f82fb03bd85daf5"
+    },
+    {
+      "path": "schemas/document-set-manifest.schema.json",
+      "sha256": "215b3cee623bc00d8c288e1e538c3662f9d76ac94ea6f25ae3ad5eb9aa9d0c97"
+    },
+    {
+      "path": "schemas/evaluation-rubric.schema.json",
+      "sha256": "70b94bf2ea310b4dec6b9934c6b25d42e3575e7925f6d58709a7e3e474ea2717"
+    },
+    {
+      "path": "schemas/project-manifest.schema.json",
+      "sha256": "b8a2e51b645a14b5299ce299fe9bb7af3bb252a887b113f095991b6bbab317f9"
+    },
+    {
+      "path": "schemas/release-record-v2.schema.json",
+      "sha256": "2c53b6f49f02d0e890dd87ddedb4c62d552c32b322d532dff3f14062959561e4"
+    },
+    {
+      "path": "schemas/release-record.schema.json",
+      "sha256": "cb1b6cfa55e83c57f4ac016ae0b809975664041ce2ed3d37edc790d1b184f6ed"
+    },
+    {
+      "path": "schemas/workspace-manifest.schema.json",
+      "sha256": "50a7e3fc013d0b86c76619db23250b1335eb28cbf39662cf81b2206fcefadfd5"
+    },
+    {
+      "path": "src/applications.js",
+      "sha256": "79b82ad43ca90cfd480b4b0f4d85566f251c19d917c8970c66891ac6cd3d6b98"
+    },
+    {
+      "path": "src/document-evaluations.js",
+      "sha256": "2e3775db665b69561550535928d2cb609e47e694e0c36cd01e9934acf2639d90"
+    },
+    {
+      "path": "src/evaluations.js",
+      "sha256": "2c9165a03aff1c32403f2be87bedc5534e9761be0170c5d170bfcd1d5bdfd384"
+    },
+    {
+      "path": "src/gateway.js",
+      "sha256": "c6284ce34c962f756afc9845c7dfe94da9bb485af4a712ba1ba48507ee6f8678"
+    },
+    {
+      "path": "src/index.js",
+      "sha256": "3227a10ee3ffda79c591c6ef774a3425b70fcd233477244e4c2e7eec76f51581"
+    },
+    {
+      "path": "src/manifests.js",
+      "sha256": "4a39b86ce61faf49cfcc3ab4956a49f5e6234bb1c6531b9c829130ab46eca952"
+    },
+    {
+      "path": "src/otel-genai.js",
+      "sha256": "ecf02fe56df4d1786fad3968031869276b9838fc1f78b715b82713d3ec2c209b"
+    },
+    {
+      "path": "src/projects.js",
+      "sha256": "094d93cd96ddf01f1b8911c09bf590f93f853f590d2f95de57774d9a7f3695db"
+    },
+    {
+      "path": "src/releases.js",
+      "sha256": "9fab226f07d14c44b5140a5ba1a050faade12afdc510c594870e26025e45bc38"
+    }
+  ]
+}

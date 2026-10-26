@@ -1,0 +1,27 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://esia.categori.se/schemas/document-classification-v1.json",
+  "title":"Optional exact-version document metadata classification",
+  "description":"A proposal and its human decision in source metadataHistory, separate from passage assertions and professional findings. Legacy metadata omits this object.",
+  "type":"object","additionalProperties":false,
+  "required":["schemaVersion","engagementId","sourceVersionId","sourceSha256","status","proposal","evidence","provenance","proposedBy","proposedAt"],
+  "properties":{
+    "schemaVersion":{"const":1},"engagementId":{"$ref":"#/$defs/uuid"},"sourceVersionId":{"type":"string","minLength":1,"maxLength":192},"sourceSha256":{"$ref":"#/$defs/sha"},
+    "status":{"enum":["suggested","human_confirmed","human_modified"]},"proposal":{"$ref":"#/$defs/profile"},"reviewedProfile":{"$ref":"#/$defs/profile"},
+    "evidence":{"type":"array","minItems":1,"maxItems":8,"items":{"$ref":"#/$defs/passage"}},
+    "provenance":{"type":"object","additionalProperties":false,"required":["kind"],"properties":{"kind":{"enum":["human","ai"]},"model":{"type":"string","maxLength":1000},"method":{"type":"string","maxLength":1000},"promptHash":{"$ref":"#/$defs/sha"},"actorId":{"type":"string","maxLength":1000},"at":{"type":"string","format":"date-time"},"sources":{"type":"array","maxItems":100,"uniqueItems":true,"items":{"type":"string","minLength":1,"maxLength":1000}}},"anyOf":[{"required":["model"]},{"required":["method"]}]},
+    "proposedBy":{"type":"string","minLength":1,"maxLength":300},"proposedAt":{"type":"string","format":"date-time"},
+    "review":{"type":"object","additionalProperties":false,"required":["actorId","at","statement"],"properties":{"actorId":{"type":"string","minLength":1,"maxLength":300},"at":{"type":"string","format":"date-time"},"statement":{"type":"string","minLength":1,"maxLength":12000}}}
+  },
+  "allOf":[{"if":{"properties":{"status":{"const":"suggested"}}},"then":{"not":{"anyOf":[{"required":["review"]},{"required":["reviewedProfile"]}]}},"else":{"required":["review","reviewedProfile"]}}],
+  "$defs":{
+    "uuid":{"type":"string","pattern":"^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[1-8][a-fA-F0-9]{3}-[89aAbB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}$"},"sha":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "strings":{"type":"array","maxItems":30,"uniqueItems":true,"items":{"type":"string","minLength":1,"maxLength":1000}},
+    "profile":{"type":"object","additionalProperties":false,"required":["title","authors","publisher","documentDate","reportingPeriod","documentRevision","language","documentStatus","documentType","description","topics","locations","projectComponents","requirementIds"],"properties":{
+      "title":{"type":"string","maxLength":2000},"authors":{"type":"array","maxItems":50,"uniqueItems":true,"items":{"type":"string","minLength":1,"maxLength":500}},"publisher":{"type":"string","maxLength":1000},"documentDate":{"type":"string","maxLength":64},"reportingPeriod":{"type":"string","maxLength":1000},"documentRevision":{"type":"string","maxLength":200},"language":{"type":"string","maxLength":100},"documentStatus":{"type":"string","maxLength":200},"documentType":{"type":"string","maxLength":200},"description":{"type":"string","maxLength":16000},"topics":{"type":"array","maxItems":20,"uniqueItems":true,"items":{"type":"string","minLength":1,"maxLength":100}},"locations":{"$ref":"#/$defs/strings"},"projectComponents":{"$ref":"#/$defs/strings"},"requirementIds":{"type":"array","maxItems":100,"uniqueItems":true,"items":{"$ref":"#/$defs/uuid"}}
+    }},
+    "passage":{"type":"object","additionalProperties":false,"required":["passageId","versionId","sourceSha256","locator","quote","method","extractorVersion","page","range"],"properties":{
+      "passageId":{"type":"string","pattern":"^passage:[a-f0-9]{48}$"},"versionId":{"type":"string","minLength":1,"maxLength":192},"sourceSha256":{"$ref":"#/$defs/sha"},"locator":{"type":"string","minLength":1,"maxLength":4000},"quote":{"type":"string","minLength":1,"maxLength":2000},"method":{"type":"string","minLength":1,"maxLength":200},"extractorVersion":{"type":"string","minLength":1,"maxLength":200},"page":{"type":["integer","null"],"minimum":1},"range":{"type":"object","additionalProperties":false,"required":["start","end","basis"],"properties":{"start":{"type":"integer","minimum":0,"maximum":256000},"end":{"type":"integer","minimum":1,"maximum":256000},"basis":{"const":"extracted_text_utf16_code_units"}}}
+    }}
+  }
+}

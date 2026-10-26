@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://esia.categori.se/schemas/document-revision-relation-v1.json",
+  "title": "Human-reviewed exact-version document relationship",
+  "description": "Optional additive source metadata. Absence preserves legacy records. A relationship keeps physical resource and original version identities unchanged.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "engagementId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "sourceVersionId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 192
+    },
+    "sourceSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "predecessor": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "versionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 192
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "versionId",
+        "sha256"
+      ]
+    },
+    "leftMetadataSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "rightMetadataSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "comparisonSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "decision": {
+      "enum": [
+        "revision",
+        "same_bytes",
+        "inconsistent",
+        "independent"
+      ]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 4000
+        }
+      },
+      "required": [
+        "actorId",
+        "at",
+        "statement"
+      ]
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "engagementId",
+    "sourceVersionId",
+    "sourceSha256",
+    "predecessor",
+    "leftMetadataSha256",
+    "rightMetadataSha256",
+    "comparisonSha256",
+    "decision",
+    "review"
+  ]
+}

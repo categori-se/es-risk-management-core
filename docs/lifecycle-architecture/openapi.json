@@ -1,0 +1,656 @@
+{
+  "openapi": "3.1.0",
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "info": {
+    "title": "E&S Review local project lifecycle business API",
+    "version": "1.0.0",
+    "description": "Concrete implemented trusted-local API over an additive account-owned business ledger. Existing real-world Project, account project, documents, engagement evidence, assessment baseline and authorization authorities remain unchanged. The server enforces loopback Host and same-origin Origin checks plus existing account routing guards. actorId/x-esia-actor are local attribution, never remote authentication. Institutional report views are canonical projections, not native template completion or framework compliance. Proposed hosted operations are documented only under x-proposedHostedProfile and are not advertised as executable paths."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:{port}",
+      "description": "Local isolated workspace only. No live/production server is specified.",
+      "variables": {
+        "port": {
+          "default": "4173",
+          "description": "Selected local workbench port."
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "Implemented local business ledger",
+      "description": "Local business-context records, no new Project/document/evidence authority."
+    }
+  ],
+  "security": [],
+  "paths": {
+    "/api/project-lifecycle": {
+      "get": {
+        "operationId": "getLocalProjectLifecycle",
+        "summary": "Read the current local account business ledger",
+        "tags": [
+          "Implemented local business ledger"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "x-esia-account",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 192
+            },
+            "description": "Existing local account routing selector; omitted selects local-default. The resulting ledger uses the existing account custody UUID. This selector is not authentication."
+          },
+          {
+            "name": "x-esia-actor",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/ApplicationId"
+            },
+            "description": "Local process attribution for read/report/export; defaults local-owner. It is not a verified remote identity. Mutation actorId is required in the JSON body."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful account-scoped local result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/ProjectLifecycleExchange"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "405": {
+            "$ref": "#/components/responses/405"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "413": {
+            "$ref": "#/components/responses/413"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "x-implementationStatus": "implemented_local_only"
+      }
+    },
+    "/api/project-lifecycle/commands": {
+      "post": {
+        "operationId": "commandLocalProjectLifecycle",
+        "summary": "Atomically select project context, propose records, verify a record, batch proposals, or approve business context",
+        "tags": [
+          "Implemented local business ledger"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "x-esia-account",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 192
+            },
+            "description": "Existing local account routing selector; omitted selects local-default. The resulting ledger uses the existing account custody UUID. This selector is not authentication."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LifecycleCommandRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful account-scoped local result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/ProjectLifecycleExchange"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "405": {
+            "$ref": "#/components/responses/405"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "413": {
+            "$ref": "#/components/responses/413"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "x-implementationStatus": "implemented_local_only",
+        "x-requestByteLimit": 4194304
+      }
+    },
+    "/api/project-lifecycle/exchange": {
+      "get": {
+        "operationId": "exportLocalProjectLifecycle",
+        "summary": "Download exact local business exchange with history, audit and business approvals",
+        "tags": [
+          "Implemented local business ledger"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "x-esia-account",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 192
+            },
+            "description": "Existing local account routing selector; omitted selects local-default. The resulting ledger uses the existing account custody UUID. This selector is not authentication."
+          },
+          {
+            "name": "x-esia-actor",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/ApplicationId"
+            },
+            "description": "Local process attribution for read/report/export; defaults local-owner. It is not a verified remote identity. Mutation actorId is required in the JSON body."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful account-scoped local result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/ProjectLifecycleExchange"
+                }
+              }
+            },
+            "headers": {
+              "Content-Disposition": {
+                "description": "Attachment name project-lifecycle.json; no source bytes or transport grants.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "405": {
+            "$ref": "#/components/responses/405"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "413": {
+            "$ref": "#/components/responses/413"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "x-implementationStatus": "implemented_local_only"
+      }
+    },
+    "/api/project-lifecycle/import": {
+      "post": {
+        "operationId": "importLocalProjectLifecycle",
+        "summary": "Restore exact same-account exchange into an empty ledger or accept exact replay",
+        "tags": [
+          "Implemented local business ledger"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "x-esia-account",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 192
+            },
+            "description": "Existing local account routing selector; omitted selects local-default. The resulting ledger uses the existing account custody UUID. This selector is not authentication."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LifecycleImportRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful account-scoped local result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/ProjectLifecycleExchange"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "405": {
+            "$ref": "#/components/responses/405"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "413": {
+            "$ref": "#/components/responses/413"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "x-implementationStatus": "implemented_local_only",
+        "x-requestByteLimit": 4194304
+      }
+    },
+    "/api/project-lifecycle/report": {
+      "get": {
+        "operationId": "reportLocalProjectLifecycle",
+        "summary": "Derive bounded financing and lifecycle views without duplicating source or assessment authority",
+        "tags": [
+          "Implemented local business ledger"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "x-esia-account",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 192
+            },
+            "description": "Existing local account routing selector; omitted selects local-default. The resulting ledger uses the existing account custody UUID. This selector is not authentication."
+          },
+          {
+            "name": "x-esia-actor",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/ApplicationId"
+            },
+            "description": "Local process attribution for read/report/export; defaults local-owner. It is not a verified remote identity. Mutation actorId is required in the JSON body."
+          },
+          {
+            "name": "investmentId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/ApplicationId"
+            },
+            "description": "Select one existing Investment in this account ledger; report aggregates only its descendant leaf allocations."
+          },
+          {
+            "name": "snapshotId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/ApplicationId"
+            },
+            "description": "Select an existing approved business snapshot ID, preserving its exact ledger revision. Current source/authority access remains checked."
+          },
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "canonical",
+                "ifc",
+                "world_bank",
+                "adb",
+                "ebrd",
+                "eib",
+                "fmo"
+              ],
+              "default": "canonical"
+            },
+            "description": "Institution-labeled projection of the same canonical business snapshot. It is not a populated native institution template or compliance conclusion."
+          },
+          {
+            "name": "asOf",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/CalendarDate"
+            },
+            "description": "Financial allocation effective-date selector only; defaults current UTC calendar date. Sequential non-overlapping allocations are not added as simultaneous exposure. Assessment input is an explicitly retained approved baseline or current working review, separately identified in assessmentContexts. Report.temporalScope explicitly states this is not historical-knowledge reconstruction or a full effective_at/known_at query."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful account-scoped local result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LifecycleReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "405": {
+            "$ref": "#/components/responses/405"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "413": {
+            "$ref": "#/components/responses/413"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "x-implementationStatus": "implemented_local_only"
+      }
+    },
+    "/api/project-lifecycle/restore-receipts": {
+      "get": {
+        "operationId": "getLocalProjectLifecycleRestoreReceipts",
+        "summary": "Read installation-local import restore receipts",
+        "tags": [
+          "Implemented local business ledger"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "x-esia-account",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 192
+            },
+            "description": "Existing local account routing selector; omitted selects local-default. The resulting ledger uses the existing account custody UUID. This selector is not authentication."
+          },
+          {
+            "name": "x-esia-actor",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/ApplicationId"
+            },
+            "description": "Local process attribution for read/report/export; defaults local-owner. It is not a verified remote identity. Mutation actorId is required in the JSON body."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Installation-local restore receipts; separate from imported audit and E&S approval histories.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/RestoreReceipt"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "405": {
+            "$ref": "#/components/responses/405"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "413": {
+            "$ref": "#/components/responses/413"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "x-implementationStatus": "implemented_local_only"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProjectLifecycleExchange": {
+        "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/ProjectLifecycleExchange"
+      },
+      "LifecycleCommandRequest": {
+        "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LifecycleCommandRequest"
+      },
+      "LifecycleImportRequest": {
+        "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LifecycleImportRequest"
+      },
+      "LifecycleReport": {
+        "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LifecycleReport"
+      },
+      "RestoreReceipt": {
+        "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/RestoreReceipt"
+      },
+      "LocalError": {
+        "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LocalError"
+      },
+      "LifecycleDomainEvent": {
+        "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LifecycleDomainEvent"
+      }
+    },
+    "responses": {
+      "400": {
+        "description": "Malformed or unsupported fields, IDs, graph relationships, values or selectors.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LocalError"
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Loopback/origin/account guard or current adapter authority denies the operation.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LocalError"
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Selected existing record, report snapshot or investment is unavailable in the permitted context.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LocalError"
+            }
+          }
+        }
+      },
+      "405": {
+        "description": "Unsupported operation or HTTP method.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LocalError"
+            }
+          }
+        }
+      },
+      "409": {
+        "description": "Stale CAS revision, conflicting retained history, changed existing identity/source/baseline authority, or required local verification missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LocalError"
+            }
+          }
+        }
+      },
+      "413": {
+        "description": "Four-MiB exchange/request or bounded records/projects/revisions limit exceeded.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LocalError"
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Redacted local failure; no physical paths, source content or database details are disclosed.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LocalError"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ProposedHostedBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "DESIGN ONLY / DISABLED. A future host must validate issuer, audience, expiry and current native account/resource grants. Token possession, imported roles and ledger references alone do not confer access."
+      }
+    }
+  },
+  "x-runtimeLimits": {
+    "maxProjects": 100,
+    "maxRecordsPerCollection": 500,
+    "maxTotalRecords": 2000,
+    "maxExchangeBytes": 4194304,
+    "maxLedgerRevision": 250,
+    "maxUpsertRecords": 100,
+    "maxBatchCommands": 30,
+    "moneyIntegerDigits": 18,
+    "moneyFractionDigits": 12,
+    "shareFractionDigits": 6,
+    "extensions": "No namespaces enabled by default; registry validation required before nonempty extension writes."
+  },
+  "x-commandSemantics": {
+    "projects-set": "Replace explicit bindings to existing account projects and their current canonical real-world identities; no new Project is created.",
+    "upsert": "One known collection per command; records use proposal schemas. Server sets revision/actor/timestamps and resets reviewStatus=unreviewed; client verification claims are forbidden.",
+    "verify": "Explicit local human attestation of one record after current original-byte verification. Stores installation-local verification receipt for the exact record hash; any update invalidates it.",
+    "batch": "Up to30 project-selection/upsert commands in one atomic CAS transition; cannot include verification or approval.",
+    "approve": "Requires selected project context, explicit human statement, every current record verified in this installation and retained original-byte proof. Freezes only business context at its exact pre-command revision; existing E&S baselines/compliance are unaffected.",
+    "import": "Atomic current-authority/source-byte validation plus full historical structural/hash consistency; same-account empty ledger restore or exact replay only. Imported verified claims/approval/audit history cannot independently prove origin/past authority, create fresh local verification receipts, or silently rebase divergent histories."
+  },
+  "x-historyAndAudit": {
+    "emptyRevision": 0,
+    "history": "Entry n contains exact pre-command snapshot revision n, actor/time and digest; complete length equals current revision.",
+    "audit": "Entry n+1 links previous audit hash and command.resultSha256 to the resulting snapshot. Audit is tamper evidence within retained data, not an external timestamp service or legal signature.",
+    "snapshots": "Existing approved assessment bytes and histories remain in their original authority. Ledger approvedSnapshots are a separate business-context type."
+  },
+  "x-proposedHostedProfile": {
+    "status": "design_only_not_implemented_or_deployed",
+    "pathsNotInstalled": [
+      "/v1/accounts/{accountId}/project-lifecycle",
+      "/v1/accounts/{accountId}/project-lifecycle/commands",
+      "/v1/accounts/{accountId}/project-lifecycle/exchanges",
+      "/v1/accounts/{accountId}/project-lifecycle/reports"
+    ],
+    "authorization": {
+      "security": [
+        {
+          "ProposedHostedBearer": []
+        }
+      ],
+      "requirements": [
+        "Verify native identity issuer/audience/expiry and account participation.",
+        "Evaluate current project/source/engagement/case resource grants at every read/write/export/search.",
+        "Bind actor from verified server principal; reject caller-selected actor and imported authorization claims.",
+        "Keep cross-account and restricted-case existence redacted."
+      ]
+    },
+    "concurrency": "ETag/If-Match content revision with account+actor+operation scoped Idempotency-Key bound to request-body hash.",
+    "pagination": "Cursor-bound account/project/scope filters, deterministic order and byte/count caps; no unbounded scans.",
+    "events": {
+      "schema": {
+        "$ref": "../../schemas/project-lifecycle.schema.json#/$defs/LifecycleDomainEvent"
+      },
+      "status": "Optional future transactional outbox only; transport/worker/consumer/schedule disabled.",
+      "semantics": "At-least-once if later enabled; deduplicate by eventId+eventSchemaVersion and recheck current authority. No sensitive person/case/source bytes in payload."
+    },
+    "enablementGates": [
+      "Reviewed tenant/resource authorization adapter and negative security tests.",
+      "Measured request volume, idle behavior, byte/time budgets and bounded stop condition.",
+      "Explicit deployment configuration and local/self-hosted/managed contract conformance.",
+      "Rehearsed backup/migration/rollback; no automatic physical rewrite."
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+name: Practitioner workflow feedback
+description: Describe a professional task and where the application fails to support it.
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: Task, expected deliverable and observed difficulty
+      description: Use a synthetic example and explain the professional outcome. Do not include confidential assignment information.
+    validations:
+      required: true
+  - type: textarea
+    id: improvement
+    attributes:
+      label: Proposed improvement and how a practitioner would verify it

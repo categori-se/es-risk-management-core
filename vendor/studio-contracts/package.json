@@ -1,0 +1,42 @@
+{
+  "name": "@categori/studio-contracts",
+  "version": "0.5.0",
+  "description": "Provider-neutral contracts for local and hosted AI studios",
+  "type": "module",
+  "license": "Apache-2.0",
+  "exports": {
+    ".": "./src/index.js",
+    "./applications": "./src/applications.js",
+    "./document-evaluations": "./src/document-evaluations.js",
+    "./evaluations": "./src/evaluations.js",
+    "./gateway": "./src/gateway.js",
+    "./manifests": "./src/manifests.js",
+    "./otel-genai": "./src/otel-genai.js",
+    "./projects": "./src/projects.js",
+    "./releases": "./src/releases.js",
+    "./schemas/document-evaluation-result.schema.json": "./schemas/document-evaluation-result.schema.json",
+    "./schemas/document-review-decision.schema.json": "./schemas/document-review-decision.schema.json",
+    "./schemas/document-set-manifest.schema.json": "./schemas/document-set-manifest.schema.json",
+    "./schemas/evaluation-rubric.schema.json": "./schemas/evaluation-rubric.schema.json",
+    "./schemas/project-manifest.schema.json": "./schemas/project-manifest.schema.json",
+    "./schemas/release-record.schema.json": "./schemas/release-record.schema.json",
+    "./schemas/release-record-v2.schema.json": "./schemas/release-record-v2.schema.json",
+    "./schemas/workspace-manifest.schema.json": "./schemas/workspace-manifest.schema.json"
+  },
+  "files": [
+    "src",
+    "schemas",
+    "README.md",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "check:public-tree": "node scripts/check-public-tree.mjs",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

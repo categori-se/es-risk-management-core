@@ -1,0 +1,122 @@
+{
+  "format": "esia-consultancy-operations-preparation",
+  "schemaVersion": 1,
+  "scope": {
+    "accountId": null,
+    "projectId": null,
+    "engagementId": null,
+    "sourceCommit": null,
+    "deploymentProfile": null,
+    "deploymentConfigurationSha256": null
+  },
+  "observationMode": "preparation_only",
+  "checks": [
+    {
+      "id": "mandate_rights",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "deployment_boundary",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "onboarding_roles",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "protected_stakeholders",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "ai_retrieval",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "key_custody",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "backup_recovery",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "revocation",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "retention_closeout",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "incident_response",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "technical_briefing",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "retrospective",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    },
+    {
+      "id": "longitudinal",
+      "status": "pending",
+      "ownerReference": null,
+      "notes": "",
+      "notApplicableReason": null,
+      "evidence": []
+    }
+  ],
+  "deploymentAccepted": false,
+  "professionalApprovalGranted": false,
+  "independentReviewEstablished": false
+}

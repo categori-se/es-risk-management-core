@@ -1,0 +1,18 @@
+E&S Risk Management Core
+Copyright 2026 categori.se and contributors.
+
+Application-owned Community source is licensed under the Apache License,
+Version 2.0; see LICENSE. Third-party components retain their own terms.
+This licence does not grant rights to employer, client, institutional or other
+third-party content. A source hash or repository access supplies no such rights.
+
+Vendored shared modules retain their existing LICENSE and NOTICE files.
+Production dependency licenses and notices are recorded in
+src/lib/software-attributions.js and src/data/software-notices.txt.
+Institutional names and standards references identify their respective owners;
+they do not imply endorsement, certification, source permissions or compliance.
+
+The exact buffers 0.1.1 upstream MIT/X11 notice and manual provenance are
+preserved in third-party/buffers-0.1.1-NOTICE.txt and
+third-party/buffers-0.1.1-provenance.json. Generated npm metadata retains
+its published missing-license-field status; see ACKNOWLEDGEMENTS.md.

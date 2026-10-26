@@ -1,0 +1,11 @@
+# Security policy
+
+Keep vulnerability details, client documents, credentials and identifying logs out of public issues. Use the repository's private vulnerability reporting facility when enabled. If it is unavailable, request a private reporting channel from the maintainer without disclosing the vulnerability or client data. No response-time commitment or independently certified assurance is currently advertised.
+
+A useful private report identifies the affected release/commit, deployment profile, synthetic reproduction, expected authorization boundary and observed impact. Provide minimized synthetic requests and omit tokens, document contents and personal information. Reports should distinguish local single-owner custody partitions from the separately authenticated hosted service.
+
+The maintainer reproduces reports in an isolated local environment, records affected versions, prepares a fix/regression test, reviews disclosure and rollback impact, and publishes a coordinated advisory after affected users have an upgrade path. A suspected production incident requires the deployment owner's incident procedure and authority; a software issue does not authorize changing unrelated infrastructure or reading client content.
+
+Use the reviewed Community preview commit identified by its source manifest and available release evidence, and inspect its stated limits. Verify a detached signature when the protected release signer has been configured; the current unsigned manifest is not an authenticated release. No formal long-term-support window is claimed. Essential vulnerability fixes, authorization controls, basic auditability and project export are part of the community core.
+
+The local runtime binds to loopback, validates exact Host/Origin and serves one trusted computer owner. Other users on the same OS instance can reach TCP loopback; file ownership alone does not isolate its API. It is not a multi-user public server. Keep storage private, encrypt devices and backups, and use separate devices/VMs with storage and network boundaries or the authenticated service when users require independent access. Record provider routing and source permissions before enabling any optional AI processing. See `docs/community/` and the deployment-specific assurance evidence for precise support and verification scope.

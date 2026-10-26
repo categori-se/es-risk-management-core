@@ -1,0 +1,16 @@
+{
+  "name": "@categori/app-core",
+  "version": "0.1.0-alpha.1",
+  "description": "Shared semantic theme roles and scoped color-mode behavior for distinct categori applications.",
+  "private": true,
+  "exports": {
+    "./theme.css": "./styles/theme.css"
+  },
+  "files": [
+    "styles",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "license": "Apache-2.0"
+}

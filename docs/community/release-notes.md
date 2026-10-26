@@ -1,0 +1,11 @@
+# Community source preview 0.1.0-preview.1
+
+This Community source preview includes independently installed local operation, a selective runtime/source manifest, Linux container packaging, a dedicated customer AWS reference, contributor guidance and synthetic install/restore acceptance to the existing E&S workflow. It does not publish the private repository, a container registry artifact, institutional originals or private operational configuration.
+
+The community profile includes manual evidence/assessment/action/report workflows, engagement and monitoring tools, project/financing lifecycle records, safe local custody controls, basic audit records, open provider interfaces and portable data. No commercial account or categori.se endpoint is needed for those core workflows. Optional managed operations and enterprise integrations are separate deployment/service concerns.
+
+The builder resolves the current local asset table and static/dynamic module import closure. It excludes hosted operations and storage migration receipts, real-project catalog JSON, hidden evaluation rubrics, Git history, client originals and environment credentials. Community identity/platform settings contain no production defaults; the private account-specific AWS AI adapter is disabled while compatible local/public adapters remain available. An empty resource catalog accepts the installation owner's explicitly permitted content.
+
+Application-owned Community source is licensed under [Apache-2.0](../../LICENSE), as selected by the repository owner. Third-party module licences and notices remain included; the application licence grants no rights to institutional or client originals. No independent practitioner/security certification, enterprise readiness or AWS runtime acceptance is claimed by the local tests.
+
+Use semantic preview versions for interfaces/package changes, keep the exact source commit and image digest with every release, and retain the preceding image/application package plus a consistent stopped backup for rollback. Source packages, installation artifacts and hosted deployment receipts have different scopes; promotion must identify the actual tested artifact. Do not infer a completed release merely from this file or an uncommitted package build.

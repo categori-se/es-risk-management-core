@@ -1,0 +1,73 @@
+body.fv-modal-open {overflow: hidden;}
+.fv-overlay {--fv-ink: var(--lw-ink, var(--app-text, #1b2922)); --fv-muted: var(--lw-muted, var(--app-text-muted, #53665b)); --fv-surface: var(--lw-surface, var(--app-surface, #fff)); --fv-raised: var(--lw-raised, var(--app-surface-raised, #f4f6f3)); --fv-line: var(--lw-line, var(--app-border, #cbd6ce)); --fv-accent: var(--lw-accent, var(--app-accent, #165c3a)); --fv-danger: var(--lw-danger, var(--app-danger, #9c3030)); position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; padding: 20px; background: rgb(10 24 18 / .72); color: var(--fv-ink); font: 16px/1.5 system-ui, sans-serif;}
+.fv-overlay[data-theme=dark] {--fv-ink: var(--lw-ink, var(--app-text, #e4ece6)); --fv-muted: var(--lw-muted, var(--app-text-muted, #acbdb2)); --fv-surface: var(--lw-surface, var(--app-surface, #15231b)); --fv-raised: var(--lw-raised, var(--app-surface-raised, #1d3025)); --fv-line: var(--lw-line, var(--app-border, #405448)); --fv-accent: var(--lw-accent, var(--app-accent, #91c9a5)); --fv-danger: var(--lw-danger, var(--app-danger, #f2aaa3));}
+.file-viewer, .file-viewer * {box-sizing: border-box;}
+.file-viewer {display: flex; flex-direction: column; width: min(1240px, 100%); height: min(94dvh, 1100px); min-width: 0; min-height: 0; border: 1px solid var(--fv-line); border-radius: 12px; background: var(--fv-surface); box-shadow: 0 20px 80px rgb(0 0 0 / .3); overflow: hidden;}
+.file-viewer [hidden] {display: none !important;}
+.file-viewer p, .file-viewer h2, .file-viewer h3 {margin: 0;}
+.file-viewer button, .file-viewer input {font: inherit; color: inherit;}
+.file-viewer button {cursor: pointer; min-height: 40px; border: 1px solid var(--fv-line); border-radius: 6px; padding: 7px 12px; background: var(--fv-surface); color: var(--fv-accent); font-size: .85rem; font-weight: 600; white-space: nowrap;}
+.file-viewer button:hover:not(:disabled) {background: var(--fv-raised); border-color: var(--fv-accent);}
+.file-viewer :disabled {opacity: .5; cursor: default;}
+.file-viewer :focus-visible {outline: 3px solid var(--fv-accent); outline-offset: 3px;}
+.fv-header {display: flex; justify-content: space-between; align-items: start; gap: 18px; padding: 18px 22px 13px; border-bottom: 1px solid var(--fv-line); flex-shrink: 0;}
+.fv-heading {min-width: 0;}
+.file-viewer .fv-eyebrow {color: var(--fv-accent); text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; font-weight: 700; margin-bottom: 4px;}
+.file-viewer .fv-title {font-size: 1.25rem; line-height: 1.3; overflow-wrap: anywhere; max-height: 4em; overflow: auto;}
+.file-viewer .fv-identity {color: var(--fv-muted); font: .7rem/1.5 ui-monospace, Consolas, monospace; overflow-wrap: anywhere; margin-top: 7px;}
+.fv-toolbar {display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 12px 22px; background: var(--fv-raised); border-bottom: 1px solid var(--fv-line); flex-shrink: 0;}
+.fv-pager, .fv-zoom {display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0;}
+.fv-page-label, .fv-page-total {font-size: .8rem;}
+.file-viewer .fv-page-input {width: 5.5rem; min-width: 4rem; min-height: 40px; border: 1px solid var(--fv-line); border-radius: 5px; padding: 7px 8px; background: var(--fv-surface); font-size: .85rem;}
+.fv-zoom-label {min-width: 3.2rem; text-align: center; font-size: .8rem; font-variant-numeric: tabular-nums;}
+.file-viewer .fv-status {padding: 9px 22px; color: var(--fv-muted); font-size: .8rem; flex-shrink: 0;}
+.file-viewer .fv-error {padding: 10px 22px; margin: 0; color: var(--fv-danger); border-left: 4px solid var(--fv-danger); background: var(--fv-raised); overflow-wrap: anywhere; font-size: .85rem; flex-shrink: 0; max-height: 100px; overflow: auto;}
+.fv-viewport {flex: 1 1 auto; min-height: 120px; min-width: 0; overflow: auto; overscroll-behavior: contain; padding: 20px; background: var(--fv-raised);}
+.file-viewer .fv-loading, .file-viewer .fv-note {font-size: .85rem; color: var(--fv-muted); line-height: 1.6; margin: 0 0 13px; overflow-wrap: anywhere;}
+.file-viewer .fv-content-heading {font-size: 1rem; line-height: 1.4; margin-bottom: 10px;}
+.file-viewer .fv-image-sheet {width: 100%; max-width: 1000px; margin: 0 auto 18px;}
+.fv-page-image {display: block; width: 100%; height: auto; background: #fff; border: 1px solid var(--fv-line); box-shadow: 0 2px 9px rgb(0 0 0 / .08);}
+.file-viewer .fv-image-caption {font-size: .75rem; color: var(--fv-muted); line-height: 1.5; margin-top: 10px; overflow-wrap: anywhere;}
+.file-viewer .fv-zoom-50 {width: 50%; max-width: 500px;}
+.file-viewer .fv-zoom-75 {width: 75%; max-width: 750px;}
+.file-viewer .fv-zoom-125 {width: 125%; max-width: 1250px;}
+.file-viewer .fv-zoom-150 {width: 150%; max-width: 1500px;}
+.file-viewer .fv-zoom-200 {width: 200%; max-width: 2000px;}
+.file-viewer .fv-zoom-250 {width: 250%; max-width: 2500px;}
+.file-viewer .fv-zoom-300 {width: 300%; max-width: 3000px;}
+.fv-text, .fv-metadata-text {font: .8rem/1.6 ui-monospace, Consolas, monospace; color: var(--fv-ink); white-space: pre-wrap; overflow-wrap: anywhere; margin: 10px 0; background: var(--fv-surface); border: 1px solid var(--fv-line); border-radius: 5px; padding: 15px;}
+.fv-table-region {max-width: 100%; overflow-x: auto; border: 1px solid var(--fv-line); border-radius: 5px; margin: 12px 0 20px; background: var(--fv-surface);}
+.fv-table {border-collapse: collapse; min-width: 100%; width: max-content; max-width: 3000px; font-size: .8rem;}
+.fv-table caption {text-align: left; padding: 10px 12px; font-weight: 650; color: var(--fv-ink);}
+.fv-table td {vertical-align: top; border: 1px solid var(--fv-line); padding: 7px 10px; max-width: 400px; overflow-wrap: anywhere; white-space: pre-wrap; color: var(--fv-ink);}
+.fv-warnings {margin: 0; padding: 10px 22px 10px 40px; border-top: 1px solid var(--fv-line); color: var(--fv-muted); font-size: .75rem; max-height: 90px; overflow: auto; flex-shrink: 0;}
+.fv-metadata {padding: 10px 22px; border-top: 1px solid var(--fv-line); max-height: 30%; overflow: auto; flex-shrink: 0; font-size: .8rem;}
+.file-viewer summary {color: var(--fv-accent); cursor: pointer; padding: 4px 0;}
+.fv-facts {display: grid; grid-template-columns: minmax(90px, .35fr) minmax(0, 1fr); gap: 5px 16px;}
+.fv-facts dt {color: var(--fv-muted);}
+.fv-facts dd {margin: 0; overflow-wrap: anywhere;}
+.fv-spatial {min-height: 300px; min-width: 0;}
+@media (max-width: 680px) {
+  .fv-overlay {padding: 0;}
+  .file-viewer {width: 100%; height: 100dvh; border-radius: 0; border: 0;}
+  .fv-header {padding: 14px; gap: 10px;}
+  .file-viewer .fv-title {font-size: 1.05rem;}
+  .fv-toolbar {padding: 10px 14px; gap: 10px;}
+  .fv-pager {gap: 6px;}
+  .file-viewer button {padding: 7px 9px; font-size: .78rem;}
+  .fv-header > button {white-space: normal; flex-shrink: 0;}
+  .file-viewer .fv-status, .file-viewer .fv-error, .fv-metadata {padding-left: 14px; padding-right: 14px;}
+  .fv-viewport {padding: 12px;}
+  .fv-page-label {width: auto;}
+  .fv-facts {grid-template-columns: minmax(0, 1fr); gap: 3px;}
+  .fv-facts dd {margin-bottom: 7px;}
+}
+@media print {
+  body.fv-modal-open > :not(.fv-overlay) {display: none !important;}
+  .fv-overlay {position: static; display: block; padding: 0; background: white; color: black;}
+  .file-viewer {display: block; width: 100%; height: auto; overflow: visible; border: 0; box-shadow: none;}
+  .fv-toolbar, .fv-header > button, .fv-metadata {display: none;}
+  .fv-viewport {overflow: visible; padding: 0; background: white;}
+  .file-viewer .fv-image-sheet {width: 100%; max-width: 100%;}
+  .fv-page-image {max-width: 100%; box-shadow: none;}
+}

@@ -1,0 +1,195 @@
+{
+  "@context": {
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@id": "urn:esia:engagement-concepts:1",
+  "@type": "skos:ConceptScheme",
+  "dcterms:title": "E&S Review engagement themes",
+  "dcterms:hasVersion": "1",
+  "dcterms:description": "Framework-neutral discovery themes. Shared themes and requirement mappings never transfer institutional applicability or compliance conclusions.",
+  "prov:wasDerivedFrom": "urn:esia:framework-register:2026-10-23.1",
+  "skos:hasTopConcept": [
+    {
+      "@id": "urn:esia:concept:applicability",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Which instrument applies",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Record the financing instrument, dates and contractual applicability before assessment.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    },
+    {
+      "@id": "urn:esia:concept:assessment",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Assessment and commitments",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Identify whose duties are assessed and which management or commitment records are needed.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    },
+    {
+      "@id": "urn:esia:concept:labor",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Labor and occupational safety",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Keep worker records, contractor controls and OHS evidence distinct from community safety.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    },
+    {
+      "@id": "urn:esia:concept:pollution",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Pollution and resource efficiency",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Retain sampling methods, permits, applicable limits and versions of technical guidelines.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    },
+    {
+      "@id": "urn:esia:concept:health_safety",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Community health, safety and security",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Separate worker and community exposures, emergency arrangements and security responsibilities.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    },
+    {
+      "@id": "urn:esia:concept:engagement",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Engagement and grievances",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Track disclosure, consultation, feedback and responses throughout the engagement.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    },
+    {
+      "@id": "urn:esia:concept:land",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Land and livelihoods",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Trace displacement, eligibility, entitlements, compensation and livelihood outcomes.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    },
+    {
+      "@id": "urn:esia:concept:indigenous",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Indigenous Peoples and consent",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Check the applicable consultation/consent trigger and evidence; similar terms can have different tests.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    },
+    {
+      "@id": "urn:esia:concept:biodiversity",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Biodiversity and natural resources",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Locate affected habitats, assess impacts and document management and monitoring outcomes.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    },
+    {
+      "@id": "urn:esia:concept:cultural_heritage",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Cultural heritage",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Retain field evidence, consultation, chance-find procedures and relevant consent or access arrangements.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    },
+    {
+      "@id": "urn:esia:concept:climate",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Climate and emissions",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Preserve the applicable trigger, inventory boundary and methodology; safeguards are distinct from corporate reporting.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    },
+    {
+      "@id": "urn:esia:concept:financial_intermediaries",
+      "@type": "skos:Concept",
+      "skos:prefLabel": {
+        "@value": "Financial intermediaries",
+        "@language": "en"
+      },
+      "skos:scopeNote": {
+        "@value": "Assess the intermediary system and portfolio/subproject duties separately from direct project duties.",
+        "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "urn:esia:engagement-concepts:1"
+      }
+    }
+  ]
+}

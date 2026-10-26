@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:categori:esia:ai-draft-output:v1",
+  "title": "E&S AI draft output",
+  "description": "Provider-neutral model output only. The server independently authorizes sources, verifies exact quotations and enriches canonical document/version/hash/locator citations. Schema validity is not substantive accuracy or human approval.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "state", "citations", "items"],
+  "properties": {
+    "schema": {"enum": ["es.project-answer.v1", "es.project-profile.v1", "es.document-classification.v1", "es.framework-applicability.v1", "es.requirement-evidence.v1", "es.requirement-assessment.v1", "es.esap-actions.v1", "es.monitoring-comparison.v1", "es.incident-grievance-synthesis.v1", "es.template-mapping.v1", "es.report-narrative.v1"]},
+    "state": {"const": "ai_draft"},
+    "answer": {"type": "string", "minLength": 1, "maxLength": 16000},
+    "citations": {"type": "array", "maxItems": 1000, "items": {"$ref": "#/$defs/citation"}},
+    "items": {"type": "array", "maxItems": 500, "items": {"$ref": "#/$defs/item"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 192, "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 16000},
+    "passages": {"type": "array", "maxItems": 100, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "citation": {"type": "object", "additionalProperties": false, "required": ["passageId", "quote"], "properties": {"passageId": {"$ref": "#/$defs/id"}, "quote": {"type": "string", "minLength": 1, "maxLength": 2000}}},
+    "fieldValue": {"oneOf": [{"type": ["string", "number", "boolean", "null"], "maxLength": 16000}, {"type": "array", "maxItems": 500, "items": {"$ref": "#/$defs/fieldValue"}}, {"type": "object", "propertyNames": {"not": {"enum": ["__proto__", "prototype", "constructor", "tools", "tool_calls", "function_call", "credentials", "authorization", "password", "api_key", "approved", "reviewedBy", "reviewedAt", "rights", "endpoint", "script", "onload", "onclick"]}}, "additionalProperties": {"$ref": "#/$defs/fieldValue"}}]},
+    "item": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "text", "supportingPassageIds", "contradictoryPassageIds", "missingEvidence"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "kind": {"$ref": "#/$defs/id"}, "requirementId": {"$ref": "#/$defs/id"}, "frameworkId": {"$ref": "#/$defs/id"}, "edition": {"type": "string", "minLength": 1, "maxLength": 500},
+        "coverage": {"enum": ["complete", "partial", "missing", "not_determined"]}, "adequacy": {"enum": ["adequate", "deficient", "insufficient_evidence"]},
+        "judgment": {"enum": ["compliant", "partially_compliant", "noncompliant", "undetermined", "not_assessed", "not_applicable", "supported", "insufficient_evidence"]},
+        "uncertainty": {"type": "string", "maxLength": 16000}, "text": {"$ref": "#/$defs/text"}, "supportingPassageIds": {"$ref": "#/$defs/passages"}, "contradictoryPassageIds": {"$ref": "#/$defs/passages"}, "missingEvidence": {"type": "boolean"},
+        "fields": {"type": "object", "additionalProperties": {"$ref": "#/$defs/fieldValue"}}
+      },
+      "allOf": [
+        {"if": {"properties": {"supportingPassageIds": {"maxItems": 0}, "contradictoryPassageIds": {"maxItems": 0}}, "required": ["supportingPassageIds", "contradictoryPassageIds"]}, "then": {"required": ["uncertainty"], "properties": {"missingEvidence": {"const": true}, "uncertainty": {"minLength": 1}, "judgment": {"enum": ["undetermined", "not_assessed", "insufficient_evidence"]}}}},
+        {"if": {"properties": {"judgment": {"const": "compliant"}}, "required": ["judgment"]}, "then": {"required": ["coverage", "adequacy"], "properties": {"coverage": {"const": "complete"}, "adequacy": {"const": "adequate"}, "missingEvidence": {"const": false}, "supportingPassageIds": {"minItems": 1}, "contradictoryPassageIds": {"maxItems": 0}}}},
+        {"if": {"properties": {"contradictoryPassageIds": {"minItems": 1}}, "required": ["contradictoryPassageIds"]}, "then": {"required": ["uncertainty"], "properties": {"uncertainty": {"minLength": 1}}}}
+      ]
+    }
+  }
+}

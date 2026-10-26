@@ -1,0 +1,203 @@
+/* Shared screen density. Issued document and print layouts keep their own rules. */
+@media screen {
+  :root {
+    --es-compact-gap: 8px;
+    --es-compact-padding: 12px;
+    --es-compact-radius: 4px;
+  }
+
+  body :is(.route-app, .engagement-workspace, .framework-workspace, .local-workspace, .pl-workspace,
+      .oversight-workspace, .oversight-consolidation, .oversight-comparison,
+      .project-ai, .field-capture, .publication-studio-shell, .cts-root) {
+    font-family: var(--app-font-sans, ui-sans-serif, system-ui, sans-serif);
+    font-size: .875rem;
+    line-height: 1.45;
+  }
+
+  body :is(.engagement-workspace, .framework-workspace, .local-workspace, .pl-workspace,
+      .oversight-workspace, .oversight-consolidation, .oversight-comparison,
+      .project-ai, .publication-studio-shell) {
+    padding: 14px;
+    gap: 10px;
+    max-width: 1660px;
+  }
+
+  body :is(.route-app, .engagement-workspace, .framework-workspace, .local-workspace, .pl-workspace,
+      .oversight-workspace, .oversight-consolidation, .oversight-comparison,
+      .project-ai, .field-capture, .publication-studio-shell, .cts-root) h1 {
+    font-size: 1.4rem;
+    line-height: 1.25;
+    margin-block: 0 8px;
+    letter-spacing: -.015em;
+  }
+
+  body :is(.route-app, .engagement-workspace, .framework-workspace, .local-workspace, .pl-workspace,
+      .oversight-workspace, .oversight-consolidation, .oversight-comparison,
+      .project-ai, .field-capture, .publication-studio-shell, .cts-root) h2 {
+    font-size: 1rem;
+    line-height: 1.35;
+    margin-block: 0 8px;
+  }
+
+  body :is(.route-app, .engagement-workspace, .framework-workspace, .local-workspace, .pl-workspace,
+      .oversight-workspace, .oversight-consolidation, .oversight-comparison,
+      .project-ai, .field-capture, .publication-studio-shell, .cts-root) h3 {
+    font-size: .9375rem;
+    line-height: 1.4;
+    margin-block: 0 6px;
+  }
+
+  body :is(.engagement-workspace, .framework-workspace, .local-workspace, .pl-workspace,
+      .oversight-workspace, .oversight-consolidation, .oversight-comparison,
+      .project-ai, .field-capture, .publication-studio-shell, .cts-root) p {
+    margin-block: 4px 8px;
+  }
+
+  body :is(.ew-panel, .lw-panel, .pl-panel, .framework-workspace .fw-panel, .ai-panel,
+      .oversight-workspace .ow-card, .oversight-consolidation .oc-card,
+      .publication-studio-shell .ps-account, .cts-panel) {
+    padding: var(--es-compact-padding);
+    margin-block: 0 10px;
+    border-radius: var(--es-compact-radius);
+    box-shadow: none;
+  }
+
+  body :is(.ew-header, .ew-heading, .ew-toolbar, .ew-tabs, .ew-records,
+      .pl-header, .pl-toolbar, .pl-nav, .pl-actions, .ai-header, .ai-actions,
+      .fw-toolbar, .fw-nav, .ow-heading, .ow-actions, .ow-tabs,
+      .oc-heading, .oc-actions, .oc-tabs, .ps-navigation) {
+    gap: var(--es-compact-gap);
+    margin-block: 8px;
+  }
+
+  body :is(.ew-form, .lw-form, .pl-form, .ai-context, .ai-filters, .cts-root form) {
+    gap: 10px;
+    margin-block: 10px;
+  }
+
+  body :is(.ew-record, .ai-proposal, .pl-record-list li) {
+    padding-block: 8px;
+  }
+
+  body .engagement-workspace .ew-matrix :is(th, td),
+  body .pl-workspace .pl-table-wrap :is(th, td),
+  body .oversight-workspace table :is(th, td),
+  body .oversight-consolidation table :is(th, td),
+  body .framework-workspace table :is(th, td) {
+    padding: 6px 8px;
+    line-height: 1.4;
+  }
+
+  /* Collections share one aligned reading direction; editors retain their grids. */
+  body .route-app :is(.project-hub-record-grid, .project-hub-engagements,
+                .project-hub-accounts, .project-stakeholder-grid, .journey-workspaces),
+  body .framework-workspace .fw-workflow-list,
+  body .oversight-workspace .ow-grid,
+  body .oversight-consolidation :is([data-consolidation-sources], .oc-project-grid) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  body .route-app :is(.project-hub-record-grid, .project-hub-engagements,
+                .project-hub-accounts, .project-stakeholder-grid, .journey-workspaces) > *,
+  body .framework-workspace .fw-workflow-list > *,
+  body .oversight-workspace .ow-grid > *,
+  body .oversight-consolidation :is([data-consolidation-sources], .oc-project-grid) > * {
+    min-width: 0;
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 0;
+    box-shadow: none;
+    border-width: 0 0 1px;
+    border-style: solid;
+    border-color: var(--app-border, var(--line, #ccd8cf));
+  }
+
+  body :is(.pl-metrics, .ow-metrics) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin-block: 8px;
+  }
+
+  body :is(.pl-metrics, .ow-metrics) > * {
+    padding: 6px 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  body .pl-metrics strong {font-size: 1.15rem;}
+
+  body .product-overview {padding: 14px; line-height: 1.45;}
+  body .product-overview h1 {font-size: clamp(1.5rem, 3vw, 2rem); max-width: 36ch;}
+  body .product-overview section {margin-block: 16px;}
+  body .product-overview .product-hero {padding: 16px; border-radius: 4px;}
+  body .product-overview :is(.product-cards, .product-outcomes) {grid-template-columns: minmax(0, 1fr); gap: 0;}
+  body .product-overview :is(.product-cards > section, .product-cards > details, .product-outcomes > li) {
+    padding: 10px 12px;
+    margin: 0;
+    border-radius: 0;
+    border-width: 0 0 1px;
+    box-shadow: none;
+  }
+  body .product-overview :is(.product-cards, .product-outcomes) p {margin-block: 4px 8px;}
+  body .product-overview .product-table :is(th, td) {padding: 6px 8px;}
+
+  body .local-workspace :is(.lw-layout, .lw-main, .lw-sidebar, .lw-grid) {gap: 10px;}
+  body .local-workspace .lw-account-panel {padding: 12px; gap: 8px; margin-block: 10px; border-radius: 4px;}
+  body .local-workspace .lw-record-list {gap: 0; margin-block: 8px 0;}
+  body .local-workspace .lw-record {padding-block: 6px;}
+  body .local-workspace .lw-record-details > summary {padding: 5px 0; line-height: 1.35; overflow-wrap: anywhere;}
+  body .local-workspace .lw-record-details > summary strong {font-size: .9375rem;}
+  body .local-workspace .lw-row-meta {display: block; margin: 2px 0 0 16px; font-size: .8125rem; color: var(--lw-muted);}
+  body .local-workspace .lw-record-detail-body {padding: 6px 0 6px 16px; overflow-wrap: anywhere;}
+  body .local-workspace .lw-row-actions {display: flex; flex-wrap: wrap; gap: 0 16px; padding-left: 16px;}
+  body .local-workspace .lw-row-actions > details {min-width: 0; max-width: 100%;}
+  body .local-workspace .lw-row-actions > details[open] {flex-basis: 100%;}
+  body .local-workspace .lw-row-actions > details > summary {padding-block: 5px;}
+
+  /* The institution directory uses the plain launcher, unlike settings rows. */
+  body .route-app .launcher-grid:has(> .workspace-card) {grid-template-columns: minmax(0, 1fr); gap: 0;}
+  body .route-app .launcher-grid > .workspace-card {display: grid; grid-template-columns: minmax(160px, .8fr) minmax(0, 1.5fr); align-items: center; gap: 6px 16px; padding: 8px 10px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; box-shadow: none;}
+  body .route-app .launcher-grid > .workspace-card :is(h2, p) {margin: 0; font-size: .9375rem; line-height: 1.4; overflow-wrap: anywhere;}
+  body .route-app .launcher-grid > .workspace-card a {display: inline-flex; align-items: center; min-height: 32px;}
+}
+
+@media screen and (min-width: 769px) and (pointer: fine) {
+  body :is(.engagement-workspace, .framework-workspace, .local-workspace, .pl-workspace,
+      .oversight-workspace, .oversight-consolidation, .oversight-comparison,
+      .project-ai, .cts-root, .source-intake, .project-documents)
+    :is(button, summary, input:not([type=checkbox]):not([type=radio]):not([type=file]), select:not([multiple])) {
+    min-height: 32px;
+    padding: 5px 8px;
+    border-radius: var(--es-compact-radius);
+    font-size: .875rem;
+  }
+
+  body .engagement-workspace .project-documents .pd-table [data-document-select] {min-height: 32px;}
+}
+
+@media screen and (max-width: 768px), screen and (pointer: coarse) {
+  body :is(.route-app, .engagement-workspace, .framework-workspace, .local-workspace, .pl-workspace,
+      .oversight-workspace, .oversight-consolidation, .oversight-comparison,
+      .project-ai, .field-capture, .publication-studio-shell, .cts-root) {
+    font-size: 1rem;
+  }
+
+  body :is(.engagement-workspace, .framework-workspace, .local-workspace, .pl-workspace,
+      .oversight-workspace, .oversight-consolidation, .oversight-comparison,
+      .project-ai, .field-capture, .publication-studio-shell, .cts-root,
+      .project-documents, .source-intake)
+    :is(button, summary, input:not([type=checkbox]):not([type=radio]), select) {
+    min-height: 44px;
+    font-size: 1rem;
+  }
+
+  body .project-documents .pd-table [data-document-select] {min-height: 44px;}
+  body .local-workspace .lw-row-meta {font-size: .875rem;}
+  body .local-workspace .lw-row-actions {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 10px;}
+  body .local-workspace .lw-row-actions > details[open] {grid-column: 1 / -1;}
+  body .route-app .launcher-grid > .workspace-card {grid-template-columns: minmax(0, 1fr); gap: 2px;}
+  body .route-app .launcher-grid > .workspace-card a {min-height: 44px; min-width: 44px;}
+}

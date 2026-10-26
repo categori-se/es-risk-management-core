@@ -1,0 +1,19 @@
+{
+  "name": "@categori/app-connections-streams",
+  "version": "0.1.0-alpha.3",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./index.mjs",
+    "./download": "./download.mjs",
+    "./private-object": "./private-object.mjs",
+    "./object-download": "./object-download.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "license": "Apache-2.0"
+}

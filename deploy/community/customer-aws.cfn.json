@@ -1,0 +1,39 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "E&S Review dedicated single-owner reference. No public application ingress; operator uses SSM port forwarding. Creates billable EC2 and encrypted retained EBS; not a shared multi-user service.",
+  "Parameters": {
+    "VpcId": {"Type": "AWS::EC2::VPC::Id"},
+    "SubnetId": {"Type": "AWS::EC2::Subnet::Id", "Description": "Customer subnet with HTTPS egress to SSM and the selected image registry; no inbound application connection required."},
+    "AvailabilityZone": {"Type": "AWS::EC2::AvailabilityZone::Name", "Description": "Must match SubnetId."},
+    "AmiId": {"Type": "AWS::EC2::Image::Id", "Description": "Approved immutable x86_64 Linux AMI with podman, active SSM Agent, xfsprogs, curl and systemd already installed. Record its provenance; bootstrap never installs unpinned OS packages."},
+    "ApplicationImage": {"Type": "String", "AllowedPattern": "(?:docker\\.io|public\\.ecr\\.aws)/[A-Za-z0-9_./-]+@sha256:[a-f0-9]{64}", "Description": "Approved digest-pinned community image accessible without private credentials. Verify the signed image/OCI digest before supplying it."},
+    "ReleaseIdentifier": {"Type": "String", "AllowedPattern": "[A-Za-z0-9._-]{1,100}", "Description": "Approved release or source commit bound to the assurance package."},
+    "InstanceType": {"Type": "String", "Default": "t3.small", "AllowedValues": ["t3.small", "t3.medium"]},
+    "DataGiB": {"Type": "Number", "Default": 32, "MinValue": 8, "MaxValue": 1024}
+  },
+  "Resources": {
+    "InstanceRole": {"Type": "AWS::IAM::Role", "Properties": {"AssumeRolePolicyDocument": {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Principal": {"Service": "ec2.amazonaws.com"}, "Action": "sts:AssumeRole"}]}, "ManagedPolicyArns": [{"Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore"}]}},
+    "InstanceProfile": {"Type": "AWS::IAM::InstanceProfile", "Properties": {"Roles": [{"Ref": "InstanceRole"}]}},
+    "SecurityGroup": {"Type": "AWS::EC2::SecurityGroup", "Properties": {"GroupDescription": "No inbound ports. HTTPS egress only for SSM and approved registry.", "VpcId": {"Ref": "VpcId"}, "SecurityGroupIngress": [], "SecurityGroupEgress": [{"IpProtocol": "tcp", "FromPort": 443, "ToPort": 443, "CidrIp": "0.0.0.0/0", "Description": "SSM and digest-pinned image fetch. Customer may replace with private endpoint routes."}]}},
+    "DataVolume": {"Type": "AWS::EC2::Volume", "DeletionPolicy": "Retain", "UpdateReplacePolicy": "Retain", "Properties": {"AvailabilityZone": {"Ref": "AvailabilityZone"}, "Encrypted": true, "VolumeType": "gp3", "Size": {"Ref": "DataGiB"}, "Tags": [{"Key": "Name", "Value": "esia-private-client-data"}, {"Key": "Release", "Value": {"Ref": "ReleaseIdentifier"}}]}},
+    "Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "ImageId": {"Ref": "AmiId"}, "InstanceType": {"Ref": "InstanceType"},
+        "IamInstanceProfile": {"Ref": "InstanceProfile"},
+        "NetworkInterfaces": [{"DeviceIndex": "0", "AssociatePublicIpAddress": false, "SubnetId": {"Ref": "SubnetId"}, "GroupSet": [{"Ref": "SecurityGroup"}]}],
+        "MetadataOptions": {"HttpTokens": "required", "HttpEndpoint": "enabled", "HttpPutResponseHopLimit": 1},
+        "BlockDeviceMappings": [{"DeviceName": "/dev/xvda", "Ebs": {"Encrypted": true, "VolumeType": "gp3", "VolumeSize": 16, "DeleteOnTermination": true}}],
+        "Tags": [{"Key": "Name", "Value": "esia-dedicated-single-owner"}, {"Key": "Release", "Value": {"Ref": "ReleaseIdentifier"}}],
+        "UserData": {"Fn::Base64": {"Fn::Sub": "#!/bin/bash\nset -euo pipefail\numask 077\ncommand -v podman\ncommand -v mkfs.xfs\ngetent passwd 1000 >/dev/null || useradd --uid 1000 --create-home esia\nmkdir -p /var/lib/esia\nvolume_id='${DataVolume}'\nserial_id=$(printf '%s' \"$volume_id\" | tr -d '-')\ndevice=\nfor attempt in $(seq 1 60); do\n  for candidate in /dev/disk/by-id/nvme-Amazon_Elastic_Block_Store_*; do\n    if [[ \"$candidate\" == *\"$serial_id\" ]]; then device=$(readlink -f \"$candidate\"); break; fi\n  done\n  [[ -n \"$device\" ]] && break\n  sleep 5\ndone\n[[ -b \"$device\" ]] || { echo 'Retained data volume was not attached within five minutes.' >&2; exit 1; }\nif ! blkid \"$device\" >/dev/null 2>&1; then mkfs.xfs \"$device\"; fi\nuuid=$(blkid -s UUID -o value \"$device\")\nprintf 'UUID=%s /var/lib/esia xfs defaults,nofail 0 2\\n' \"$uuid\" >> /etc/fstab\nmount /var/lib/esia\nchown 1000:1000 /var/lib/esia\nchmod 0700 /var/lib/esia\npodman pull '${ApplicationImage}'\ncat >/etc/systemd/system/esia-review.service <<'UNIT'\n[Unit]\nDescription=E&S Review dedicated loopback workspace\nAfter=network-online.target\nRequiresMountsFor=/var/lib/esia\n[Service]\nType=simple\nExecStart=/usr/bin/podman run --rm --name esia-review --network host --user 1000:1000 --read-only --cap-drop ALL --security-opt no-new-privileges --pids-limit 128 --memory 1g --tmpfs /tmp:rw,noexec,nosuid,nodev,size=256m,mode=1777 --volume /var/lib/esia:/data:Z '${ApplicationImage}'\nExecStop=/usr/bin/podman stop --time 15 esia-review\nTimeoutStopSec=30\nRestart=no\n[Install]\nWantedBy=multi-user.target\nUNIT\nsystemctl daemon-reload\nsystemctl enable --now esia-review.service\npodman image inspect '${ApplicationImage}' >/var/lib/esia/deployment-image.json\nprintf '%s\\n' '${ReleaseIdentifier}' >/var/lib/esia/deployment-release.txt\n"}}
+      }
+    },
+    "DataAttachment": {"Type": "AWS::EC2::VolumeAttachment", "Properties": {"Device": "/dev/sdf", "InstanceId": {"Ref": "Instance"}, "VolumeId": {"Ref": "DataVolume"}}}
+  },
+  "Outputs": {
+    "InstanceId": {"Value": {"Ref": "Instance"}},
+    "RetainedDataVolumeId": {"Value": {"Ref": "DataVolume"}},
+    "Release": {"Value": {"Ref": "ReleaseIdentifier"}},
+    "Access": {"Value": "Use customer-authorized AWS-StartPortForwardingSession port 4173, then http://127.0.0.1:4173. Local accounts are one operator's custody partitions."}
+  }
+}

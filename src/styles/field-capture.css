@@ -1,0 +1,63 @@
+.field-capture {--ink:var(--app-text,var(--lw-ink,#1b211d));--surface:var(--app-surface,var(--lw-surface,#fff));--surface-2:var(--app-surface-raised,var(--lw-raised,#f8f6f1));--muted:var(--app-text-muted,var(--lw-muted,#677069));--line:var(--app-border,var(--lw-line,#ded8ce));--line-strong:var(--app-border-strong,var(--lw-line,#c8bfb2));--green:var(--app-accent,var(--lw-accent,#165c3a));--green-soft:var(--app-accent-soft,var(--lw-soft,#e3f0e8));--amber:var(--app-warning,#875412);--amber-soft:var(--app-warning-soft,#fbeddc);--red:var(--app-danger,var(--lw-danger,#b94848));--teal:var(--app-info,#2e7885);color:var(--ink);font-size:1rem;line-height:1.6;max-width:1180px;margin-inline:auto;overflow-wrap:anywhere}
+.fieldwork-navigation {display:flex;flex-wrap:wrap;gap:.5rem;margin-block:.75rem}
+.fieldwork-navigation a {display:inline-flex;align-items:center;min-height:44px;padding:.25rem .65rem}
+.fieldwork-page .fc-account {max-width:36rem;margin-bottom:1rem}
+.fieldwork-page .fc-account select {min-height:44px}
+.field-capture * {box-sizing:border-box}
+.field-capture .fc-heading {display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.field-capture h1 {font-size:clamp(1.7rem,4vw,2.3rem);line-height:1.2;margin:.25rem 0 .65rem}
+.field-capture h2 {font-size:1.3rem;margin:0 0 .7rem}
+.field-capture p {margin:.5rem 0 1rem}
+.field-capture .fc-eyebrow {color:var(--green,#165c3a);font-weight:700;margin-bottom:.4rem}
+.field-capture .fc-layout {display:grid;grid-template-columns:minmax(0,2fr) minmax(260px,1fr);gap:1rem;align-items:start}
+.field-capture .fc-panel {border:1px solid var(--line,#ded8ce);background:var(--surface,#fff);border-radius:10px;padding:clamp(1rem,3vw,1.5rem);min-width:0}
+.field-capture .fc-vault {max-width:620px;margin:1rem auto}
+.field-capture fieldset {border:0;padding:0;margin:0;min-width:0}
+.field-capture legend {font-size:1.15rem;font-weight:700;margin-bottom:.75rem}
+.field-capture .fc-fields {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-block:1rem}
+.field-capture .fc-wide {grid-column:1/-1}
+.field-capture label {display:grid;gap:.35rem;min-width:0;margin-bottom:.75rem;font-weight:600}
+.field-capture label small {font-weight:400;line-height:1.5}
+.field-capture input,.field-capture textarea,.field-capture select {width:100%;min-height:46px;border:1px solid var(--line-strong,#c8bfb2);border-radius:6px;padding:.65rem .75rem;background:var(--surface,#fff);color:var(--ink,#1b211d);font:inherit;max-width:100%}
+.field-capture textarea {resize:vertical}
+.field-capture button {min-height:46px;max-width:100%;border:1px solid var(--line-strong,#c8bfb2);border-radius:6px;padding:.65rem .85rem;background:var(--surface-2,#f8f6f1);color:var(--ink,#1b211d);font:inherit;font-weight:650;line-height:1.35;cursor:pointer}
+.field-capture button:disabled {opacity:.6;cursor:wait}
+.field-capture button:focus-visible,.field-capture input:focus-visible,.field-capture select:focus-visible,.field-capture textarea:focus-visible,.field-capture summary:focus-visible {outline:3px solid var(--teal,#2e7885);outline-offset:3px}
+.field-capture .fc-primary,.field-capture button[aria-pressed=true] {background:var(--green-soft,#e3f0e8);border-color:var(--green,#165c3a);color:var(--ink,#1b211d)}
+.field-capture .fc-kinds,.field-capture .fc-actions {display:flex;flex-wrap:wrap;gap:.65rem;margin:.65rem 0 1rem}
+.field-capture .fc-kinds button {flex:1 0 110px}
+.field-capture details {border-top:1px solid var(--line,#ded8ce);padding-top:.6rem;margin-top:1rem}
+.field-capture summary {min-height:46px;padding:.5rem 0;font-weight:700;cursor:pointer}
+.field-capture .fc-help,.field-capture small {color:var(--muted,#677069);font-size:.94rem}
+.field-capture .fc-status {min-height:1.6rem;white-space:pre-wrap}
+.field-capture .fc-error {color:var(--red,#b94848);font-weight:600}
+.field-capture .fc-notice {background:var(--amber-soft,#fbeddc);border-left:3px solid var(--amber,#875412);padding:.85rem;color:var(--ink,#1b211d)}
+.field-capture .fc-save-state {font-weight:700}
+.field-capture .fc-drafts,.field-capture .fc-attachments {list-style:none;padding:0;margin:0}
+.field-capture .fc-drafts>li,.field-capture .fc-attachments>li {padding-block:1rem;border-top:1px solid var(--line,#ded8ce);display:grid;gap:.35rem}
+.field-capture .fc-drafts span {font-size:.95rem;color:var(--muted,#677069)}
+.field-capture .fc-attachments code {font-size:.8rem;white-space:normal;word-break:break-all}
+.field-capture .fc-check {display:flex;align-items:flex-start;font-weight:400;gap:.7rem}
+.field-capture .fc-check input {min-width:22px;width:22px;min-height:22px;margin-top:.2rem}
+.field-capture .fc-sr {position:absolute!important;width:1px!important;height:1px!important;min-height:0!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@media(max-width:850px) {.field-capture .fc-layout {grid-template-columns:minmax(0,1fr)}.field-capture .fc-heading {flex-wrap:wrap}.field-capture .fc-heading>button {margin-left:auto}}
+@media(max-width:520px) {.field-capture .fc-fields {grid-template-columns:minmax(0,1fr)}.field-capture .fc-kinds {gap:.5rem}.field-capture .fc-kinds button {flex-basis:calc(50% - .5rem)}.field-capture .fc-actions>button {flex:1 1 180px}.field-capture .fc-panel {border-radius:7px}.field-capture {font-size:1rem}}
+
+/* Prepared mission tools share the local theme and strict CSP. Source content
+   uses inert text/static rasters; generated geometry has no external basemap. */
+.fieldwork-page [data-mission-brief],.fieldwork-page [data-mission-panel],.fieldwork-page [data-mission-source-viewer],.fieldwork-page [data-mission-offline-review] {min-width:0;max-width:100%;overflow-wrap:anywhere}
+.fieldwork-page .fc-offline-text,.field-capture .fc-offline-text {white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;max-height:65vh;overflow:auto;min-width:0;max-width:100%;font-size:.85rem;line-height:1.5}
+.fieldwork-page .fc-offline-raster {display:block;max-width:100%;max-height:70vh;object-fit:contain}
+.fieldwork-page .fc-offline-map {display:block;width:100%;height:auto;max-width:650px}
+.fieldwork-page .fc-offline-hash {overflow-wrap:anywhere;word-break:break-word}
+.fieldwork-page [data-mission-brief] .fc-panel,.fieldwork-page [data-field-transfer-panel] {min-width:0;border:1px solid var(--lw-line,#ded8ce);border-radius:7px;background:var(--lw-surface,#fff);padding:14px;margin-block:12px;overflow-wrap:anywhere}
+.fieldwork-page :where([data-mission-brief],[data-field-transfer-panel],[data-mission-import],[data-mission-unlock]) :where(button,select,input:not([type=checkbox]),textarea) {min-height:44px;max-width:100%;font-size:1rem}
+.fieldwork-page [data-mission-brief] .fc-actions {display:flex;flex-wrap:wrap;gap:8px;margin-block:12px}
+.fieldwork-page [data-mission-brief] .fc-fields {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fieldwork-page [data-mission-brief] .fc-wide {grid-column:1/-1}
+.fieldwork-page [data-mission-brief] .fc-check {display:flex;align-items:flex-start;gap:10px;min-height:44px;font-weight:500}
+.fieldwork-page [data-mission-brief] .fc-check input {flex:0 0 22px;width:22px;min-height:22px;margin-top:4px}
+.fieldwork-page [data-mission-brief] fieldset {margin-block:12px}
+@media(max-width:600px){.fieldwork-page [data-mission-brief] .fc-fields {grid-template-columns:minmax(0,1fr)}.fieldwork-page [data-mission-brief] .fc-actions button {flex:1 1 160px}}
+
+.field-capture .fc-offline-image {display:block;max-width:100%;height:auto;max-height:65vh;object-fit:contain}
