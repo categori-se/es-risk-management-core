@@ -1,7 +1,7 @@
 {
   "format": "esia-community-source-candidate",
   "schemaVersion": 1,
-  "sourceCommit": "84fb2aa38feebcd239079e97175e553b6fe6b082",
+  "sourceCommit": "5610b1ffe5e6d8eeb47858adcdd933734124b0df",
   "status": "approved-community-source-preview",
   "publicationApproved": true,
   "license": "Apache-2.0",
@@ -12,7 +12,7 @@
     "authorization": "Explicit repository-owner selection",
     "scope": "Application-owned files in the selective Community export; third-party notices and content permissions remain separate"
   },
-  "sourceTreeSha256": "d48ca4c80b802775a4ee910435aefe164a9a4157fe6324aee48c6a931430eb59",
+  "sourceTreeSha256": "5248a8167b05f984a733bfe9dcd1901116dc7c6871053053ee489e5657d36d75",
   "publicationGates": [
     {
       "id": "ownership",
@@ -707,9 +707,9 @@
     },
     {
       "path": "server/client-template-native.mjs",
-      "size": 47615,
-      "sha256": "d14d91a5369e69e68c433d2412c22ecd8b52f9904d15f1fff72c6ab001ec14d6",
-      "sourceSha256": "d14d91a5369e69e68c433d2412c22ecd8b52f9904d15f1fff72c6ab001ec14d6"
+      "size": 55851,
+      "sha256": "521b729ed19418aba55ca09e29452a28ab6c0cfe53e6e25b051362eef5fab1e7",
+      "sourceSha256": "521b729ed19418aba55ca09e29452a28ab6c0cfe53e6e25b051362eef5fab1e7"
     },
     {
       "path": "server/client-template-native.py",
@@ -1132,6 +1132,12 @@
       "size": 4155,
       "sha256": "d13d9ce3f551e17b8381e4224f205f93e5b3b44a807c6ff1f122dcdb39db94f6",
       "sourceSha256": "d13d9ce3f551e17b8381e4224f205f93e5b3b44a807c6ff1f122dcdb39db94f6"
+    },
+    {
+      "path": "server/native-office-startup-assets.json",
+      "size": 21872,
+      "sha256": "26236abb440d6f49a357e60f9b39ed2f0cca08a103d7be2e8431af9c4db731ec",
+      "sourceSha256": "26236abb440d6f49a357e60f9b39ed2f0cca08a103d7be2e8431af9c4db731ec"
     },
     {
       "path": "server/office-preview.mjs",

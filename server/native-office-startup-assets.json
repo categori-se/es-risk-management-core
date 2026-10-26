@@ -1,0 +1,649 @@
+{
+  "format": "esia-native-office-startup-assets",
+  "schemaVersion": 1,
+  "toolchainInputSha256": "7fa140670ed0fb2a741701559ae3077152656e3b55eb0bd3c6a914be1713e2a5",
+  "fileCount": 128,
+  "totalBytes": 125031464,
+  "files": [
+    {
+      "path": "/lib/ld-musl-x86_64.so.1",
+      "size": 670312,
+      "sha256": "095b047c631447e4fa50401fa7ffce01f678587040d65ba18c574981dc630de5"
+    },
+    {
+      "path": "/usr/lib/libX11-xcb.so.1.0.0",
+      "size": 13880,
+      "sha256": "f7a9e0281693f41309192880f242249e29afab9329eac458eed3f79dfb8f00c2"
+    },
+    {
+      "path": "/usr/lib/libX11.so.6.4.0",
+      "size": 1161312,
+      "sha256": "5a7c2df00148b914e9d66b7455680bd2a1b29a0eaef68b115a0133ce441d2a76"
+    },
+    {
+      "path": "/usr/lib/libXau.so.6.0.0",
+      "size": 13936,
+      "sha256": "0fd15be141dc06c149f2f2b92408dc91f4429d1f872a3fb9a655490e8c994578"
+    },
+    {
+      "path": "/usr/lib/libXdmcp.so.6.0.0",
+      "size": 26384,
+      "sha256": "cb4e243ca95695d59f1de5abc8cb0092d5ac1066811302c0f874a9341778b7eb"
+    },
+    {
+      "path": "/usr/lib/libXext.so.6.4.0",
+      "size": 68496,
+      "sha256": "a25b874bdaeed2ebea69eedd5be32f91bc868d714a584eed357ced0399694f54"
+    },
+    {
+      "path": "/usr/lib/libXrender.so.1.3.0",
+      "size": 42880,
+      "sha256": "92f49cdff11f38b0c8d46ba388787da305e29dad40ea8c3d9089c25bf81376dd"
+    },
+    {
+      "path": "/usr/lib/libassuan.so.9.0.2",
+      "size": 75848,
+      "sha256": "edf3ab62e67cc84f64480c5c540c6240c4b54a03d70bc0b00108937d2ec52526"
+    },
+    {
+      "path": "/usr/lib/libavahi-client.so.3.2.9",
+      "size": 59488,
+      "sha256": "03352c8fc419a36f003a9cd899fc952ca222303410193402b9190f0ffcd9fbb5"
+    },
+    {
+      "path": "/usr/lib/libavahi-common.so.3.5.4",
+      "size": 47160,
+      "sha256": "9eeda35314b88f0e6a54a7631491cf406343ef06e62233616e0fea446622e8ab"
+    },
+    {
+      "path": "/usr/lib/libblkid.so.1.1.0",
+      "size": 203600,
+      "sha256": "0d0a939694978d45ac5546078ef7fdfcd25f902811dc17f31d48b2380b660492"
+    },
+    {
+      "path": "/usr/lib/libboost_locale.so.1.84.0",
+      "size": 924192,
+      "sha256": "e195c1d8328385fcda173c13780b7a4beea2e9c9daf13db6d9d3c4fa2720129e"
+    },
+    {
+      "path": "/usr/lib/libboost_thread.so.1.84.0",
+      "size": 116832,
+      "sha256": "4eea99afaf9e6ee56add9a5b2e5da0399f99f2676e6d99e1699d6cc55daefd8f"
+    },
+    {
+      "path": "/usr/lib/libbrotlicommon.so.1.2.1",
+      "size": 140992,
+      "sha256": "570b996f56d64d9136900203e3d919d2386280365d3ec3c86906ff38ffed78e8"
+    },
+    {
+      "path": "/usr/lib/libbrotlidec.so.1.2.1",
+      "size": 54896,
+      "sha256": "79077f16b521a3f2b945a7eec5a2d16caacbc66fe0f60be4ecaa4a93135aca0c"
+    },
+    {
+      "path": "/usr/lib/libbrotlienc.so.1.2.1",
+      "size": 784600,
+      "sha256": "452902a60ed97316fc63b4d29b8aae41c7ab0ce37861c07324190baff21147a2"
+    },
+    {
+      "path": "/usr/lib/libbsd.so.0.12.2",
+      "size": 64272,
+      "sha256": "a5b321623fe7274c695805b7f46bb2ed8ac4e970413a4930f09701a17c44ed21"
+    },
+    {
+      "path": "/usr/lib/libbz2.so.1.0.8",
+      "size": 78480,
+      "sha256": "790364d377669c0f29b6a39776d0bc1c65a3618eaba151cb7ca1d01f4514cdc8"
+    },
+    {
+      "path": "/usr/lib/libcairo.so.2.11804.4",
+      "size": 961224,
+      "sha256": "62a60dc2f21341d91d60b7728a8e235c23d64456988014259ac7997ac4f13c7f"
+    },
+    {
+      "path": "/usr/lib/libcares.so.2.19.8",
+      "size": 247512,
+      "sha256": "ea80a8184082a25891b95a4c5c48d08de90eb7a133f9d6484de8c94874168f46"
+    },
+    {
+      "path": "/usr/lib/libcrypto.so.3",
+      "size": 4993808,
+      "sha256": "bb2d86be6845456696f90f0948b6de6369f66612b7cf3ffa755e664436fdbc88"
+    },
+    {
+      "path": "/usr/lib/libcups.so.2",
+      "size": 563000,
+      "sha256": "5f85710d909b3c1f8fbfb80323be776cd7a1c228fcf158e1ed8810e4138ac0c6"
+    },
+    {
+      "path": "/usr/lib/libcurl.so.4.8.0",
+      "size": 750432,
+      "sha256": "1ee394034d4872936a253abf0f3c22f88677f450fe56b810efab2e3820184c04"
+    },
+    {
+      "path": "/usr/lib/libdbus-1.so.3.38.3",
+      "size": 296952,
+      "sha256": "59003e53934538d49c3d297126aff3f152e6fb2b1de8269261e5e8ca5f7889ce"
+    },
+    {
+      "path": "/usr/lib/libeconf.so.0.8.3",
+      "size": 38752,
+      "sha256": "4aa270277bea8c4fc301108c4e4a51dc33c6cd008c1e8567fccd0c3966c64798"
+    },
+    {
+      "path": "/usr/lib/libepoxy.so.0.0.0",
+      "size": 1033576,
+      "sha256": "3b74367d269a15fd1c828f9e81b58ae7cc7d4dec2cd74bd2295e790c9197e029"
+    },
+    {
+      "path": "/usr/lib/libexpat.so.1.13.0",
+      "size": 140992,
+      "sha256": "0aa9093ce225c2f5d38a9083a4c203a6133ed9c592366f58e51a6a987f461f44"
+    },
+    {
+      "path": "/usr/lib/libffi.so.8.2.0",
+      "size": 38960,
+      "sha256": "05ff2c2379c35e867e039cf48b4eb390c0faa30c73b04b3b66f1cb86fb287fa2"
+    },
+    {
+      "path": "/usr/lib/libfontconfig.so.1.16.1",
+      "size": 255688,
+      "sha256": "c9a5f56d4c90979310723735297a9b0b972d60fa731d1ae43529827bcaf58b83"
+    },
+    {
+      "path": "/usr/lib/libfreetype.so.6.20.6",
+      "size": 673920,
+      "sha256": "f1cce198cf29160495728b27a69ecaf6d8c3f10c1881775e66529995a4f2d086"
+    },
+    {
+      "path": "/usr/lib/libgcc_s.so.1",
+      "size": 173920,
+      "sha256": "5ea51dd885b6fc691eccc569d0bda739204204f6161e97075b26dc9c050d1ca1"
+    },
+    {
+      "path": "/usr/lib/libgio-2.0.so.0.9000.0",
+      "size": 2026736,
+      "sha256": "5a11c7a6500d54bc72c6ea290e28b846a4e0312ce05b0a83b575f861df7cf980"
+    },
+    {
+      "path": "/usr/lib/libglib-2.0.so.0.9000.0",
+      "size": 1432632,
+      "sha256": "4c7bdca82d0631ca962ebe5af03a5e28a4ddf3ee6cab7b5b8f23973f207227c1"
+    },
+    {
+      "path": "/usr/lib/libgmodule-2.0.so.0.9000.0",
+      "size": 22208,
+      "sha256": "05561b5eddda5a95787344ad0d1316ace5a43065f5cbadc69af3d574f53340fc"
+    },
+    {
+      "path": "/usr/lib/libgmp.so.10.5.0",
+      "size": 423880,
+      "sha256": "3c1954cb458975dbc924d68825e86885adb0acf10b5e6bdc3f8a02b6be5bf8b4"
+    },
+    {
+      "path": "/usr/lib/libgnutls.so.30.42.0",
+      "size": 2060368,
+      "sha256": "125e23c2b0070d677dab168029aa47be5745a6e9ec4ab1faa01db4b49a46b9e1"
+    },
+    {
+      "path": "/usr/lib/libgobject-2.0.so.0.9000.0",
+      "size": 387072,
+      "sha256": "ca371523736f2cb8633605813ea7c5ab00668fc9500d1dd02a0db83e843c48b6"
+    },
+    {
+      "path": "/usr/lib/libgpg-error.so.0.42.1",
+      "size": 145320,
+      "sha256": "cff1bd1cc7a97dcfa04769e0e1b430ef801c8370151e2323f0ffbb202b30c6d4"
+    },
+    {
+      "path": "/usr/lib/libgpgme.so.45.0.1",
+      "size": 273720,
+      "sha256": "10d31680da091396e1e651eeb6d95e71558d933b87382b72ae513f2e4d89a16f"
+    },
+    {
+      "path": "/usr/lib/libgpgmepp.so.7.0.0",
+      "size": 464824,
+      "sha256": "36602cfb579be7ff9d2e0f4ab0f839229014d229f6ded3dba9b9e4cf5ceffefd"
+    },
+    {
+      "path": "/usr/lib/libgraphite2.so.3.2.1",
+      "size": 120512,
+      "sha256": "ee60e1fde2d480adf9c50894fc1bb26cfc121948152638797301e45b79e3e3ee"
+    },
+    {
+      "path": "/usr/lib/libharfbuzz-icu.so.0.61321.0",
+      "size": 13936,
+      "sha256": "20862e44a7658a4beeb86fd91e8f431d2c06fd23470ddeed034bf453700c93a1"
+    },
+    {
+      "path": "/usr/lib/libharfbuzz.so.0.61321.0",
+      "size": 1236728,
+      "sha256": "371f99e8aeb5b887ccb96e65c6d53b7026be0ed41d515befcf01d3d5b729453a"
+    },
+    {
+      "path": "/usr/lib/libhogweed.so.6.11",
+      "size": 288680,
+      "sha256": "eefdf7e999857435acef52358d4155463be23cb064a27a792deecde29d63f1a9"
+    },
+    {
+      "path": "/usr/lib/libicudata.so.78.1",
+      "size": 9040,
+      "sha256": "e3b9c77978cc5aa646d8c93f0943df5d4a2d8264aa4970c24441b6f2fe149bd6"
+    },
+    {
+      "path": "/usr/lib/libicui18n.so.78.1",
+      "size": 3008960,
+      "sha256": "4214a2cd169c2eee5478da385ed0807c4959f1ecd5d49657fe1e88cabe872d8b"
+    },
+    {
+      "path": "/usr/lib/libicuuc.so.78.1",
+      "size": 1783808,
+      "sha256": "a9a8e85f501bb532503cb30e825aa604bac26aa085cbba48a4b54631194577fd"
+    },
+    {
+      "path": "/usr/lib/libidn2.so.0.4.0",
+      "size": 198632,
+      "sha256": "9e6121c48274280c4258f1b3da895c5e63266639cd7ff611e9a562311e210263"
+    },
+    {
+      "path": "/usr/lib/libintl.so.8.4.6",
+      "size": 136912,
+      "sha256": "c43f799d118a30b411000220133bf8d297ef5b4684dbca30b45b605e484815a0"
+    },
+    {
+      "path": "/usr/lib/libjpeg.so.8.3.2",
+      "size": 657232,
+      "sha256": "9309c5a71b9ec1a2f60ff90687839ba24dff1c58dbbbaa440305d7e068cdec6a"
+    },
+    {
+      "path": "/usr/lib/liblangtag.so.1.4.1",
+      "size": 124872,
+      "sha256": "4d5b740efc4993efd07c3301e30da302857a44a650bc1d0be395742cadb2bc96"
+    },
+    {
+      "path": "/usr/lib/liblcms2.so.2.0.19",
+      "size": 340800,
+      "sha256": "c66dc532ad8d7e060c97bc6bdf99604c230a68af2610881ddfadfd5fe3af2605"
+    },
+    {
+      "path": "/usr/lib/liblzma.so.5.8.4",
+      "size": 227192,
+      "sha256": "6106974ac44f821cf97633527c65e7413be657a95e55aafb0885bf84743bb8a4"
+    },
+    {
+      "path": "/usr/lib/libmd.so.0.2.0",
+      "size": 63408,
+      "sha256": "4fd22b05b1297facf99c57988915345ff0ba033fbb2c6f07e4e3bb41fdedfeea"
+    },
+    {
+      "path": "/usr/lib/libmount.so.1.1.0",
+      "size": 293368,
+      "sha256": "9b76c3563ed4d173e4b2d8f1e7249454e3d108d4b464120ef0c3644a5529c6f2"
+    },
+    {
+      "path": "/usr/lib/libnettle.so.8.11",
+      "size": 309192,
+      "sha256": "9cdb023dde75392b9a1a7ca0f624e25703c372a8840ff094bec2f3acced9cbf7"
+    },
+    {
+      "path": "/usr/lib/libnghttp2.so.14.29.5",
+      "size": 132896,
+      "sha256": "efaa3700ec84c79857c4a5aad9d6f0c858d83bba3506350c5e80c684cc7d5a5a"
+    },
+    {
+      "path": "/usr/lib/libnspr4.so",
+      "size": 246016,
+      "sha256": "d200bd790620744fc619a26638c00cfde8ea20b214fc1670908f9e3bf97df13c"
+    },
+    {
+      "path": "/usr/lib/libnss3.so.124",
+      "size": 1319496,
+      "sha256": "732fc7a9c5f8f2e3c4f6255f2618c0890a6ce03a05f20620d673cbdc2b8425b3"
+    },
+    {
+      "path": "/usr/lib/libnssutil3.so.124",
+      "size": 186368,
+      "sha256": "add7327c6928e580825d8032bdea6b992e5392adeb441c59592e187f9865026e"
+    },
+    {
+      "path": "/usr/lib/libopenjp2.so.2.5.4",
+      "size": 313024,
+      "sha256": "434166b12fab5434af13380f8923b7e13e216264219d2783430941b3d75cbbd7"
+    },
+    {
+      "path": "/usr/lib/libp11-kit.so.0.4.8",
+      "size": 1400680,
+      "sha256": "171a0528711ecba98f692c132308d0f798272236117c3a2664b3a20e1e6d3be4"
+    },
+    {
+      "path": "/usr/lib/libpcre2-8.so.0.16.1",
+      "size": 784352,
+      "sha256": "496ce2b43e3910e8c232105fa04cf1b47df8860f9ec90e75dde05303c2fc69be"
+    },
+    {
+      "path": "/usr/lib/libpixman-1.so.0.46.4",
+      "size": 571184,
+      "sha256": "d3130442f660d3b395301c2285ea79504a7f06dcd19c296795340d285bf2be22"
+    },
+    {
+      "path": "/usr/lib/libplc4.so",
+      "size": 22240,
+      "sha256": "f6f014b549805ee8237ccde489af672890b4d48be207ed30bf39a54c47071355"
+    },
+    {
+      "path": "/usr/lib/libplds4.so",
+      "size": 14080,
+      "sha256": "f59b59ab7ec07b82c114683af83516f15778ce3cb1c3267d02ec9345a338ce8c"
+    },
+    {
+      "path": "/usr/lib/libpng16.so.16.59.0",
+      "size": 186280,
+      "sha256": "4651d9bebd2001344b47eda8fc2ab517232a71eb8bfc98a090d89db5e575bf84"
+    },
+    {
+      "path": "/usr/lib/libpsl.so.5.3.5",
+      "size": 75536,
+      "sha256": "7072595d6c575fd8576208944b1428d97c88998ba21b9f649c9b7aace3559d5d"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libavmedialo.so",
+      "size": 264448,
+      "sha256": "a7203b15576805636dd4d72ef00e6db800e622ef4e4c4437588163371b9484ef"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libbasegfxlo.so",
+      "size": 714784,
+      "sha256": "ef0d6f4ebb5a11d9b53240af1fdaaa15bda0938bd4392882fcf4fbc63adff400"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libcanvastoolslo.so",
+      "size": 211128,
+      "sha256": "f1fdb3a85c4142bae951d762fc1a8d3a616902ea16bba6b1db56c7f11f35f4ee"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libclewlo.so",
+      "size": 22208,
+      "sha256": "6d8c2baa61b747339dce6c9b1651bb5703e9f9acea124466419ce5a6543d88b7"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libcomphelper.so",
+      "size": 1633104,
+      "sha256": "91df8e3b16292df31d2e9d30377c9c232a5fad05b49caa7bf7d5b7b316a6cd0d"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libcppcanvaslo.so",
+      "size": 235472,
+      "sha256": "dfedd401ee831774d623e081ad7ccd2cb0b90a88b01e3e0fe166a37e4f6f6a3b"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libdbtoolslo.so",
+      "size": 1816464,
+      "sha256": "9bc26485e435bb2b4209ceb4689ffcbfc8ee5a6e40caf23c12b8fcbf2c142497"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libdeploymentmisclo.so",
+      "size": 178416,
+      "sha256": "671f75cb22e2282d852bec651356e9bb14e86505a1836b3c3f629c0b609e3e83"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libdocmodello.so",
+      "size": 120928,
+      "sha256": "0488c43285ab8dd1feb188c7c01c52ad5dfa54fa7553b37fa4821734294462fa"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libdrawinglayercorelo.so",
+      "size": 104488,
+      "sha256": "87a94647205d29dc5fd6c502330ece3b07824e66aa78ea908a4ccd01154c1072"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libdrawinglayerlo.so",
+      "size": 1579256,
+      "sha256": "8096d5181de14576faa93b89e3bf309645859512dcf33dc8c7d729c33f5386c9"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libeditenglo.so",
+      "size": 2686672,
+      "sha256": "e2c2cdf742545691207159d3fef6f6023fe213345750a0a89fe5cc0377c92139"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libfwklo.so",
+      "size": 3398480,
+      "sha256": "599c05f8ab486cbcda90d00e974a1fe63f5f2dd488543104ec7f9d417904fa4b"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libi18nlangtag.so",
+      "size": 153672,
+      "sha256": "b8944a32ef2cf543c5b00e9884e29ef4e2bcd01d1d3385eba92ec7365ce8e6b6"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libi18nutil.so",
+      "size": 108472,
+      "sha256": "f4e4f1db2273ec2cc31e12d18628dd05a6f083db1cb6a72927d1b145f38179aa"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libjvmaccesslo.so",
+      "size": 34784,
+      "sha256": "74f4f51f5aeb8cf4dd38a47c84a4233b4a68ec6c7f258c4adda122733344abb0"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libjvmfwklo.so",
+      "size": 141576,
+      "sha256": "5a37147ecaa81c64d0edd266b49944056bfa5067663c729bac4b39b0bb9fa6c3"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/liblnglo.so",
+      "size": 688672,
+      "sha256": "5ea6645cdebf8b39108beac13315403d86ab5528016ac3c0738e3f6f3e48a039"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libopencllo.so",
+      "size": 104400,
+      "sha256": "4a8e922fb4d0a1b1f1cdb95c06ff95134547238410d8c41b8b4afc4dc3173dc5"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libpdfiumlo.so",
+      "size": 4114432,
+      "sha256": "5f569d2ae6b62f7a1ae7a9f037378c725608691d2b236b28e1f3d6f68ebec1d9"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libreglo.so",
+      "size": 84200,
+      "sha256": "68856f3a351c6c243f5adb731a7616ec006480059198c84fe6413a3851026572"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libsaxlo.so",
+      "size": 342736,
+      "sha256": "0a8a1c0c1099ea716cde0601a0fd797eeb162aa83c1858d18a4e255499c544a1"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libsblo.so",
+      "size": 1720072,
+      "sha256": "1eae221c24eba7e0facea5bb011102dc1a35f053792d407f4f8cc6da3b382c34"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libsfxlo.so",
+      "size": 5783232,
+      "sha256": "aa4a417f09cfcf842043b8ef136da5c895bc7dbd593572c9171b777b67a9d5d6"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libskialo.so",
+      "size": 8035952,
+      "sha256": "f69910c7c35a976be0b231f9dc871aa99719370e6403306807230351410e4b86"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libsofficeapp.so",
+      "size": 1002304,
+      "sha256": "e3748d1c27cc77609bf28f7aee25743efc42f9dc14051886dfb60937305143a1"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libsotlo.so",
+      "size": 370880,
+      "sha256": "93a02fef7a83d56855ad42429bea5ce7d2e05727d2e5479c1219ebbabf4a2bce"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libstorelo.so",
+      "size": 96192,
+      "sha256": "4ea54b6b9ac5b03228413424484c592a1471839dc2f0f76836bace4bbaf4506a"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libsvllo.so",
+      "size": 3028912,
+      "sha256": "d1ebe6fa2fda7a87e92f050fb481b6b78cc9eabee9d80992cb3e221fab4465a9"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libsvtlo.so",
+      "size": 2223456,
+      "sha256": "6c748a8d0ad90b3224395d4edc12f0b64005d09af67b9a3a1c62347c213bb3ee"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libsvxcorelo.so",
+      "size": 9287264,
+      "sha256": "3e44f04ff8189bf74d73fbdd3c884aa56d4489302c47c341f324d7139c74acfa"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libsvxlo.so",
+      "size": 4089840,
+      "sha256": "8de24bf7cbc5a66b0a0c2b09d09d13bca11be798b95d75901955fba98a3fb67b"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libtklo.so",
+      "size": 3975136,
+      "sha256": "5e99110db41b2ba1f81d4bb9bab45f8ea88106a27a2a883f2271e04aff177b0c"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libtllo.so",
+      "size": 584696,
+      "sha256": "15cab3743274ade5631b1e77f4f599f591a4f6109b488a4320e5355404fc0e52"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libucbhelper.so",
+      "size": 503568,
+      "sha256": "1e8330bd3ba70bea02f7a000ed617c981b684677c70d469784989b1331c8a699"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libuno_cppu.so.3",
+      "size": 198760,
+      "sha256": "87a3400450ac483830f401e563fb5b3c915005bf117b78b2213c300e114849fe"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libuno_cppuhelpergcc3.so.3",
+      "size": 922096,
+      "sha256": "65fc424d74b2a4dff86d5e54306ead0fb81fec759d99b059743bd01f08400567"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libuno_sal.so.3",
+      "size": 416688,
+      "sha256": "c66d25ca67a6e13d05ec8f7b0ac6444edbebbd0362751072f2c51cc7edfed115"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libuno_salhelpergcc3.so.3",
+      "size": 34832,
+      "sha256": "c853c6afcbab2dd0d633e5f347947bdf82dce4fcaaea4a832aa42be91a93e385"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libunoidllo.so",
+      "size": 395208,
+      "sha256": "4866fc198d0b36891fe9e88836b6841fd90194075e04fd08b479cdcbfb1336b6"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libutllo.so",
+      "size": 1052936,
+      "sha256": "eee27198df74b62aa0e78fb4425f41576d76b06395eb39b2c94e6360a21ab22e"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libvcllo.so",
+      "size": 12026056,
+      "sha256": "2ceec3aa23a033a0e970d80fc8a6614be0cafe36c33f6424197d04c5543dc28d"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libxmlreaderlo.so",
+      "size": 42944,
+      "sha256": "4f785739e3d747bc3a47a747945fed319e596843056239af8476bb43a44a83db"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libxmlscriptlo.so",
+      "size": 584384,
+      "sha256": "dbfccdefaaeb9f12aaf5ffe41e91547c8bdd6149514d2b7375517e0356a5beda"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/libxolo.so",
+      "size": 4892864,
+      "sha256": "bbd07b2b929ae7b4e833af6a55d5b017957e4d0421ba09739aabc57338aa6b08"
+    },
+    {
+      "path": "/usr/lib/libreoffice/program/soffice.bin",
+      "size": 14232,
+      "sha256": "986698ce83bc0ed138d2d5a56945ccb047c72bb66737294970849d126a230509"
+    },
+    {
+      "path": "/usr/lib/libsharpyuv.so.0.1.2",
+      "size": 26240,
+      "sha256": "40030402847612f26a9d60bd7d70ddb91416c48b5ed30378cff0926410c94f0e"
+    },
+    {
+      "path": "/usr/lib/libsmime3.so.124",
+      "size": 178088,
+      "sha256": "023dc3148ff6198c2d8a7472c8783cd86a8ff38c70a928a89cde898632636a90"
+    },
+    {
+      "path": "/usr/lib/libssl.so.3",
+      "size": 843640,
+      "sha256": "ed8d30405217b3904a8df9ac311002d0ae43df516e60c5b3a8a998eda68ee340"
+    },
+    {
+      "path": "/usr/lib/libstdc++.so.6.0.34",
+      "size": 2804104,
+      "sha256": "67a940194aec6c44c3eb47a98e44c53d248e4dac5f4eb57c0971c0d6286eafe5"
+    },
+    {
+      "path": "/usr/lib/libtasn1.so.6.6.5",
+      "size": 67424,
+      "sha256": "cb7fb655ce9686ef877754bf940d8e29d41a1c1c9f6b1a3a9ac28dc05f90573f"
+    },
+    {
+      "path": "/usr/lib/libtiff.so.6.3.0",
+      "size": 473016,
+      "sha256": "74a429d55ecb49a7c1c35133c888f4e1022122fc119e9e2fdbcb818ec2f50985"
+    },
+    {
+      "path": "/usr/lib/libunistring.so.5.2.1",
+      "size": 1922880,
+      "sha256": "62fe5110253cb5ba3a1673e33097b0bca9903b5e016ed50aca4977bd9b905009"
+    },
+    {
+      "path": "/usr/lib/libwebp.so.7.2.0",
+      "size": 558984,
+      "sha256": "3963f600473b6f481536c1e94f554ba1b96533aa8ee64e369f9425a9fcaa6f1f"
+    },
+    {
+      "path": "/usr/lib/libxcb-render.so.0.0.0",
+      "size": 55016,
+      "sha256": "d55c9f3d55af3f73e78ed38752b2986308e90b0e73934c367effed1947c40bdc"
+    },
+    {
+      "path": "/usr/lib/libxcb-shm.so.0.0.0",
+      "size": 14048,
+      "sha256": "bbc01db63523f38d313f8c4a9557e56df5970cc565a6b8bcb809d4448598c403"
+    },
+    {
+      "path": "/usr/lib/libxcb.so.1.1.0",
+      "size": 153344,
+      "sha256": "fd7bc55e8680c183fe038b22d5cc7407c323e3b1e1bd6ee488b57137124b0292"
+    },
+    {
+      "path": "/usr/lib/libxml2.so.2.13.9",
+      "size": 1072096,
+      "sha256": "c7742d413585cee3e2750472e04da810a7a9883a1c10a8270c2f6e8c56231ad7"
+    },
+    {
+      "path": "/usr/lib/libz.so.1.3.2",
+      "size": 108376,
+      "sha256": "ecc8b9dfc45eb7fa29b410ffaca6257873890de53b80fe91735737b49067c5f2"
+    },
+    {
+      "path": "/usr/lib/libzstd.so.1.5.7",
+      "size": 714432,
+      "sha256": "a0a285da817a61e65d9e89bbfd38243cf8a4798cc429adc2772b5931f1d4fbb6"
+    }
+  ]
+}

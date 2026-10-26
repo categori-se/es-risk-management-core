@@ -1,13 +1,14 @@
 import {createHash} from 'node:crypto';
 import {spawnSync, spawn} from 'node:child_process';
-import {mkdtempSync, writeFileSync, readFileSync, readdirSync, rmSync, statSync, mkdirSync, openSync, readSync, closeSync, opendirSync, constants as fsConstants} from 'node:fs';
+import {mkdtempSync, writeFileSync, readFileSync, readdirSync, rmSync, statSync, lstatSync, fstatSync, realpathSync, mkdirSync, openSync, readSync, closeSync, opendirSync, constants as fsConstants} from 'node:fs';
 import {tmpdir} from 'node:os';
-import {join, extname, basename} from 'node:path';
+import {join, extname, basename, isAbsolute, resolve} from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {performance} from 'node:perf_hooks';
 import {isDeepStrictEqual} from 'node:util';
 import {AsyncLocalStorage} from 'node:async_hooks';
 import {boundedZip} from './office-preview.mjs';
+import nativeOfficeStartupAssets from './native-office-startup-assets.json' with {type:'json'};
 
 export const nativeTemplateLimits = Object.freeze({sourceBytes:16*1024*1024,outputBytes:48*1024*1024,fields:1000,repeatRows:500,pages:40,dpi:72,renderMilliseconds:45000});
 const worker=fileURLToPath(new URL('./client-template-native.py',import.meta.url));
@@ -54,8 +55,8 @@ function nativeCommandProcessState(groupId){
   while(Buffer.byteLength(JSON.stringify(result))>limits.maximumSerializedBytes){result.truncated=true;const row=result.processes.at(-1);if(row?.threads.length)row.threads.pop();else result.processes.pop();}
   result.available=result.processes.length>0;return freezeProcessDiagnostic(result);
 }
-function diagnose(error,{phase,command,reason,started,timeout,processState}){
-  failureDiagnostics.set(error,Object.freeze({phase:diagnosticPhases.has(phase)?phase:'native.command',command:diagnosticCommands.has(basename(command))?basename(command):'unknown',reason:diagnosticReasons.has(reason)?reason:'exit',elapsedMs:boundedMilliseconds(performance.now()-started),timeoutMs:boundedMilliseconds(timeout),...(processState?{processState}:{})}));
+function diagnose(error,{phase,command,reason,started,timeout,processState,startupProgress}){
+  failureDiagnostics.set(error,Object.freeze({phase:diagnosticPhases.has(phase)?phase:'native.command',command:diagnosticCommands.has(basename(command))?basename(command):'unknown',reason:diagnosticReasons.has(reason)?reason:'exit',elapsedMs:boundedMilliseconds(performance.now()-started),timeoutMs:boundedMilliseconds(timeout),...(processState?{processState}:{}),...(startupProgress?{startupProgress}:{})}));
   return error;
 }
 /** Only locally produced command diagnostics are available; caller/worker properties are ignored. */
@@ -71,13 +72,47 @@ const officePackageDirectory='/opt/esia/office-library-package';
 export const nativeOfficePackageLimits=Object.freeze({prepareMilliseconds:9000,versionMilliseconds:10000,expandedBytes:112*1024*1024,compressedBytes:40*1024*1024,scratchReserveBytes:256*1024*1024});
 // Self-contained static child: no app imports, user data, network, subprocesses or tar extraction.
 async function officePackageChild(){
-  const fs=await import('node:fs'),f=await import('node:fs/promises'),{join,basename}=await import('node:path'),{createHash}=await import('node:crypto'),{Transform}=await import('node:stream'),{pipeline}=await import('node:stream/promises'),{createBrotliDecompress}=await import('node:zlib');
+  const fs=await import('node:fs'),f=await import('node:fs/promises'),{join,basename,dirname}=await import('node:path'),{createHash}=await import('node:crypto'),{Transform}=await import('node:stream'),{pipeline}=await import('node:stream/promises'),{createBrotliDecompress}=await import('node:zlib');
   const input=JSON.parse(process.argv[1]),uid=process.getuid?.(),digest=bytes=>createHash('sha256').update(bytes).digest('hex'),keys=(value,list)=>value&&JSON.stringify(Object.keys(value).sort())===JSON.stringify(list.split(',').sort());
   const regular=async(path,maximum)=>{const s=await f.lstat(path);if(!s.isFile()||s.isSymbolicLink()||s.nlink!==1||s.size>maximum)throw Error();return s;};
   const privateDirectory=async path=>{const s=await f.lstat(path);if(!s.isDirectory()||s.isSymbolicLink()||(s.mode&511)!==448||uid!==undefined&&s.uid!==uid||await f.realpath(path)!==path)throw Error();};
   const space=async()=>{const s=await f.statfs(input.cacheRoot,{bigint:true}),n=s.bavail*s.bsize;return Number(n>BigInt(Number.MAX_SAFE_INTEGER)?BigInt(Number.MAX_SAFE_INTEGER):n);};
+  // This reads fixed image assets in place. It neither relocates libraries nor
+  // changes the loader environment. Module-only fixture injection cannot arrive
+  // through the native request's JSON wire format.
+  async function prefetchStartup(){
+    const s=input.startup,m=s.manifest,check=()=>{if(process.hrtime.bigint()>=BigInt(input.deadlineNs))throw Error();};
+    if(!keys(m,'format,schemaVersion,toolchainInputSha256,fileCount,totalBytes,files')||m.format!=='esia-native-office-startup-assets'||m.schemaVersion!==1||m.toolchainInputSha256!==s.toolchainInputSha256||digest(Buffer.from(JSON.stringify(m)))!==s.manifestSha256||!Array.isArray(m.files)||m.fileCount!==m.files.length||m.fileCount<1||m.fileCount>128||m.totalBytes!==m.files.reduce((n,v)=>n+v.size,0)||m.totalBytes>128*1048576||new Set(m.files.map(v=>v.path)).size!==m.fileCount||!m.files.every(v=>keys(v,'path,size,sha256')&&/^\/(?:lib|usr\/lib)\/[A-Za-z0-9_+./-]+$/.test(v.path)&&!v.path.slice(1).split('/').some(p=>p==='.'||p==='..'||p==='')&&Number.isSafeInteger(v.size)&&v.size>=4&&v.size<=32*1048576&&/^[a-f0-9]{64}$/.test(v.sha256)))throw Error();
+    const metadata=join(s.root,'opt/esia/toolchain-inputs.json');let metadataStat;
+    try{metadataStat=await f.lstat(metadata);}catch(error){
+      if(error.code!=='ENOENT')throw error;
+      const parents=[];for(let path=dirname(metadata);;path=dirname(path)){parents.unshift(path);if(dirname(path)===path)break;}
+      for(const path of parents){let s;try{s=await f.lstat(path);}catch(missing){if(missing.code==='ENOENT')return {packaged:false};throw missing;}if(!s.isDirectory()||s.isSymbolicLink())throw Error();}
+      return {packaged:false};
+    }
+    if(!metadataStat.isFile()||metadataStat.isSymbolicLink()||metadataStat.nlink!==1||metadataStat.size<1||metadataStat.size>1048576||await f.realpath(metadata)!==metadata)throw Error();
+    await privateDirectory(input.staging);const progress={manifestSha256:s.manifestSha256,fileIndex:0,verifiedCount:0,readBytes:0};
+    const progressFile=await f.open(join(input.staging,'startup-progress.json'),fs.constants.O_WRONLY|fs.constants.O_CREAT|fs.constants.O_EXCL|fs.constants.O_NOFOLLOW,384);
+    const saveProgress=async()=>{const bytes=Buffer.from(JSON.stringify(progress));if(bytes.length>1024)throw Error();await progressFile.write(bytes,0,bytes.length,0);await progressFile.truncate(bytes.length);};
+    const same=(a,b)=>a.dev===b.dev&&a.ino===b.ino&&a.size===b.size&&a.mtimeMs===b.mtimeMs&&a.ctimeMs===b.ctimeMs;
+    async function openFixed(path,size){check();const before=await f.lstat(path);check();if(!before.isFile()||before.isSymbolicLink()||before.nlink!==1||before.size!==size||await f.realpath(path)!==path)throw Error();check();const handle=await f.open(path,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW|fs.constants.O_NONBLOCK);try{if(!same(before,await handle.stat()))throw Error();check();return {handle,before};}catch(error){await handle.close();throw error;}}
+    try{
+      await saveProgress();const meta=await openFixed(metadata,metadataStat.size),metadataHash=createHash('sha256');
+      try{const bytes=Buffer.alloc(metadataStat.size);check();const {bytesRead}=await meta.handle.read(bytes,0,bytes.length,0);check();if(bytesRead!==bytes.length||!same(meta.before,await meta.handle.stat())||!same(meta.before,await f.lstat(metadata)))throw Error();metadataHash.update(bytes);}finally{await meta.handle.close();}
+      if(metadataHash.digest('hex')!==s.toolchainInputSha256)throw Error();
+      const buffer=Buffer.alloc(1048576);
+      for(let index=0;index<m.files.length;index++){
+        check();progress.fileIndex=index;await saveProgress();const asset=m.files[index],path=join(s.root,asset.path),opened=await openFixed(path,asset.size),hasher=createHash('sha256');let offset=0;
+        try{
+          while(offset<asset.size){check();const {bytesRead}=await opened.handle.read(buffer,0,Math.min(buffer.length,asset.size-offset),offset);progress.readBytes+=bytesRead;check();if(bytesRead<1)throw Error();if(offset===0&&(bytesRead<4||buffer.subarray(0,4).toString('hex')!=='7f454c46'))throw Error();hasher.update(buffer.subarray(0,bytesRead));offset+=bytesRead;await saveProgress();}
+          check();if(hasher.digest('hex')!==asset.sha256||!same(opened.before,await opened.handle.stat())||!same(opened.before,await f.lstat(path)))throw Error();progress.verifiedCount++;await saveProgress();
+        }finally{await opened.handle.close();}
+      }
+      check();return {packaged:false,startupPrefetch:{manifestSha256:s.manifestSha256,fileCount:m.fileCount,totalBytes:m.totalBytes}};
+    }catch(error){try{await saveProgress();}catch{}throw error;}finally{await progressFile.close();}
+  }
   try{
-    let packageStat;try{packageStat=await f.lstat(input.packageDirectory);}catch(error){if(error.code==='ENOENT'&&!input.required){process.stdout.write(JSON.stringify({packaged:false}));return;}throw error;}
+    let packageStat;try{packageStat=await f.lstat(input.packageDirectory);}catch(error){if(error.code==='ENOENT'&&!input.required){process.stdout.write(JSON.stringify(await prefetchStartup()));return;}throw error;}
     if(!packageStat.isDirectory()||packageStat.isSymbolicLink()||await f.realpath(input.packageDirectory)!==input.packageDirectory)throw Error();
     await regular(join(input.packageDirectory,'manifest.json'),8192);await regular(join(input.packageDirectory,'manifest.sha256'),65);
     const raw=await f.readFile(join(input.packageDirectory,'manifest.json')),manifestSha256=digest(raw),pin=(await f.readFile(join(input.packageDirectory,'manifest.sha256'),'utf8')).trim();if(pin!==manifestSha256)throw Error();
@@ -105,15 +140,36 @@ async function officePackageChild(){
     let cacheHit=false;try{await f.rename(payload,target);}catch(error){if(!['EEXIST','ENOTEMPTY'].includes(error.code))throw error;await verifiedCache();cacheHit=true;}const remaining=await space();if(remaining<reserve)throw Error();process.stdout.write(JSON.stringify(response(cacheHit,remaining)));
   }catch{process.stdout.write(JSON.stringify({error:'NATIVE_OFFICE_PACKAGE_UNAVAILABLE'}));process.exitCode=1;}
 }
-function officePreparationContext({packageDirectory=officePackageDirectory,cacheRoot=tmpdir(),required=process.env.ESIA_NATIVE_OFFICE_PACKAGE==='required',timeout=nativeOfficePackageLimits.prepareMilliseconds,phase='native.command'}={}){
+function officePreparationContext({packageDirectory=officePackageDirectory,cacheRoot=tmpdir(),required=process.env.ESIA_NATIVE_OFFICE_PACKAGE==='required',timeout=nativeOfficePackageLimits.prepareMilliseconds,phase='native.command',startupFixture}={}){
   if(!Number.isFinite(timeout)||timeout<1)throw fail('The native renderer package could not be prepared.',503);
-  const started=performance.now(),staging=mkdtempSync(join(cacheRoot,'esia-native-office-prepare-'));
-  return {cacheRoot,required,phase,started,staging,timeout:Math.min(nativeOfficePackageLimits.prepareMilliseconds,Math.floor(timeout)),args:['--input-type=module','-e',`(${officePackageChild.toString()})()`,JSON.stringify({packageDirectory,cacheRoot,required,staging})]};
+  // A function-valued dependency is for authored local tests only. Serialized
+  // native request JSON cannot select another manifest, metadata pin or root.
+  if(startupFixture!==undefined&&typeof startupFixture!=='function')throw fail('The native renderer package could not be prepared.',503);
+  const fixture=startupFixture?.(),root=fixture?.root??resolve('/'),manifest=JSON.parse(JSON.stringify(fixture?.manifest??nativeOfficeStartupAssets));
+  if(!isAbsolute(root)||resolve(root)!==root||!manifest||!Array.isArray(manifest.files)||!/^[a-f0-9]{64}$/.test(manifest.toolchainInputSha256))throw fail('The native renderer package could not be prepared.',503);
+  const startup={root,manifest,manifestSha256:hash(Buffer.from(JSON.stringify(manifest))),toolchainInputSha256:manifest.toolchainInputSha256};
+  const started=performance.now(),boundedTimeout=nativeCommandTimeout(Math.min(nativeOfficePackageLimits.prepareMilliseconds,Math.floor(timeout))),deadlineNs=String(process.hrtime.bigint()+BigInt(boundedTimeout)*1000000n),staging=mkdtempSync(join(cacheRoot,'esia-native-office-prepare-'));
+  return {cacheRoot,required,phase,started,staging,startup,timeout:boundedTimeout,args:['--input-type=module','-e',`(${officePackageChild.toString()})()`,JSON.stringify({packageDirectory,cacheRoot,required,staging,startup,deadlineNs})]};
 }
-function officePreparationFailure(context,reason){return diagnose(fail('The native renderer package could not be prepared.',503),{phase:context.phase,command:'node',reason,started:context.started,timeout:context.timeout});}
+function officeStartupProgress(context){
+  let fd;try{
+    const directory=lstatSync(context.staging),path=join(context.staging,'startup-progress.json'),s=lstatSync(path),uid=process.getuid?.(),stamp=v=>[v.dev,v.ino,v.size,v.mtimeMs,v.ctimeMs].join(':');
+    if(!directory.isDirectory()||directory.isSymbolicLink()||(directory.mode&511)!==448||uid!==undefined&&directory.uid!==uid||realpathSync(context.staging)!==context.staging||!s.isFile()||s.isSymbolicLink()||s.nlink!==1||(s.mode&511)!==384||uid!==undefined&&s.uid!==uid||s.size<1||s.size>1024)return;
+    fd=openSync(path,fsConstants.O_RDONLY|fsConstants.O_NOFOLLOW|fsConstants.O_NONBLOCK);if(stamp(s)!==stamp(fstatSync(fd)))return;
+    const bytes=Buffer.alloc(s.size),n=readSync(fd,bytes,0,bytes.length,0);if(n!==s.size||stamp(s)!==stamp(fstatSync(fd))||stamp(s)!==stamp(lstatSync(path)))return;
+    const value=JSON.parse(bytes),keys=Object.keys(value).sort().join(','),m=context.startup.manifest;
+    if(keys!=='fileIndex,manifestSha256,readBytes,verifiedCount'||value.manifestSha256!==context.startup.manifestSha256||!Number.isSafeInteger(value.fileIndex)||value.fileIndex<0||value.fileIndex>=m.files.length||!Number.isSafeInteger(value.verifiedCount)||![value.fileIndex,value.fileIndex+1].includes(value.verifiedCount)||!Number.isSafeInteger(value.readBytes)||value.readBytes<0||value.readBytes<m.files.slice(0,value.verifiedCount).reduce((n,v)=>n+v.size,0)||value.readBytes>m.files.slice(0,value.fileIndex+1).reduce((n,v)=>n+v.size,0))return;
+    return Object.freeze(value);
+  }catch{}finally{if(fd!==undefined)try{closeSync(fd);}catch{}}
+}
+function officePreparationFailure(context,reason,original){const prior=nativeFailureDiagnostic(original);return diagnose(fail('The native renderer package could not be prepared.',503),{phase:context.phase,command:'node',reason,started:context.started,timeout:context.timeout,processState:prior?.processState,startupProgress:officeStartupProgress(context)});}
 function acceptedOfficePreparation(context,text){
   const {required,cacheRoot}=context;let value;try{value=JSON.parse(text);}catch{throw officePreparationFailure(context,'invalid_result');}
   if(value?.packaged===false&&!required&&Object.keys(value).length===1)return {packaged:false,elapsedMs:boundedMilliseconds(performance.now()-context.started)};
+  if(value?.packaged===false&&!required&&Object.keys(value).sort().join(',')==='packaged,startupPrefetch'){
+    const expected={manifestSha256:context.startup.manifestSha256,fileCount:context.startup.manifest.fileCount,totalBytes:context.startup.manifest.totalBytes};
+    if(!isDeepStrictEqual(value.startupPrefetch,expected))throw officePreparationFailure(context,'invalid_result');return {packaged:false,startupPrefetch:Object.freeze(expected),elapsedMs:boundedMilliseconds(performance.now()-context.started)};
+  }
   if(value?.packaged!==true||JSON.stringify(Object.keys(value).sort())!==JSON.stringify('packaged,directory,manifestSha256,totalBytes,compressedBytes,cacheHit,scratchBytesAvailable,scratchReserveBytes'.split(',').sort())||!/^[a-f0-9]{64}$/.test(value.manifestSha256)||value.directory!==join(cacheRoot,'esia-native-office-library-cache',value.manifestSha256)||!Number.isSafeInteger(value.totalBytes)||value.totalBytes<1||value.totalBytes>nativeOfficePackageLimits.expandedBytes||!Number.isSafeInteger(value.compressedBytes)||value.compressedBytes<1||value.compressedBytes>nativeOfficePackageLimits.compressedBytes||typeof value.cacheHit!=='boolean'||!Number.isSafeInteger(value.scratchBytesAvailable)||value.scratchBytesAvailable<nativeOfficePackageLimits.scratchReserveBytes||value.scratchReserveBytes!==nativeOfficePackageLimits.scratchReserveBytes)throw officePreparationFailure(context,'invalid_result');
   return {...value,elapsedMs:boundedMilliseconds(performance.now()-context.started)};
 }
@@ -127,12 +183,12 @@ export function prepareNativeOfficeLibraries(options={}){
 /** Rendering uses an asynchronous timer and process-group kill; it never waits for a blocked child's exit. */
 export async function prepareNativeOfficeLibrariesAsync(options={}){
   const context=officePreparationContext(options);
-  try{let result;try{result=await (options.runCommand||executeNativeCommand)(process.execPath,context.args,{env:{PYTHONDONTWRITEBYTECODE:'1'},timeout:context.timeout,maximum:8192,phase:context.phase});}catch(error){throw officePreparationFailure(context,nativeFailureDiagnostic(error)?.reason||'unavailable');}return acceptedOfficePreparation(context,result.stdout);}
+  try{let result;try{result=await (options.runCommand||executeNativeCommand)(process.execPath,context.args,{env:{PYTHONDONTWRITEBYTECODE:'1'},timeout:context.timeout,maximum:8192,phase:context.phase});}catch(error){throw officePreparationFailure(context,nativeFailureDiagnostic(error)?.reason||'unavailable',error);}return acceptedOfficePreparation(context,result.stdout);}
   finally{cleanupOfficePreparation(context);}
 }
 // Load merged through its immutable original-path alias so module-relative resources keep their installed origin.
 function officeLibraryEnvironment(env,libraries){return libraries.packaged?{...env,LD_LIBRARY_PATH:['/usr/lib/libreoffice/program',libraries.directory,...(process.env.LD_LIBRARY_PATH||'').split(':').filter(Boolean)].join(':')}:env;}
-function officeLibraryEvidence(libraries){if(!libraries)return{packaged:null,status:'unavailable'};return libraries.packaged?{packaged:true,manifestSha256:libraries.manifestSha256,expandedBytes:libraries.totalBytes,compressedBytes:libraries.compressedBytes,scratchReserveBytes:libraries.scratchReserveBytes}: {packaged:false};}
+function officeLibraryEvidence(libraries){if(!libraries)return{packaged:null,status:'unavailable'};return libraries.packaged?{packaged:true,manifestSha256:libraries.manifestSha256,expandedBytes:libraries.totalBytes,compressedBytes:libraries.compressedBytes,scratchReserveBytes:libraries.scratchReserveBytes}: {packaged:false,...(libraries.startupPrefetch?{startupPrefetch:libraries.startupPrefetch}:{})};}
 
 // Import the modules used by the worker: distribution metadata can describe a
 // different installation from the module selected by this interpreter/site path.
